@@ -1,0 +1,67 @@
+body {
+  text-align: center;
+}
+h2 {
+  text-align: center;
+  color: #464646;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+.container {
+  text-align: center;
+}
+img {
+  width: 35%;
+  height: 30%;
+}
+h3 {
+  color: #000000;
+  font-size: 22px;
+}
+.btn1 {
+  background-color: #d03830;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  font-size: 15px;
+  margin: 30px;
+}
+.modal {
+  text-align: left;
+}
+.modal label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+  color: #323131;
+  font-size: 18px;
+  text-align: center;
+}
+
+.modal input,
+.modal select {
+  width: calc(95% - 20px);
+  padding: 5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+  border: 2px solid #838181;
+  border-radius: 2px;
+  font-size: 15px;
+  width: 40%;
+}
+.modal select {
+  cursor: pointer;
+}
+input {
+  width: 100px;
+}
+.centrer {
+  text-align: center;
+}
+h5 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: #d03830;
+}

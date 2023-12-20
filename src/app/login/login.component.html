@@ -1,0 +1,43 @@
+<div
+  class="container-fluid body d-flex flex-column align-items-center justify-content-end"
+>
+  <div class="container mb-4 container1">
+    <img src="assets/cosit.png" alt="logo cosit" class="img-fluid logo" />
+  </div>
+  <h2>Bienvenue sur MASSY</h2>
+
+  <div class="container">
+    <form class="registration-form bg-light p-3 rounded">
+      <!-- <button class="fermer-btn" (click)="fermerFormulaire()">X</button> -->
+      <h3 class="text-center mb-4">Connexion</h3>
+
+      <label for="email">Email:</label>
+      <input
+        [(ngModel)]="email"
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        placeholder="Votre adresse email"
+        required
+      />
+
+      <label for="password">Mot de passe:</label>
+      <input
+        [(ngModel)]="password"
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+        placeholder="Votre mot de passe"
+        required
+      />
+
+      <div class="container-bouton text-center mt-3">
+        <button type="submit" class="btn btn-block btn1" (click)="login()">
+          Se connecter
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

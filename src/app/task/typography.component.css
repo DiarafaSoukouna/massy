@@ -1,0 +1,237 @@
+/* card.component.css */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: auto;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  overflow-y: auto;
+}
+.fixed-height {
+  height: 200px;
+}
+
+.card h3 {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.button {
+  background-color: #842424;
+  color: white;
+  padding: 8px 16px;
+  height: 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  float: right;
+}
+
+.button:hover {
+  background-color: #490e14;
+}
+
+.add-card {
+  cursor: pointer;
+  color: #1e90ff;
+  background-color: #842424;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  float: right;
+}
+.add-card:hover {
+  background-color: #910101;
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  overflow-x: auto;
+}
+
+.card {
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+  padding: 20px;
+  min-width: 300px;
+}
+
+.card h3 {
+  margin-bottom: 20px;
+}
+
+.bouger {
+  text-align: center;
+}
+button:hover {
+  background-color: #910101;
+}
+
+.container::-webkit-scrollbar {
+  height: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: #f44336;
+}
+
+.container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+.card input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #ececec;
+}
+
+.card input:focus {
+  outline: none;
+  border-color: #f44336;
+  box-shadow: 0 0 5px rgba(115, 50, 58, 0.5);
+}
+textarea.auto-resize {
+  resize: none;
+  overflow-y: hidden;
+  height: 30px;
+  transition: height 0.3s;
+  min-height: 30px;
+}
+
+.m {
+  border-radius: 10px;
+}
+.modal {
+  text-align: left;
+}
+.modal label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: #000;
+}
+
+.modal input,
+.modal select {
+  width: calc(95% - 20px);
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  width: 100%;
+}
+.modal select {
+  cursor: pointer;
+}
+input {
+  width: 100px;
+}
+h2 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+.espace {
+  padding: 20px;
+}
+body {
+  margin-top: 60px;
+  text-align: center;
+}
+h5 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: #f44336;
+}
+.btn1 {
+  background-color: #f44336;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  margin-right: 20px;
+}
+.example-list {
+  width: 500px;
+  max-width: 100%;
+
+  min-height: 60px;
+  display: block;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-box {
+  padding: 15px 8px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

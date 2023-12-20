@@ -1,0 +1,133 @@
+<body>
+  <div class="container">
+    <img src="assets/confirmation2.png" alt="photo enveloppe" />
+  </div>
+  <h2>Authentification à doubles facteurs</h2>
+
+  <p>
+    L'authentification à deux facteurs est essentielle pour la sécurité en
+    ligne. <br />
+    Elle offre une défense renforcée contre les menaces de cybercriminalité<br />
+    pour assurer la sécurité des informations <br />
+    personnelles et professionnelles.
+  </p>
+  <h3>Recevoir le message de confirmation par..</h3>
+  <button
+    type="button"
+    class="btn btn1"
+    data-toggle="modal"
+    data-target="#emailModal"
+  >
+    Email
+  </button>
+
+  <button
+    type="button"
+    class="btn btn1"
+    data-toggle="modal"
+    data-target="#whatsappModal"
+  >
+    WhatsApp
+  </button>
+</body>
+
+<!-- authentification par mail -->
+<div
+  class="modal fade"
+  id="emailModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="projetModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="emailModalLabel">Authentification</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="modale">
+            <div class="centrer">
+              <label for="email"
+                >Veuillez inscrire le code recu par Email</label
+              >
+              <input
+                type="text"
+                id="email"
+                name="email"
+                placeholder="ex:12345"
+                required
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button type="button" class="btn btn1">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- authentification par WhatsApp -->
+
+<div
+  class="modal fade"
+  id="whatsappModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="whatsappModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="whatsapp">Authentification</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="modale">
+            <div class="centrer">
+              <label for="email"
+                >Veuillez inscrire le code recu par WhatsApp</label
+              >
+              <input
+                type="text"
+                id="whatsapp"
+                name="whatsapp"
+                placeholder="ex:12345"
+                required
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button type="button" class="btn btn1">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>
