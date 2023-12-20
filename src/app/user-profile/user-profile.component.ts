@@ -3,7 +3,6 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { DataService } from "app/data.service";
-import { response } from "express";
 
 @Component({
   selector: "app-user-profile",
@@ -33,8 +32,11 @@ export class UserProfileComponent {
   getUser() {
     this.dataService.getUsers().subscribe(
       (data: any) => {
-        this.dataSource = data.user;
-        console.log(response);
+        if (Array.isArray(data.user)) {
+          this.dataSource.data = data.user;
+        } else {
+          console.error("Les données ne sont pas un tableau :", data);
+        }
       },
       (error) => {
         console.error(
@@ -62,7 +64,6 @@ export class UserProfileComponent {
       .subscribe(
         (response: any) => {
           console.log(response);
-
           this.getUser();
         },
         (error) => {

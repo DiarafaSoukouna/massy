@@ -2,41 +2,23 @@
   <h2>Liste de vos taches</h2>
   <div class="add-card btn1" (click)="addCard()">+</div>
 
-  <body>
-    <body>
-      <body>
-        <div class="container">
-          <div
-            *ngFor="let card of cards; let i = index"
-            class="card"
-            [ngClass]="{ 'fixed-height': card.inputs.length > 0 }"
-          >
-            <h3>{{ card.title }}</h3>
-
-            <div
-              cdkDropList
-              class="example-list"
-              (cdkDropListDropped)="drop($event)"
-            >
-              <div class="example-box" *ngFor="let movie of movies" cdkDrag>
-                {{ movie }}
-              </div>
-            </div>
-
-            <button
-              type="button"
-              class="btn btn1"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              data-whatever="@mdo"
-            >
-              Ajouter une tache
-            </button>
-          </div>
-        </div>
-      </body>
-    </body>
-  </body>
+  <div class="container">
+    <div *ngFor="let task of projectTasks">
+      <div class="card">
+        <h3>{{ task.title }}</h3>
+        <button
+          type="button"
+          class="btn btn1"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          data-whatever="@mdo"
+          (click)="cat_TaskId = task.id"
+        >
+          Ajouter une tache
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div class="m">
     <div
@@ -65,6 +47,7 @@
               <div class="modale">
                 <label for="nom">Nom:</label>
                 <input
+                  [(ngModel)]="title"
                   type="text"
                   id="nom"
                   name="nom"
@@ -73,18 +56,20 @@
                 />
                 <label for="description">Description:</label>
                 <input
+                  [(ngModel)]="desc"
                   type="text"
                   id="description"
                   name="description"
                   placeholder="description du projet"
                   required
                 />
-                <label for="status">Statut:</label>
-                <select name="status" id="status">
-                  <option value="urgent">Urgent</option>
-                  <option value="urgent">Moins urgent</option>
-                  <option value="urgent">Pas urgent</option>
-                </select>
+                <input
+                  [(ngModel)]="cat_TaskId"
+                  type="hidden"
+                  id="cat_TaskId"
+                  name="cat_TaskId"
+                  required
+                />
               </div>
             </form>
           </div>
@@ -96,10 +81,48 @@
             >
               Fermer
             </button>
-            <button type="button" class="btn btn1">Valider</button>
+            <button type="button" class="btn btn1" (click)="onSubmit()">
+              Valider
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </body>
+
+<!-- <body>
+  <body>
+    <body>
+      <div class="container">
+        <div
+          *ngFor="let card of cards; let i = index"
+          class="card"
+          [ngClass]="{ 'fixed-height': card.inputs.length > 0 }"
+        >
+          <h3>{{ card.title }}</h3>
+
+          <div
+            cdkDropList
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="example-box" *ngFor="let movie of movies" cdkDrag>
+              {{ movie }}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn1"
+            data-toggle="modal"
+            data-target="#exampleModal"
+            data-whatever="@mdo"
+          >
+            Ajouter une tache
+          </button>
+        </div>
+      </div>
+    </body>
+  </body>
+</body> -->

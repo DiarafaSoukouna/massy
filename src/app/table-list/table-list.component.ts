@@ -7,7 +7,6 @@ import { NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs";
 import { DataService } from "app/data.service";
-import { Console } from "console";
 import { HttpHeaders } from "@angular/common/http";
 
 @Component({
@@ -150,6 +149,10 @@ export class TableListComponent {
           console.log(error);
         }
       );
+  }
+
+  onClickProject(id: any): void {
+    this.router.navigate(["/typography", { projetId: id }]);
   }
 
   onRecup(id: any): void {

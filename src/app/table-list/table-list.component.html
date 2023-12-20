@@ -23,7 +23,11 @@
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>Nom du projet</th>
-      <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+      <td mat-cell *matCellDef="let element">
+        <boutton (click)="onClickProject(element.id)">{{
+          element.title
+        }}</boutton>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="desc">
