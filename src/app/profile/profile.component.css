@@ -1,0 +1,70 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.card {
+  width: 450px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: white;
+}
+
+.profile-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="email"] {
+  width: calc(100% - 16px);
+  height: 35px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.profile-form input[type="file"] {
+  margin-top: 10px;
+}
+
+.profile-form button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-form button:hover {
+  background-color: #980000;
+}
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin: 10px;
+}
+.container1 {
+  text-align: center;
+  padding: 10px;
+  width: 200px;
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}

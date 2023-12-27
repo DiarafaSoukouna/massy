@@ -12,6 +12,9 @@
   margin-bottom: 10px;
   overflow-y: auto;
 }
+.center {
+  width: 245px;
+}
 .fixed-height {
   height: 200px;
 }
@@ -234,4 +237,132 @@ h5 {
 
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.tasks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  background-color: #b0b0b0;
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* checkbox.component.css */
+/* checkbox.component.css */
+.checkbox-label {
+  position: relative;
+  cursor: pointer;
+  padding-left: 30px;
+  display: inline-block;
+  line-height: 24px;
+}
+
+.custom-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-custom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+
+.custom-checkbox:checked + .checkbox-custom {
+  background-color: #2196f3;
+  border: 1px solid #2196f3;
+}
+
+.checkbox-custom:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox:checked + .checkbox-custom:after {
+  display: block;
+}
+
+.checkbox-custom:after {
+  left: 8px;
+  top: 4px;
+  width: 8px;
+  height: 16px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.button1 {
+  background-color: #b0b0b0;
+  border-radius: 0px;
+  color: #000;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+}
+.button1:hover {
+  background-color: #ccc;
+  color: #000;
+}
+.tasks label {
+  margin-right: 10px;
+}
+.right {
+  float: right;
+  width: 27px;
+  background-color: #ffffff;
+  border-radius: 0px;
+  color: #000;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+}
+.right:hover {
+  background-color: #eeeeee;
+}
+.non-editable {
+  pointer-events: none;
+  opacity: 0.9;
+  background-color: #dfdfdf;
+}
+.non-editable button {
+  background-color: #dfdfdf;
+}
+h5 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+}
+mat-icon {
+  color: rgb(19, 184, 82);
+  font-weight: bold;
+}
+h4 {
+  color: #3c3e3f;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+h6 {
+  color: #333333;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.5;
+  margin-bottom: 10px;
 }

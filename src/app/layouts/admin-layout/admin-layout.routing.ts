@@ -10,6 +10,8 @@ import { NotificationsComponent } from "../../notifications/notifications.compon
 import { UpgradeComponent } from "../../upgrade/upgrade.component";
 import { LoginComponent } from "app/login/login.component";
 import { ConfirmationComponent } from "app/confirmation/confirmation.component";
+import { MembresComponent } from "app/membres/membres.component";
+import { ProfileComponent } from "app/profile/profile.component";
 
 export const AdminLayoutRoutes: Routes = [
   // {
@@ -64,4 +66,6 @@ export const AdminLayoutRoutes: Routes = [
   { path: "upgrade", component: UpgradeComponent },
   { path: "login", component: LoginComponent },
   { path: "confirmation", component: ConfirmationComponent },
+  { path: "membres", component: MembresComponent },
+  { path: "profile", component: ProfileComponent },
 ];

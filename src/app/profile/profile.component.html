@@ -1,0 +1,34 @@
+<body>
+  <div class="card">
+    <form class="profile-form">
+      <span class="close-button" (click)="retour()"
+        ><mat-icon>close</mat-icon></span
+      >
+      <div class="container container1">
+        <img src="assets/cosit.png" alt="logo cosit" class="img-fluid logo" />
+      </div>
+      <h2>Profil utilisateur</h2>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="email">Nom:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="email">Prenom:</label>
+      <input type="email" id="email" name="email" required />
+
+      <div id="profile-picture">
+        <label for="profile-picture">Profile Picture:</label>
+        <input
+          type="file"
+          id="profile-picture"
+          name="profile-picture"
+          accept="image/*"
+        />
+        <img src="#" id="profile-image" />
+      </div>
+
+      <button type="submit">Envoyer</button>
+    </form>
+  </div>
+</body>

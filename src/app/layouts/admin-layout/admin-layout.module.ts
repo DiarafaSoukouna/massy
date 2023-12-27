@@ -23,6 +23,11 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { DataService } from "app/data.service";
 import { MatIconModule } from "@angular/material/icon";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { ConfirmationComponent } from "app/confirmation/confirmation.component";
+import { AuthentificationService } from "app/authentification.service";
+import { MatMenuModule } from "@angular/material/menu";
+import { MembresComponent } from "app/membres/membres.component";
+import { ProfileComponent } from "app/profile/profile.component";
 
 @NgModule({
   imports: [
@@ -40,6 +45,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     DragDropModule,
     MatIconModule,
     NgbModule,
+    MatMenuModule,
   ],
   declarations: [
     DashboardComponent,
@@ -51,7 +57,10 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     NotificationsComponent,
     UpgradeComponent,
     LoginComponent,
+    ConfirmationComponent,
+    MembresComponent,
+    ProfileComponent,
   ],
-  providers: [DataService],
+  providers: [DataService, AuthentificationService],
 })
 export class AdminLayoutModule {}

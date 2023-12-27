@@ -8,6 +8,7 @@ import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs";
 import { DataService } from "app/data.service";
 import { HttpHeaders } from "@angular/common/http";
+import { AuthentificationService } from "app/authentification.service";
 
 @Component({
   selector: "app-table-list",
@@ -19,6 +20,8 @@ export class TableListComponent {
   loadingModalRef: NgbModalRef;
   loadingModal: NgbModal;
   loading: boolean = false;
+  showConfirmation = false;
+  projet_array: any[];
 
   title: any;
   desc: any;
@@ -26,22 +29,16 @@ export class TableListComponent {
   date_fin: any;
   budg_prev: any;
   id: any;
+  projet_array1: any;
 
   displayedColumns: string[] = [
     "title",
-    "desc",
     "date_deb",
     "date_fin",
+    "status",
     "action",
   ];
   dataSource = new MatTableDataSource<any>();
-  setAccessToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
-    console.log("token", this.tokenKey);
-  }
-  getAccessToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -51,7 +48,8 @@ export class TableListComponent {
     private http: HttpClient,
     private router: Router,
     private modalService: NgbModal,
-    private dataService: DataService
+    private dataService: DataService,
+    private authService: AuthentificationService
   ) {}
 
   ngOnInit() {
@@ -63,6 +61,17 @@ export class TableListComponent {
       (data: any) => {
         if (Array.isArray(data.projet)) {
           this.dataSource.data = data.projet;
+
+          console.log("All projet data", data.projet);
+
+          this.dataSource.data = data.projet
+            .map(
+              (projet: any) =>
+                projet.members
+                  .map((member: any) => member.userId)
+                  .includes(this.authService.getUserId()) && projet
+            )
+            .filter((projet: any) => projet !== false);
         } else {
           console.error("Les données ne sont pas un tableau :", data);
         }
@@ -84,20 +93,24 @@ export class TableListComponent {
   // }
 
   onDelete(id: any): void {
-    this.http
-      .post("http://192.168.1.14:5000/projet/delete", {
-        projetId: id,
-      })
-      .subscribe(
-        (response: any) => {
-          console.log("suppression executer");
-          this.getProject();
-        },
-        (error) => {
-          console.log(error);
-          this.getProject();
-        }
-      );
+    const userConfirmed = window.confirm("Are you sure you want to delete?");
+
+    if (userConfirmed) {
+      this.http
+        .post("http://localhost:5000/projet/delete", {
+          projetId: id,
+        })
+        .subscribe(
+          (response: any) => {
+            console.log("Suppression exécutée");
+            this.getProject();
+          },
+          (error) => {
+            console.log(error);
+            this.getProject();
+          }
+        );
+    }
   }
   onSubmit(event: Event): void {
     event.preventDefault();
@@ -111,21 +124,25 @@ export class TableListComponent {
       date_fin: this.date_fin,
       budg_prev: this.budg_prev,
       id: this.id,
+      userId: this.authService.getUserId(),
     };
+    const headers = this.authService.getHeaders();
+    const access_token = this.authService.getToken();
 
-    this.http.post("http://192.168.1.14:5000/projet/add", userData).subscribe(
-      (response: any) => {
-        console.log(response);
-
-        this.loadingModalRef.close();
-        this.modalService.dismissAll();
-        this.getProject();
-      },
-      (error) => {
-        console.log(error);
-        this.loadingModalRef.close();
-      }
-    );
+    this.http
+      .post("http://localhost:5000/projet/add", userData, { headers })
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+          this.loadingModalRef.close();
+          this.modalService.dismissAll();
+          this.getProject();
+        },
+        (error) => {
+          console.log(error);
+          this.loadingModalRef.close();
+        }
+      );
   }
   onEdit(): void {
     const userData = {
@@ -137,22 +154,24 @@ export class TableListComponent {
       id: this.id,
     };
 
-    this.http
-      .post("http://192.168.1.14:5000/projet/update", userData)
-      .subscribe(
-        (response: any) => {
-          console.log(response);
+    this.http.post("http://localhost:5000/projet/update", userData).subscribe(
+      (response: any) => {
+        console.log(response);
 
-          this.getProject();
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+        this.getProject();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   onClickProject(id: any): void {
     this.router.navigate(["/typography", { projetId: id }]);
+  }
+
+  onClickProjectMembers(id: any): void {
+    this.router.navigate(["/membres", { projetId: id }]);
   }
 
   onRecup(id: any): void {
