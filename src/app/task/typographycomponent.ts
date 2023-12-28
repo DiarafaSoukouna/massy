@@ -39,7 +39,7 @@ export class TypographyComponent implements OnInit {
   ngOnInit() {
     this.projetId = this.route.snapshot.paramMap.get("projetId");
     this.onCatasks(this.projetId);
-    this.cat_TaskId && this.onTasks(this.cat_TaskId);
+    this.onTasks(this.cat_TaskId);
     this.onTasksUser();
     this.getMembers(this.projetId);
   }
