@@ -157,17 +157,21 @@ export class TableListComponent {
       budg_prev: this.budg_prev,
       id: this.id,
     };
+    const headers = this.authService.getHeaders();
+    this.http
+      .post("http://localhost:5000/projet/update", userData, {
+        headers: headers,
+      })
+      .subscribe(
+        (response: any) => {
+          console.log(response);
 
-    this.http.post("http://localhost:5000/projet/update", userData).subscribe(
-      (response: any) => {
-        console.log(response);
-
-        this.getProject();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+          this.getProject();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   onClickProject(id: any): void {
