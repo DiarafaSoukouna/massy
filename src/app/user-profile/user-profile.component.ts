@@ -59,14 +59,16 @@ export class UserProfileComponent {
       password: this.password,
     };
 
-    this.http.post("http://localhost:5000/auth/register", userData).subscribe(
-      (response: any) => {
-        console.log(response);
-        this.getUser();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.http
+      .post("http://localhost:5000/manager/admin/add-user", userData)
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+          this.getUser();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }

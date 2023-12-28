@@ -198,10 +198,10 @@
   <div class="card-container">
     <div *ngFor="let taskUsers of task_by_Users">
       <div *ngIf="!projetId" class="card">
-        <h4>Tache:</h4>
+        <h4><mat-icon class="mat">book</mat-icon></h4>
         <h6>{{ taskUsers.title }}</h6>
 
-        <h4>Description:</h4>
+        <div class="description">Description et directives:</div>
         <span>{{ taskUsers.desc }}</span>
       </div>
     </div>

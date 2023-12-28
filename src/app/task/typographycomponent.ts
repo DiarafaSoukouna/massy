@@ -39,7 +39,7 @@ export class TypographyComponent implements OnInit {
   ngOnInit() {
     this.projetId = this.route.snapshot.paramMap.get("projetId");
     this.onCatasks(this.projetId);
-    this.onTasks(this.cat_TaskId);
+    this.cat_TaskId && this.onTasks(this.cat_TaskId);
     this.onTasksUser();
     this.getMembers(this.projetId);
   }
@@ -88,7 +88,6 @@ export class TypographyComponent implements OnInit {
       })
       .subscribe(
         (response: any) => {
-          console.log(response.projet.cat_Tasks);
           this.projectTasks = response.projet.cat_Tasks;
         },
         (error) => {
@@ -157,7 +156,7 @@ export class TypographyComponent implements OnInit {
   onTasksUser(): void {
     this.http
       .post("http://localhost:5000/tache/getTaskBy-user", {
-        id: this.authService.getUserId(),
+        userId: this.authService.getUserId(),
       })
       .subscribe(
         (response: any) => {
