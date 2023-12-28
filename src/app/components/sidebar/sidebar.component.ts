@@ -16,14 +16,14 @@ export const ROUTES: RouteInfo[] = [
     icon: "content_paste",
     class: "",
   },
-  { path: "/typography", title: "Taches", icon: "library_books", class: "" },
-  { path: "/icons", title: "Icons", icon: "location_on", class: "" },
-  {
-    path: "/maps",
-    title: "Gestion des permissions",
-    icon: "bubble_chart",
-    class: "",
-  },
+  { path: "/task", title: "Taches", icon: "library_books", class: "" },
+  { path: "/chat", title: "Chat", icon: "chat", class: "" },
+  // {
+  //   path: "/maps",
+  //   title: "Gestion des permissions",
+  //   icon: "bubble_chart",
+  //   class: "",
+  // },
   {
     path: "/notifications",
     title: "Notifications",

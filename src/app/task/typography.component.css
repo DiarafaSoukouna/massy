@@ -366,3 +366,8 @@ h6 {
   line-height: 1.5;
   margin-bottom: 10px;
 }
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px; /* Espace entre les cartes */
+}

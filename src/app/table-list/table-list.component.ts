@@ -167,7 +167,7 @@ export class TableListComponent {
   }
 
   onClickProject(id: any): void {
-    this.router.navigate(["/typography", { projetId: id }]);
+    this.router.navigate(["/task", { projetId: id }]);
   }
 
   onClickProjectMembers(id: any): void {

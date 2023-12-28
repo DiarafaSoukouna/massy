@@ -194,10 +194,10 @@
     </body>
   </body>
 </body> -->
-<div class="container">
-  <div *ngFor="let taskUsers of task_by_Users">
-    <div *ngIf="!projetId">
-      <div class="card">
+<div>
+  <div class="card-container">
+    <div *ngFor="let taskUsers of task_by_Users">
+      <div *ngIf="!projetId" class="card">
         <h4>Tache:</h4>
         <h6>{{ taskUsers.title }}</h6>
 
@@ -206,267 +206,269 @@
       </div>
     </div>
   </div>
-</div>
 
-<div
-  class="modal fade"
-  id="updateTaskModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="updateTaskModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="updateTaskLabel">Modifier la tache</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="modale">
-            <label for="nom">Nom:</label>
-            <input
-              [(ngModel)]="title"
-              type="text"
-              id="nom"
-              name="nom"
-              placeholder="nom de la tache"
-              required
-            />
-            <label for="description">Description:</label>
-            <input
-              [(ngModel)]="desc"
-              type="text"
-              id="description"
-              name="description"
-              placeholder="description de la tache"
-              required
-            />
-            <input
-              [(ngModel)]="cat_TaskId"
-              type="hidden"
-              id="cat_TaskId"
-              name="cat_TaskId"
-              required
-            />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Fermer
-        </button>
-        <button
-          type="button"
-          class="btn btn1"
-          data-dismiss="modal"
-          (click)="onEdit_task()"
-        >
-          Valider
-        </button>
+  <div
+    class="modal fade"
+    id="updateTaskModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="updateTaskModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateTaskLabel">Modifier la tache</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="modale">
+              <label for="nom">Nom:</label>
+              <input
+                [(ngModel)]="title"
+                type="text"
+                id="nom"
+                name="nom"
+                placeholder="nom de la tache"
+                required
+              />
+              <label for="description">Description:</label>
+              <input
+                [(ngModel)]="desc"
+                type="text"
+                id="description"
+                name="description"
+                placeholder="description de la tache"
+                required
+              />
+              <input
+                [(ngModel)]="cat_TaskId"
+                type="hidden"
+                id="cat_TaskId"
+                name="cat_TaskId"
+                required
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn1"
+            data-dismiss="modal"
+            (click)="onEdit_task()"
+          >
+            Valider
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div
-  class="modal fade"
-  id="CatModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="CatModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="  CatModalLabel">Nouvelle categorie</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="modale">
-            <label for="nom">Nom:</label>
-            <input
-              [(ngModel)]="title"
-              type="text"
-              id="nom"
-              name="nom"
-              placeholder="nom de la categorie"
-              required
-            />
-            <label for="description">Description:</label>
-            <input
-              [(ngModel)]="desc"
-              type="text"
-              id="description"
-              name="description"
-              placeholder="description de la categorie"
-              required
-            />
-            <input
-              [(ngModel)]="cat_TaskId"
-              type="hidden"
-              id="cat_TaskId"
-              name="cat_TaskId"
-              required
-            />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Fermer
-        </button>
-        <button
-          type="button"
-          class="btn btn1"
-          data-dismiss="modal"
-          (click)="addCat()"
-        >
-          Valider
-        </button>
+  <div
+    class="modal fade"
+    id="CatModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="CatModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="  CatModalLabel">Nouvelle categorie</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="modale">
+              <label for="nom">Nom:</label>
+              <input
+                [(ngModel)]="title"
+                type="text"
+                id="nom"
+                name="nom"
+                placeholder="nom de la categorie"
+                required
+              />
+              <label for="description">Description:</label>
+              <input
+                [(ngModel)]="desc"
+                type="text"
+                id="description"
+                name="description"
+                placeholder="description de la categorie"
+                required
+              />
+              <input
+                [(ngModel)]="cat_TaskId"
+                type="hidden"
+                id="cat_TaskId"
+                name="cat_TaskId"
+                required
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn1"
+            data-dismiss="modal"
+            (click)="addCat()"
+          >
+            Valider
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div
-  class="modal fade"
-  id="UpdateCatModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="UpdateCatModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="UpdateCatModalLabel">Nouvelle categorie</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="modale">
-            <label for="nom">Nom:</label>
-            <input
-              [(ngModel)]="title"
-              type="text"
-              id="nom"
-              name="nom"
-              placeholder="nom de la categorie"
-              required
-            />
-            <label for="description">Description:</label>
-            <input
-              [(ngModel)]="desc"
-              type="text"
-              id="description"
-              name="description"
-              placeholder="description de la categorie"
-              required
-            />
-            <input
-              [(ngModel)]="cat_TaskId"
-              type="hidden"
-              id="cat_TaskId"
-              name="cat_TaskId"
-              required
-            />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Fermer
-        </button>
-        <button
-          type="button"
-          class="btn btn1"
-          data-dismiss="modal"
-          (click)="onEdit_Cat()"
-        >
-          Valider
-        </button>
+  <div
+    class="modal fade"
+    id="UpdateCatModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="UpdateCatModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateCatModalLabel">
+            Nouvelle categorie
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="modale">
+              <label for="nom">Nom:</label>
+              <input
+                [(ngModel)]="title"
+                type="text"
+                id="nom"
+                name="nom"
+                placeholder="nom de la categorie"
+                required
+              />
+              <label for="description">Description:</label>
+              <input
+                [(ngModel)]="desc"
+                type="text"
+                id="description"
+                name="description"
+                placeholder="description de la categorie"
+                required
+              />
+              <input
+                [(ngModel)]="cat_TaskId"
+                type="hidden"
+                id="cat_TaskId"
+                name="cat_TaskId"
+                required
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn1"
+            data-dismiss="modal"
+            (click)="onEdit_Cat()"
+          >
+            Valider
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div
-  class="modal fade"
-  id="memberModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="memberModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="memberModalLabel">Assigner la tache</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="modale">
-            <label for="nom">Membre:</label>
-            <select
-              [(ngModel)]="userId"
-              name="nom"
-              placeholder="Choisissez un membre"
-            >
-              <option
-                *ngFor="let membersUser of membersUsers"
-                value="{{ membersUser.userId }}"
+  <div
+    class="modal fade"
+    id="memberModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="memberModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="memberModalLabel">Assigner la tache</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="modale">
+              <label for="nom">Membre:</label>
+              <select
+                [(ngModel)]="userId"
+                name="nom"
+                placeholder="Choisissez un membre"
               >
-                {{ membersUser.nom }} {{ membersUser.prenom }}
-              </option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Fermer
-        </button>
-        <button
-          type="button"
-          class="btn btn1"
-          data-dismiss="modal"
-          (click)="addMemberTask()"
-        >
-          Valider
-        </button>
+                <option
+                  *ngFor="let membersUser of membersUsers"
+                  value="{{ membersUser.userId }}"
+                >
+                  {{ membersUser.nom }} {{ membersUser.prenom }}
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn1"
+            data-dismiss="modal"
+            (click)="addMemberTask()"
+          >
+            Valider
+          </button>
+        </div>
       </div>
     </div>
   </div>
