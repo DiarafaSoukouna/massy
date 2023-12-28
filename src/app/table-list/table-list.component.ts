@@ -94,15 +94,19 @@ export class TableListComponent {
 
   onDelete(id: any): void {
     const userConfirmed = window.confirm("Are you sure you want to delete?");
-
+    const headers = this.authService.getHeaders();
     if (userConfirmed) {
       this.http
-        .post("http://localhost:5000/projet/delete", {
-          projetId: id,
-        })
+        .post(
+          "http://localhost:5000/projet/delete",
+          {
+            projetId: id,
+          },
+          { headers: headers }
+        )
         .subscribe(
           (response: any) => {
-            console.log("Suppression exécutée");
+            console.log("Suppression exécutée", response);
             this.getProject();
           },
           (error) => {
