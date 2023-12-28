@@ -181,6 +181,7 @@ export class TypographyComponent implements OnInit {
       .subscribe(
         (response: any) => {
           console.log(response);
+          this.onTasksByProjet(this.projetId);
           this.onTasks(this.cat_TaskId);
         },
         (error) => {
