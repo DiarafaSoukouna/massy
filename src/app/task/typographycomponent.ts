@@ -305,7 +305,7 @@ export class TypographyComponent implements OnInit {
   }
   onCatDelete(id: any): void {
     const userConfirmed = window.confirm(
-      "Etes-vous sur de vouloir supprimer cette tache?"
+      "Etes-vous sur de vouloir supprimer cette categorie??"
     );
     const headers = this.authService.getHeaders();
     if (userConfirmed) {

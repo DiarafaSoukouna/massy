@@ -86,6 +86,7 @@ export class MembresComponent {
       .subscribe(
         (response: any) => {
           console.log(response);
+          this.getMembers(this.projetId);
         },
         (error) => {
           console.log(error);
@@ -129,6 +130,7 @@ export class MembresComponent {
         .subscribe(
           (response: any) => {
             console.log("suppression effectuer");
+            this.getMembers(this.projetId);
           },
           (error) => {
             console.log(error);
