@@ -1,12 +1,16 @@
 import { Component, OnInit, ElementRef } from "@angular/core";
 import { ROUTES } from "../sidebar/sidebar.component";
+import { HttpClient } from "@angular/common/http";
+import { SocketService } from "app/socket.service";
+import { AuthentificationService } from "app/authentification.service";
 import {
   Location,
   LocationStrategy,
   PathLocationStrategy,
 } from "@angular/common";
 import { Router } from "@angular/router";
-
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+declare var $: any;
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
@@ -18,11 +22,17 @@ export class NavbarComponent implements OnInit {
   mobile_menu_visible: any = 0;
   private toggleButton: any;
   private sidebarVisible: boolean;
+  email: any;
+  notifies: any[];
+  notView: any[];
 
   constructor(
     location: Location,
     private element: ElementRef,
-    private router: Router
+    private router: Router,
+    private http: HttpClient,
+    private socket: SocketService,
+    private authService: AuthentificationService
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -39,6 +49,11 @@ export class NavbarComponent implements OnInit {
         $layer.remove();
         this.mobile_menu_visible = 0;
       }
+    });
+
+    this.getAllNotify(this.authService.getUserId());
+    this.socket.getNotify().subscribe((response: any) => {
+      this.getAllNotify(this.authService.getUserId());
     });
   }
 
@@ -116,8 +131,41 @@ export class NavbarComponent implements OnInit {
       body.classList.add("nav-open");
       this.mobile_menu_visible = 1;
     }
+    // this.GetNotify();
   }
 
+  showNotification(from, align, msg) {
+    const type = ["", "info", "success", "warning", "danger"];
+    const color = Math.floor(Math.random() * 4 + 1);
+
+    console.log("YOH");
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: msg,
+      },
+      {
+        type: type[color],
+        timer: 4000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
+  }
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
     if (titlee.charAt(0) === "#") {
@@ -133,5 +181,53 @@ export class NavbarComponent implements OnInit {
   }
   profile() {
     this.router.navigate(["/profile"]);
+  }
+  chat() {
+    this.router.navigate(["/chat"]);
+  }
+
+  getAllNotify(id: string) {
+    this.http
+      .post("http://localhost:5000/user/getNotifyBy-user", { userId: id })
+      .subscribe((response: any) => {
+        if (
+          response.notify &&
+          this.notifies &&
+          response.notify.length > this.notifies.length
+        ) {
+          const lastNotify = response.notify.sort((a: any, b: any) => {
+            if (a.dateCreate < b.dateCreate) {
+              return 1;
+            }
+            return -1;
+          });
+
+          this.showNotification("top", "center", lastNotify[0].content);
+        }
+
+        this.notifies = response.notify.sort((a: any, b: any) => {
+          if (a.dateCreate < b.dateCreate) {
+            return 1;
+          }
+          return -1;
+        });
+      });
+    this.notifies;
+  }
+  goToNotify() {
+    this.router.navigate(["/notifications"]);
+  }
+
+  onLogout() {
+    this.http
+      .post(
+        "http://localhost:5000/auth/logout",
+        {},
+        { headers: this.authService.getHeaders() }
+      )
+      .subscribe((response: any) => {
+        window.localStorage.removeItem("access_token");
+        this.router.navigate(["/login"]);
+      });
   }
 }

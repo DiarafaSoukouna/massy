@@ -17,7 +17,7 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   { path: "/task", title: "Taches", icon: "library_books", class: "" },
-  { path: "/chat", title: "Chat", icon: "chat", class: "" },
+
   // {
   //   path: "/maps",
   //   title: "Gestion des permissions",

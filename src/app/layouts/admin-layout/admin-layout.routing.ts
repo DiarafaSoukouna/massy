@@ -12,6 +12,8 @@ import { LoginComponent } from "app/login/login.component";
 import { ConfirmationComponent } from "app/confirmation/confirmation.component";
 import { MembresComponent } from "app/membres/membres.component";
 import { ProfileComponent } from "app/profile/profile.component";
+import { TaskDetailsComponent } from "app/task-details/task-details.component";
+import { ProjectDetailsComponent } from "app/project-details/project-details.component";
 
 export const AdminLayoutRoutes: Routes = [
   // {
@@ -60,12 +62,14 @@ export const AdminLayoutRoutes: Routes = [
   { path: "user-profile", component: UserProfileComponent },
   { path: "table-list", component: TableListComponent },
   { path: "task", component: TypographyComponent },
-  { path: "chat", component: IconsComponent },
   { path: "maps", component: MapsComponent },
   { path: "notifications", component: NotificationsComponent },
   { path: "upgrade", component: UpgradeComponent },
   { path: "login", component: LoginComponent },
   { path: "confirmation", component: ConfirmationComponent },
   { path: "membres", component: MembresComponent },
+  { path: "chat", component: IconsComponent },
   { path: "profile", component: ProfileComponent },
+  { path: "task-details", component: TaskDetailsComponent },
+  { path: "project-details", component: ProjectDetailsComponent },
 ];

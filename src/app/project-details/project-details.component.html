@@ -1,0 +1,172 @@
+<!-- <body>
+  <div
+    id="carouselExampleIndicators"
+    class="carousel slide"
+    data-ride="carousel"
+    style="background-color: rgb(186, 186, 186)"
+  >
+    <ol class="carousel-indicators">
+      <li
+        data-target="#carouselExampleIndicators"
+        data-slide-to="0"
+        class="active"
+      ></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <h1 class="margin">
+          {{ oneProject.title }}
+        </h1>
+        <div class="card mx-auto" style="width: 18rem">
+          <div class="card-body">
+            <h5 class="card-title">DESCRIPTION</h5>
+
+            <p class="card-text">
+              {{ oneProject.desc }}
+            </p>
+            <div class="progress">
+              <div
+                class="progress-bar progress-bar-striped"
+                role="progressbar"
+                [style.width.%]="oneProject.status"
+                [style.background-color]="
+                  getProgressBarColor(oneProject.status)
+                "
+                [attr.aria-valuenow]="oneProject.status"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <h1 class="margin">
+          {{ oneProject.title }}
+        </h1>
+        <div class="card mx-auto" style="width: 18rem">
+          <div class="card-body">
+            <h5 class="card-title">LES TACHES</h5>
+
+            <p class="card-text">
+              Le projet {{ oneProject.title }} comporte: <br />
+              <mat-icon>book</mat-icon> {{ oneProject.tasks.length }} tâches
+
+              <mat-icon>checkbox</mat-icon> {{ tasks.length }} tâches validées
+            </p>
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <p>
+          Nous et nos partenaires sollicitons votre consentement afin de traiter
+          vos données à caractère personnel pour les finalités suivantes :
+        </p>
+        <div class="card mx-auto" style="width: 18rem">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a
+      class="carousel-control-prev"
+      href="#carouselExampleIndicators"
+      role="button"
+      data-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a
+      class="carousel-control-next"
+      href="#carouselExampleIndicators"
+      role="button"
+      data-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</body> -->
+<body class="mx-auto">
+  <section class="section about-section gray-bg" id="about">
+    <div class="container">
+      <div class="align-items-center margin">
+        <div class="about-text go-to">
+          <div class="card1">
+            <h3 class="dark-color">{{ oneProject.title }}</h3>
+            <p>
+              Date de création:
+              {{ oneProject.dateCreate | date : "dd-MM-yyyy" }}
+            </p>
+
+            <p>
+              <mark>DESCRIPTION: </mark><br /><br />
+              <span>{{ oneProject.desc }}</span>
+            </p>
+            <div class="row about-list">
+              <div class="col-md-6">
+                <div class="media">
+                  <label>Début </label>
+                  <p>{{ oneProject.date_deb | date : "dd-MM-yyyy" }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="media">
+                  <label>Fin</label>
+                  <p>{{ oneProject.date_fin | date : "dd-MM-yyyy" }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="counter">
+        <div class="row">
+          <div class="col-6 col-lg-3">
+            <div class="count-data text-center">
+              <h6 class="count h2" data-to="500" data-speed="500">
+                {{ oneProject.tasks.length }}
+              </h6>
+              <p class="m-0px font-w-600">Tâches</p>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="count-data text-center">
+              <h6 class="count h2" data-to="150" data-speed="150">
+                {{ tasks.length }}
+              </h6>
+              <p class="m-0px font-w-600">Tâches validées</p>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="count-data text-center">
+              <h6 class="count h2" data-to="850" data-speed="850">
+                {{ members.length }}
+              </h6>
+              <p class="m-0px font-w-600">Membres</p>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="count-data text-center">
+              <h6 class="count h2" data-to="190" data-speed="190">190</h6>
+              <p class="m-0px font-w-600">Telephonic Talk</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>

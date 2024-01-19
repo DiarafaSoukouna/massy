@@ -1,38 +1,187 @@
-<!-- <div class="main-content">
-  <div class="container-fluid">
-    <div class="card card-plain">
-      <div class="card-header card-header-danger">
-        <h4 class="card-title">Material Design Icons</h4>
-        <p class="card-category">
-          Handcrafted by our friends from
-          <a target="_blank" href="https://fonts.google.com/icons">Google</a>
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card-body">
-            <div class="iframe-container d-none d-lg-block">
-              <iframe
-                src="https://material.io/design/iconography/system-icons.html#grid-and-keyline-shapes"
-              >
-                <p>Your browser does not support iframes.</p>
-              </iframe>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="side" opened="true" class="sidenav">
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="filte()"
+        class="form-control"
+        placeholder="Search..."
+      />
+      <button class="bt" data-toggle="modal" data-target="#UserModal">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </div>
+    <div *ngFor="let oneChat of userChats">
+      <ul class="conversation-list">
+        <li class="clearfix" (click)="onClickChat(oneChat.id); scrollBottom()">
+          <div class="profile-picture" style="background-color: #f44336">
+            <div class="initials">
+              {{
+                oneChat.userId === userOnline.id
+                  ? getInitials(oneChat.nomSub, oneChat.prenomSub)
+                  : getInitials(oneChat.nom, oneChat.prenom)
+              }}
+            </div>
+          </div>
+          <div class="about">
+            <div class="name">
+              {{
+                oneChat.userId === userOnline.id ? oneChat.nomSub : oneChat.nom
+              }}
+              {{
+                oneChat.userId === userOnline.id
+                  ? oneChat.prenomSub
+                  : oneChat.prenom
+              }}
             </div>
             <div
-              class="col-md-12 d-none d-sm-block d-md-block d-lg-none d-block d-sm-none text-center ml-auto mr-auto"
+              class="cote text-truncate"
+              style="width: 250px; font-family: match"
             >
-              <h5>
-                The icons are visible on Desktop mode inside an iframe. Since
-                the iframe is not working on Mobile and Tablets please visit the
-                icons on their original page on Google. Check the
-                <a href="https://fonts.google.com/icons" target="_blank"
-                  >Material Icons</a
-                >
-              </h5>
+              {{ getLastMessage(oneChat) }}
             </div>
+            <div class="status">{{ getLastMessageHours(oneChat) }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content
+    class="yes"
+    style="
+      background-image: url('assets/whatsapp-chat.jpg');
+      background-size: contain;
+    "
+  >
+    <h4 *ngIf="isSpecificUrl()">Selectionnez une conversation!🖐️</h4>
+
+    <div *ngIf="!isSpecificUrl()">
+      <div class="card-header">
+        <div
+          class="d-flex justify-content-between padding"
+          style="background-color: #fff !important"
+        >
+          <div class="profile-picture" style="background-color: #f44336">
+            <div class="initials" *ngIf="curChat.userId === userOnline.id">
+              {{ getInitials(curChat.nomSub, curChat.prenomSub) }}
+            </div>
+            <div class="initials" *ngIf="curChat.userId !== userOnline.id">
+              {{ getInitials(curChat.nom, curChat.prenom) }}
+            </div>
+          </div>
+
+          <div class="mb-0 fw-bold blanc">
+            <div *ngIf="curChat.userId === userOnline.id">
+              {{ curChat.nomSub }} {{ curChat.prenomSub }}
+            </div>
+            <div *ngIf="curChat.userId !== userOnline.id">
+              {{ curChat.nom }} {{ curChat.prenom }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div
+          #scrollContainer
+          [scrollTop]="scrollContainer.scrollHeight"
+          class="chat"
+        >
+          <div *ngFor="let message of messages">
+            <div *ngIf="message.senderId === userOnline.id">
+              <div class="row message-body">
+                <div class="col-sm-12 message-main-sender">
+                  <div class="sender">
+                    <div class="message-text">
+                      {{ message.content }}
+                    </div>
+                    <span class="message-time pull-right">
+                      {{ message.dateCreate | date : "HH:mm" }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!(message.senderId === userOnline.id)">
+              <div class="message-body">
+                <div class="col-sm-12 message-main-receiver">
+                  <div class="receiver">
+                    <div class="message-text">
+                      {{ message.content }}
+                    </div>
+                    <span class="message-time pull-right">
+                      {{ message.dateCreate | date : "HH:mm" }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-container">
+          <input
+            (keyup.enter)="onSendMessage()"
+            [(ngModel)]="content"
+            type="text"
+            class="form-control"
+            placeholder="Saisissez votre message..."
+          />
+          <button class="btn btn1" (click)="onSendMessage()">
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<div
+  class="modal fade"
+  id="UserModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="UserModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Les utilisateurs</h2>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let user of users">
+          <div *ngIf="user.id !== userOnline.id">
+            <ul class="conversation-list">
+              <li
+                class="clearfix"
+                data-dismiss="modal"
+                (click)="userIdSub = user.id; initiateChat()"
+              >
+                <div class="profile-picture" style="background-color: #f44336">
+                  <div class="initials">
+                    {{ getInitials(user.nom, user.prenom) }}
+                  </div>
+                </div>
+
+                <div class="about">
+                  <div class="name">{{ user.nom }} {{ user.prenom }}</div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>

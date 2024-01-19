@@ -6,7 +6,8 @@ import { DataService } from "app/data.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute } from "@angular/router";
 import { AuthentificationService } from "app/authentification.service";
-import { log } from "console";
+import { FormControl } from "@angular/forms";
+import { startWith, map } from "rxjs/operators";
 
 interface Card {
   content: string;
@@ -35,40 +36,24 @@ export class TypographyComponent implements OnInit {
   users: any[];
   userId: any;
   membersUsers: any[];
-
+  allCat: any;
+  taskid: any[];
+  alluse: any;
+  userOnline: any;
+  allprojets: any;
+  searchTerm: any;
+  memberFormControl = new FormControl();
+  filteredMembers: any[] = [];
   ngOnInit() {
     this.projetId = this.route.snapshot.paramMap.get("projetId");
     this.onCatasks(this.projetId);
     this.onTasks(this.cat_TaskId);
     this.onTasksUser();
     this.getMembers(this.projetId);
+    this.onRecup6(this.authService.getUserId());
+    this.getProject();
   }
 
-  saveContent(index: number) {
-    localStorage.setItem(`card${index + 1}`, this.cards[index].content);
-  }
-
-  // loadContent() {
-  //   for (let i = 1; i <= 3; i++) {
-  //     const content = localStorage.getItem(`card${i}`);
-  //     this.cards[i - 1].content = content || "";
-  //   }
-  // }
-
-  // addInput(cardIndex: number) {
-  //   this.cards[cardIndex].inputs.push({ value: "" });
-  // }
-
-  // updateCardContent(cardIndex: number, inputIndex: number, event: any) {
-  //   const inputValue = (event.target as HTMLInputElement).value;
-
-  //   if (inputValue.trim() === "") {
-  //     this.cards[cardIndex].inputs.splice(inputIndex, 1);
-  //   } else {
-  //     this.cards[cardIndex].content += inputValue + "\n";
-  //     this.cards[cardIndex].inputs.splice(inputIndex, 1);
-  //   }
-  // }
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -76,25 +61,38 @@ export class TypographyComponent implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private authService: AuthentificationService
-  ) {}
+  ) {
+    this.memberFormControl.valueChanges
+      .pipe(
+        startWith(""),
+        map((value) => this._filterMembers(value))
+      )
+      .subscribe((filteredMembers) => {
+        this.filteredMembers = filteredMembers;
+      });
+  }
 
   openModal(content: any): NgbModalRef {
     return this.modalService.open(content, { centered: true });
   }
   onCatasks(id: any): void {
     this.http
-      .post("http://localhost:5000/projet/getByID", {
+      .post("http://localhost:5000/tache/getCatBy-projet", {
         projetId: id,
       })
       .subscribe(
         (response: any) => {
-          this.projectTasks = response.projet.cat_Tasks;
+          this.projectTasks = response.task.filter(
+            (cat: any) => cat.tasks.length !== 0
+          );
+          this.allCat = response.task;
         },
         (error) => {
           console.log(error);
         }
       );
   }
+
   onTasks(id: any): void {
     this.http
       .post("http://localhost:5000/tache/getTaskBy-category", {
@@ -146,6 +144,7 @@ export class TypographyComponent implements OnInit {
             console.log("suppression effectuer");
             // this.onTasks(this.cat_TaskId);
             this.onTasksByProjet(this.projetId);
+            this.onCatasks(this.projetId);
           },
           (error) => {
             console.log(error);
@@ -160,7 +159,6 @@ export class TypographyComponent implements OnInit {
       })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.task_by_Users = response.task;
         },
         (error) => {
@@ -183,6 +181,8 @@ export class TypographyComponent implements OnInit {
           console.log(response);
           this.onTasksByProjet(this.projetId);
           this.onTasks(this.cat_TaskId);
+          this.title = "";
+          this.desc = "";
         },
         (error) => {
           console.log(error);
@@ -232,7 +232,10 @@ export class TypographyComponent implements OnInit {
         (response: any) => {
           console.log(response);
           this.onTasksByProjet(this.projetId);
+          this.onCatasks(this.projetId);
           //this.onTasks(this.cat_TaskId);
+          this.title = "";
+          this.desc = "";
         },
         (error) => {
           console.log(error);
@@ -267,6 +270,8 @@ export class TypographyComponent implements OnInit {
           console.log(response);
           this.onTasks(this.cat_TaskId);
           this.onCatasks(this.projetId);
+          this.title = "";
+          this.desc = "";
         },
         (error) => {
           console.log(error);
@@ -298,6 +303,8 @@ export class TypographyComponent implements OnInit {
           console.log(response);
           this.onTasks(this.cat_TaskId);
           this.onCatasks(this.projetId);
+          this.title = "";
+          this.desc = "";
         },
         (error) => {
           console.log(error);
@@ -332,21 +339,32 @@ export class TypographyComponent implements OnInit {
   }
 
   addMemberTask(): void {
+    var nom = "";
+    var prenom = "";
+    for (let user of this.membersUsers) {
+      if (this.userId === user.userId) {
+        nom = user.nom;
+        prenom = user.prenom;
+      }
+    }
+
     const userData = {
-      assigneID: this.userId,
-      id: this.taskId,
+      userId: this.userId,
+      nom: nom,
+      prenom: prenom,
+      taskId: this.taskId,
     };
     const headers = this.authService.getHeaders();
 
-    console.log("Membre", userData);
-
     this.http
-      .post("http://localhost:5000/tache/update-task", userData, {
+      .post("http://localhost:5000/tache/add-member", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
           console.log("membre ajouter", response);
+          nom = "";
+          prenom = "";
         },
         (error) => {
           console.log(error);
@@ -363,10 +381,65 @@ export class TypographyComponent implements OnInit {
         (response: any) => {
           console.log(response.projet.members);
           this.membersUsers = response.projet.members;
+          this.filteredMembers = this.membersUsers;
         },
         (error) => {
           console.log(error);
         }
       );
+  }
+
+  onClickTask(id: any, cat_TaskId: any): void {
+    this.router.navigate([
+      "/task-details",
+      { taskId: id, cat_TaskId: cat_TaskId, projectId: this.projetId },
+    ]);
+  }
+  onClickTaskNote(id: any, cat_TaskId: any): void {
+    this.router.navigate([
+      "/task-details",
+      { taskId: id, cat_TaskId: cat_TaskId },
+    ]);
+  }
+  onRecup6(id: any): void {
+    this.dataService.getUsers().subscribe((data: any) => {
+      this.alluse = data.user;
+      for (let use of this.alluse) {
+        if (id === use.id) {
+          this.userOnline = use;
+        }
+      }
+    });
+    console.log(this.userOnline);
+  }
+  getProject() {
+    this.dataService.getDonnees().subscribe((data: any) => {
+      this.allprojets = data.projet;
+    });
+  }
+  oneProjet(id: any) {
+    for (let v of this.allprojets) {
+      if (v.id === id) {
+        return v.title;
+      }
+    }
+  }
+  get filteredTasks() {
+    return this.task_by_Users.filter(
+      (task) =>
+        task.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.oneProjet(task.projetId)
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase())
+    );
+  }
+  private _filterMembers(value: string): any[] {
+    const filterValue = value.toLowerCase();
+
+    return this.membersUsers.filter(
+      (member) =>
+        member.nom.toLowerCase().includes(filterValue) ||
+        member.prenom.toLowerCase().includes(filterValue)
+    );
   }
 }

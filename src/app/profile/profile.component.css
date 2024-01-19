@@ -1,70 +1,123 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  margin-top: 20px;
+  background-color: #f2f6fc;
+  color: #69707a;
 }
-
+.img-account-profile {
+  height: 10rem;
+}
+.rounded-circle {
+  border-radius: 50% !important;
+}
 .card {
-  width: 450px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  background-color: white;
+  box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
 }
-
-.profile-form label {
-  display: block;
-  font-weight: bold;
-  margin-top: 10px;
+.card .card-header {
+  font-weight: 500;
 }
-
-.profile-form input[type="text"],
-.profile-form input[type="email"] {
-  width: calc(100% - 16px);
-  height: 35px;
-  padding: 8px;
-  box-sizing: border-box;
+.card-header:first-child {
+  border-radius: 0.35rem 0.35rem 0 0;
 }
-
-.profile-form input[type="file"] {
-  margin-top: 10px;
+.card-header {
+  padding: 1rem 1.35rem;
+  margin-bottom: 0;
+  background-color: rgba(33, 40, 50, 0.03);
+  border-bottom: 1px solid rgba(33, 40, 50, 0.125);
 }
-
-.profile-form button {
+.form-control,
+.dataTable-input {
   display: block;
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 0.875rem 1.125rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #69707a;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #c5ccd6;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.35rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.profile-form button:hover {
-  background-color: #980000;
+.nav-borders .nav-link.active {
+  color: #0061f2;
+  border-bottom-color: #0061f2;
+}
+.nav-borders .nav-link {
+  color: #69707a;
+  border-bottom-width: 0.125rem;
+  border-bottom-style: solid;
+  border-bottom-color: transparent;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.change-password-button {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 15px;
+
+  text-align: center;
+  text-decoration: none;
+  background-color: #ff6a35;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.change-password-button:hover {
+  background-color: #c7491c;
+}
+.btn1 {
+  background-color: #f44336;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  margin-right: 20px;
+}
+.btn1:hover {
+  background-color: #b82a20;
+}
+.modal {
+  text-align: left;
+}
+.modal label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: #000;
+}
+
+.modal input,
+.modal select {
+  width: calc(95% - 20px);
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  width: 100%;
+}
+.modal select {
+  cursor: pointer;
+}
+input {
+  width: 100px;
 }
 h2 {
-  font-size: 22px;
-  font-weight: 700;
   text-align: center;
-  margin: 10px;
-}
-.container1 {
-  text-align: center;
-  padding: 10px;
-  width: 200px;
-}
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
+  font-size: 30px;
   font-weight: bold;
+  font-family: match;
 }

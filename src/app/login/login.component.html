@@ -38,6 +38,136 @@
           Se connecter
         </button>
       </div>
+      <div class="text">
+        <a data-toggle="modal" data-target="#emailModal" class="a"
+          >Mot de passe oublié?</a
+        >
+      </div>
     </form>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="emailModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="emailModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="emailModalLabel">
+          Changer de mot de passe
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="modale">
+            <label for="nom">Veuillez inscrire votre email:</label>
+
+            <input
+              [(ngModel)]="mail"
+              type="text"
+              id="mail"
+              name="mail"
+              placeholder="example@gmail.com"
+              required
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button
+          type="button"
+          class="btn btn1"
+          data-dismiss="modal"
+          (click)="onResetCode(mail)"
+          data-toggle="modal"
+          data-target="#passwordModal"
+        >
+          Valider
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="passwordModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="passwordModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="passwordModalLabel">
+          Changer de mot de passe
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="modal">
+            <label for="nom">Veuillez inscrire le code recu:</label>
+
+            <input
+              [(ngModel)]="code"
+              type="text"
+              id="code"
+              name="code"
+              placeholder="ex: 123456"
+              required
+            />
+
+            <label for="nom">Nouveau mot de passe:</label>
+
+            <input
+              [(ngModel)]="password"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="*****"
+              required
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button
+          type="button"
+          class="btn btn1"
+          data-dismiss="modal"
+          (click)="onResetPassword()"
+        >
+          Valider
+        </button>
+      </div>
+    </div>
   </div>
 </div>

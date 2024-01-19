@@ -1,15 +1,16 @@
 <body>
   <div><h2>Liste des utilisateurs</h2></div>
-
-  <button
-    type="button"
-    class="btn btn1"
-    data-toggle="modal"
-    data-target="#userModal"
-    data-whatever="@mdo"
-  >
-    Ajouter un utilisateur
-  </button>
+  <div *ngIf="userOnline.type === 'admin'">
+    <button
+      type="button"
+      class="btn btn1"
+      data-toggle="modal"
+      data-target="#userModal"
+      data-whatever="@mdo"
+    >
+      Ajouter un utilisateur
+    </button>
+  </div>
   <mat-form-field>
     <mat-label>Filtrer</mat-label>
     <input
@@ -71,7 +72,26 @@
       <div class="modal-body">
         <form>
           <div class="modale">
-            <label for="email">Email:</label>
+            <div style="display: flex; justify-content: space-between">
+              <input
+                [(ngModel)]="nom"
+                type="text"
+                id="nom"
+                name="nom"
+                placeholder="nom"
+                required
+              />
+
+              <input
+                [(ngModel)]="prenom"
+                type="text"
+                id="prenom"
+                name="prenom"
+                placeholder="prenom"
+                required
+              />
+            </div>
+
             <input
               [(ngModel)]="email"
               type="email"
@@ -80,7 +100,7 @@
               placeholder="email"
               required
             />
-            <label for="password">Mot de passe:</label>
+
             <input
               [(ngModel)]="password"
               type="password"
@@ -89,41 +109,35 @@
               placeholder="password"
               required
             />
-            <label for="nom">Nom:</label>
+
+            <div style="display: flex; justify-content: space-between">
+              <input
+                [(ngModel)]="phone"
+                type="text"
+                id="phone"
+                name="phone"
+                placeholder="contact"
+                required
+              />
+
+              <input
+                [(ngModel)]="type"
+                type="text"
+                id="type"
+                name="type"
+                placeholder="type"
+                required
+              />
+            </div>
+            <label for="role">Rôle:</label>
             <input
-              [(ngModel)]="nom"
+              [(ngModel)]="role"
               type="text"
-              id="nom"
-              name="nom"
-              placeholder="nom"
+              id="role"
+              name="role"
+              placeholder="role"
               required
             />
-            <label for="prenom">Prenom:</label>
-            <input
-              [(ngModel)]="prenom"
-              type="text"
-              id="prenom"
-              name="prenom"
-              placeholder="prenom"
-              required
-            />
-            <label for="telephone">Telephone:</label>
-            <input
-              [(ngModel)]="phone"
-              type="text"
-              id="telephone"
-              name="telephone"
-              placeholder="telephone"
-              required
-            />
-            <!-- <label for="fonction">Fonction:</label>
-            <input
-              type="text"
-              id="fonction"
-              name="fonction"
-              placeholder="fonction"
-              required
-            /> -->
           </div>
         </form>
       </div>

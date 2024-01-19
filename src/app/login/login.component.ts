@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthentificationService } from "app/authentification.service";
-import { log } from "console";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-login",
@@ -12,10 +12,13 @@ export class LoginComponent {
   email: any;
   password: any;
   headers: any;
+  mail: any;
+  code: any;
 
   constructor(
     private authService: AuthentificationService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   login(): void {
@@ -32,5 +35,41 @@ export class LoginComponent {
         console.error("Erreur de connexion : ", error);
       }
     );
+  }
+
+  onResetCode(mail: any): void {
+    this.http
+      .post("http://localhost:5000/user/resetPwd-code", {
+        email: mail,
+      })
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  onResetPassword(): void {
+    const data = {
+      email: this.mail,
+      password: this.password,
+      code: this.code,
+    };
+    const headers = this.authService.getHeaders();
+    this.http
+      .post("http://localhost:5000/user/resetPwd-password", data, {
+        headers: headers,
+      })
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }

@@ -1,20 +1,22 @@
 <body>
   <div><h2>Liste des membres du projet</h2></div>
 
-  <button
-    type="button"
-    class="btn btn1"
-    data-toggle="modal"
-    data-target="#memberModal"
-  >
-    Ajouter un membre
-  </button>
+  <div>
+    <button
+      type="button"
+      class="btn btn1"
+      data-toggle="modal"
+      data-target="#memberModal"
+    >
+      Ajouter un membre
+    </button>
+  </div>
   <mat-form-field>
     <mat-label>Filtrer</mat-label>
     <input
       matInput
       (keyup)="applyFilter($event)"
-      placeholder="projet..."
+      placeholder="membre..."
       #input
     />
   </mat-form-field>
@@ -89,7 +91,7 @@
         <form>
           <div class="modale">
             <label for="nom">Membre:</label>
-            <select
+            <!-- <select
               [(ngModel)]="userId"
               name="nom"
               placeholder="Choisissez un membre"
@@ -97,16 +99,24 @@
               <option *ngFor="let user of users" value="{{ user.id }}">
                 {{ user.nom }} {{ user.prenom }}
               </option>
-            </select>
-            <label for="description">Role:</label>
+            </select> -->
             <input
-              [(ngModel)]="role"
-              type="text"
-              id="role"
-              name="role"
-              placeholder="role du membre"
-              required
+              list="membre"
+              [(ngModel)]="userId"
+              (ngModelChange)="onChange()"
             />
+            <datalist id="membre">
+              <option
+                *ngFor="let car of users"
+                value="{{ car.prenom.trim() }} {{ car.nom.trim() }}"
+              ></option>
+            </datalist>
+            <label for="description">Role:</label>
+
+            <input list="role" [(ngModel)]="role" />
+            <datalist id="role">
+              <option *ngFor="let car of data" value="{{ car }}"></option>
+            </datalist>
           </div>
         </form>
       </div>

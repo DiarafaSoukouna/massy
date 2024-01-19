@@ -1,8 +1,7 @@
-/* card.component.css */
 .card {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 16px;
+
   margin: 16px;
   width: 300px;
   background-color: #fff;
@@ -79,7 +78,10 @@ body {
 
 .container {
   display: flex;
-  overflow-x: auto;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
 }
 
 .card {
@@ -97,9 +99,6 @@ body {
 .bouger {
   text-align: center;
 }
-button:hover {
-  background-color: #910101;
-}
 
 .container::-webkit-scrollbar {
   height: 10px;
@@ -112,22 +111,7 @@ button:hover {
 .container::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
-.card input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
-  background-color: #ececec;
-}
 
-.card input:focus {
-  outline: none;
-  border-color: #f44336;
-  box-shadow: 0 0 5px rgba(115, 50, 58, 0.5);
-}
 textarea.auto-resize {
   resize: none;
   overflow-y: hidden;
@@ -171,6 +155,7 @@ h2 {
   text-align: center;
   font-size: 30px;
   font-weight: bold;
+  font-family: match;
 }
 .espace {
   padding: 20px;
@@ -322,18 +307,18 @@ h5 {
 }
 .right {
   float: right;
-  width: 27px;
+  /* width: 27px; */
   background-color: #ffffff;
   border-radius: 0px;
   color: #000;
-  font-size: 20px;
+  /* font-size: 20px; */
   display: flex;
   align-items: center;
   border: none;
   border-radius: 5px;
 }
 .right:hover {
-  background-color: #eeeeee;
+  color: #f44336;
 }
 .non-editable {
   pointer-events: none;
@@ -370,11 +355,10 @@ h6 {
 .card-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 14px; /* Espace entre les cartes */
+  gap: 14px;
 }
 .mat {
-  font-size: 30px;
-  color: #f44336;
+  color: #ef0000;
 }
 .description {
   color: #333333;
@@ -382,5 +366,11 @@ h6 {
   font-weight: 600;
   line-height: 1.5;
   margin-bottom: 10px;
-  text-align: center;
+}
+
+.table1 {
+  background-color: #ffffff;
+  width: 90%;
+  margin-top: 15px;
+  box-shadow: 0 1px 10px 0 rgba(6, 7, 7, 0.2);
 }

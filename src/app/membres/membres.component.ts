@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { DataService } from "app/data.service";
 import { AuthentificationService } from "app/authentification.service";
 import { ActivatedRoute } from "@angular/router";
+import { SocketService } from "app/socket.service";
 
 @Component({
   selector: "app-membres",
@@ -18,7 +19,9 @@ export class MembresComponent {
   users: any[];
   nom: any;
   prenom: any;
-  members: any[] = [];
+  members: any;
+  usertype: any;
+  data: any;
 
   displayedColumns: string[] = ["nom", "prenom", "role", "action"];
   dataSource = new MatTableDataSource<any>();
@@ -31,7 +34,8 @@ export class MembresComponent {
     private router: Router,
     private dataService: DataService,
     private authService: AuthentificationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private socket: SocketService
   ) {}
 
   getMembers(id: any): void {
@@ -53,6 +57,7 @@ export class MembresComponent {
     this.getUser();
     this.projetId = this.route.snapshot.paramMap.get("projetId");
     this.getMembers(this.projetId);
+    this.getDataRole();
   }
   selectUser(user: any): void {
     this.nom = user.nom;
@@ -64,20 +69,27 @@ export class MembresComponent {
     var nom = "";
     var prenom = "";
     for (let user of this.users) {
-      if (this.userId === user.id) {
+      if (this.members === user.id) {
         nom = user.nom;
         prenom = user.prenom;
       }
     }
     const userData = {
-      userId: this.userId,
+      userId: this.members,
       role: this.role,
       projetId: this.projetId,
       nom: nom,
       prenom: prenom,
     };
-    console.log("data ", userData);
     const headers = this.authService.getHeaders();
+
+    const dataNotify = {
+      userId: this.members,
+      content: `Vous avez été ajouté qu projet au projet ${this.authService.getProjetName()} en tant que ${
+        this.role
+      }`,
+      motif: "Projet",
+    };
 
     this.http
       .post("http://localhost:5000/projet/add-member", userData, {
@@ -85,8 +97,8 @@ export class MembresComponent {
       })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.getMembers(this.projetId);
+          this.socket.sendNotify(dataNotify);
         },
         (error) => {
           console.log(error);
@@ -99,7 +111,6 @@ export class MembresComponent {
       (data: any) => {
         if (Array.isArray(data.user)) {
           this.users = data.user;
-          console.log(data);
         } else {
           console.error("Les données ne sont pas un tableau :", data);
         }
@@ -112,6 +123,12 @@ export class MembresComponent {
       }
     );
   }
+  getDataRole() {
+    this.dataService.getDatasets().subscribe((data: any) => {
+      this.data = data;
+    });
+  }
+
   onDelete(id: any): void {
     const userConfirmed = window.confirm(
       "Etes-vous sur de vouloir supprimer ce membre?"
@@ -138,4 +155,14 @@ export class MembresComponent {
         );
     }
   }
+  onChange = () => {
+    this.users.forEach((ele: any) => {
+      if (
+        this.userId.split(" ")[0] === ele.prenom.trim() &&
+        this.userId.split(" ")[1] === ele.nom.trim()
+      ) {
+        this.members = ele.id;
+      }
+    });
+  };
 }

@@ -12,6 +12,7 @@ export class AuthentificationService {
   userId: string = "id";
   userMail: any = "email";
   userPhone: any = "phone";
+  projetName: string = "projetId";
 
   constructor(private http: HttpClient) {}
 
@@ -48,6 +49,12 @@ export class AuthentificationService {
     return localStorage.getItem("phone");
   }
 
+  setProjetName(nom: string) {
+    localStorage.setItem(this.projetName, nom);
+  }
+  getProjetName(): string {
+    return localStorage.getItem(this.projetName);
+  }
   //  sendCode(){
   //    return this.http.post(`${this.apiUrl}`, { email });
   //  }

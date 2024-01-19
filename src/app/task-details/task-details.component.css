@@ -1,0 +1,123 @@
+body {
+  margin-top: 60px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.body {
+  margin-top: 80px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.btn1 {
+  background-color: #f44336;
+  float: right;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+}
+button {
+  background-color: white;
+  border: none;
+}
+.icon {
+  color: #f44336;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+h2 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+select {
+  width: calc(95% - 20px);
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  width: 100%;
+}
+select {
+  cursor: pointer;
+}
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: #000;
+}
+h5 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: #f44336;
+}
+.note-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+.card {
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+  margin-top: 10%;
+  padding: 20px;
+  width: 75%;
+  height: auto;
+}
+/* .note-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+} */
+textarea {
+  width: 85%;
+}
+.container-task {
+  background-color: #e3e3e3;
+  width: 90%;
+  height: auto;
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+}
+.bouton {
+  margin-right: 10px;
+}
+.container-bet {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+.mat1 {
+  color: #f44336;
+}
+.yes {
+  border: none;
+  background-color: #e3e3e3;
+}
+.input {
+  width: calc(95% - 20px);
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  width: 100%;
+}

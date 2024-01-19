@@ -1,15 +1,16 @@
 <body>
   <div><h2>Liste de vos projets</h2></div>
-
-  <button
-    type="button"
-    class="btn btn1"
-    data-toggle="modal"
-    data-target="#projetModal"
-    data-whatever="@mdo"
-  >
-    Ajouter un projet
-  </button>
+  <div *ngIf="userOnline.type === 'admin'">
+    <button
+      type="button"
+      class="btn btn1"
+      data-toggle="modal"
+      data-target="#projetModal"
+      data-whatever="@mdo"
+    >
+      Ajouter un projet
+    </button>
+  </div>
   <mat-form-field>
     <mat-label>Filtrer</mat-label>
     <input
@@ -70,6 +71,18 @@
         (click)="onClickProject(element.id)"
       >
         {{ element.status ? element.status : 0 }}%
+
+        <div class="progress">
+          <div
+            class="progress-bar progress-bar-striped"
+            role="progressbar"
+            [style.width.%]="element.status"
+            [style.background-color]="getProgressBarColor(element.status)"
+            [attr.aria-valuenow]="element.status"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
       </td>
     </ng-container>
 
@@ -83,14 +96,22 @@
             data-toggle="modal"
             data-target="#modifModal"
             (click)="onRecup(element.id)"
+            *ngIf="userOnline.type === 'admin'"
           >
             <mat-icon>create</mat-icon>
           </button>
-          <button type="button" (click)="onDelete(element.id)">
+          <button
+            type="button"
+            (click)="onDelete(element.id)"
+            *ngIf="userOnline.type === 'admin'"
+          >
             <mat-icon class="icon">delete </mat-icon>
           </button>
           <button (click)="onClickProjectMembers(element.id)">
             <mat-icon>group</mat-icon>
+          </button>
+          <button (click)="onClickView(element.id)">
+            <mat-icon>visibility</mat-icon>
           </button>
         </div>
       </td>
@@ -166,18 +187,20 @@
               required
             />
             <label for="description">Description:</label>
-            <input
+            <textarea
+              cols="55"
+              rows="3"
               [(ngModel)]="desc"
               type="text"
               id="description"
               name="description"
               placeholder="description du projet"
               required
-            />
+            ></textarea>
             <label for="durer_exec">Date de debut:</label>
             <input
               [(ngModel)]="date_deb"
-              type="text"
+              type="date"
               id="date_deb"
               name="date_deb"
               placeholder="date de debut"
@@ -186,13 +209,13 @@
             <label for="durer_exec">Date de fin:</label>
             <input
               [(ngModel)]="date_fin"
-              type="text"
+              type="date"
               id="date_fin"
               name="date_fin"
               placeholder="date de fin"
               required
             />
-            <label for="budget_prevu">Budget prevu:</label>
+            <!-- <label for="budget_prevu">Budget prevu:</label>
             <input
               [(ngModel)]="budg_prev"
               type="text"
@@ -200,7 +223,7 @@
               name="budget_prevu"
               placeholder="budget prevu pour le projet"
               required
-            />
+            /> -->
           </div>
         </form>
       </div>
@@ -256,18 +279,20 @@
               required
             />
             <label for="description">Description:</label>
-            <input
+            <textarea
+              cols="55"
+              rows="3"
               [(ngModel)]="desc"
               type="text"
               id="description"
               name="description"
               placeholder="description du projet"
               required
-            />
+            ></textarea>
             <label for="durer_exec">Date de debut:</label>
             <input
               [(ngModel)]="date_deb"
-              type="text"
+              type="date"
               id="date_deb"
               name="date_deb"
               placeholder="date de debut"
@@ -276,13 +301,13 @@
             <label for="durer_exec">Date de fin:</label>
             <input
               [(ngModel)]="date_fin"
-              type="text"
+              type="date"
               id="date_fin"
               name="date_fin"
               placeholder="date de fin"
               required
             />
-            <label for="budget_prevu">Budget prevu:</label>
+            <!-- <label for="budget_prevu">Budget prevu:</label>
             <input
               [(ngModel)]="budg_prev"
               type="text"
@@ -290,7 +315,7 @@
               name="budget_prevu"
               placeholder="budget prevu pour le projet"
               required
-            />
+            /> -->
           </div>
         </form>
       </div>

@@ -28,6 +28,12 @@ import { AuthentificationService } from "app/authentification.service";
 import { MatMenuModule } from "@angular/material/menu";
 import { MembresComponent } from "app/membres/membres.component";
 import { ProfileComponent } from "app/profile/profile.component";
+import { ComponentsModule } from "app/components/components.module";
+import { TaskDetailsComponent } from "app/task-details/task-details.component";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatListModule } from "@angular/material/list";
+import { MessageComponent } from "app/message/message.component";
+import { ProjectDetailsComponent } from "app/project-details/project-details.component";
 
 @NgModule({
   imports: [
@@ -46,6 +52,9 @@ import { ProfileComponent } from "app/profile/profile.component";
     MatIconModule,
     NgbModule,
     MatMenuModule,
+    ComponentsModule,
+    MatListModule,
+    MatSidenavModule,
   ],
   declarations: [
     DashboardComponent,
@@ -60,6 +69,9 @@ import { ProfileComponent } from "app/profile/profile.component";
     ConfirmationComponent,
     MembresComponent,
     ProfileComponent,
+    TaskDetailsComponent,
+    MessageComponent,
+    ProjectDetailsComponent,
   ],
   providers: [DataService, AuthentificationService],
 })

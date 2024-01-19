@@ -7,6 +7,7 @@ import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from "./login/login.component";
 import { ConfirmationComponent } from "./confirmation/confirmation.component";
 import { ProfileComponent } from "./profile/profile.component";
+import { IconsComponent } from "./icons/icons.component";
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: "confirmation",
     component: ConfirmationComponent,
+  },
+  {
+    path: "chat",
+    component: IconsComponent,
   },
   {
     path: "",

@@ -9,6 +9,8 @@ import { catchError } from "rxjs";
 import { DataService } from "app/data.service";
 import { HttpHeaders } from "@angular/common/http";
 import { AuthentificationService } from "app/authentification.service";
+import { DataSource } from "@angular/cdk/collections";
+import { SocketService } from "app/socket.service";
 
 @Component({
   selector: "app-table-list",
@@ -30,6 +32,9 @@ export class TableListComponent {
   budg_prev: any;
   id: any;
   projet_array1: any;
+  status: any;
+  users: any;
+  userOnline: any;
 
   displayedColumns: string[] = [
     "title",
@@ -49,11 +54,13 @@ export class TableListComponent {
     private router: Router,
     private modalService: NgbModal,
     private dataService: DataService,
-    private authService: AuthentificationService
+    private authService: AuthentificationService,
+    private socket: SocketService
   ) {}
 
   ngOnInit() {
     this.getProject();
+    this.onRecup6(this.authService.getUserId());
   }
 
   getProject() {
@@ -61,8 +68,6 @@ export class TableListComponent {
       (data: any) => {
         if (Array.isArray(data.projet)) {
           this.dataSource.data = data.projet;
-
-          console.log("All projet data", data.projet);
 
           this.dataSource.data = data.projet
             .map(
@@ -84,13 +89,6 @@ export class TableListComponent {
       }
     );
   }
-  // onDelete(id: any): Observable<any> {
-  //   const token = this.getAccessToken();
-  //   const headers = new HttpHeaders().set("Authorization", `Bearer ${token}`);
-  //   return this.http.post("http://192.168.1.14:5000/projet/delete", {
-  //     projetId: id,
-  //   });
-  // }
 
   onDelete(id: any): void {
     const userConfirmed = window.confirm("Are you sure you want to delete?");
@@ -141,12 +139,24 @@ export class TableListComponent {
           this.loadingModalRef.close();
           this.modalService.dismissAll();
           this.getProject();
+          this.title = "";
+          this.desc = "";
+          this.date_deb = "";
+          this.date_fin = "";
         },
         (error) => {
           console.log(error);
           this.loadingModalRef.close();
         }
       );
+  }
+  onProjet(id: any): void {
+    const data = this.dataSource.data;
+    for (let datasource of data) {
+      if (datasource.id === id) {
+        this.authService.setProjetName(datasource.title);
+      }
+    }
   }
   onEdit(): void {
     const userData = {
@@ -165,8 +175,11 @@ export class TableListComponent {
       .subscribe(
         (response: any) => {
           console.log(response);
-
           this.getProject();
+          this.title = "";
+          this.desc = "";
+          this.date_deb = "";
+          this.date_fin = "";
         },
         (error) => {
           console.log(error);
@@ -176,10 +189,16 @@ export class TableListComponent {
 
   onClickProject(id: any): void {
     this.router.navigate(["/task", { projetId: id }]);
+    this.onProjet(id);
+  }
+  onClickView(id: any): void {
+    this.router.navigate(["/project-details", { projetId: id }]);
+    this.onProjet(id);
   }
 
   onClickProjectMembers(id: any): void {
     this.router.navigate(["/membres", { projetId: id }]);
+    this.onProjet(id);
   }
 
   onRecup(id: any): void {
@@ -194,5 +213,41 @@ export class TableListComponent {
         this.id = datasource.id;
       }
     }
+  }
+
+  getProgressBarColor(status: number): string {
+    if (status < 30) {
+      return "red";
+    } else if (status < 60) {
+      return "orange";
+    } else {
+      return "green";
+    }
+  }
+  addCat(userId: any, content: any, motif: string) {
+    this.http
+      .post("http://localhost:5000/user/add-notify", {
+        userId: userId,
+        content: content,
+        motif: motif,
+      })
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+  onRecup6(id: any): void {
+    this.dataService.getUsers().subscribe((data: any) => {
+      this.users = data.user;
+      for (let use of this.users) {
+        if (id === use.id) {
+          this.userOnline = use;
+        }
+      }
+    });
   }
 }

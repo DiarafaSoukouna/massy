@@ -37,7 +37,8 @@ td.mat-cell {
 }
 
 .modal input,
-.modal select {
+.modal select,
+.modal textarea {
   width: calc(95% - 20px);
   padding: 5px;
   margin-top: 2px;

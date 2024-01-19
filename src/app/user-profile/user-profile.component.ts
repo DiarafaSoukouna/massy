@@ -3,6 +3,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { DataService } from "app/data.service";
+import { AuthentificationService } from "app/authentification.service";
 
 @Component({
   selector: "app-user-profile",
@@ -16,6 +17,10 @@ export class UserProfileComponent {
   phone: any;
   id: any;
   password: any;
+  users: any;
+  userOnline: any;
+  role: any;
+  type: any;
 
   displayedColumns: string[] = ["nom", "prenom", "email"];
   dataSource = new MatTableDataSource<any>();
@@ -27,7 +32,8 @@ export class UserProfileComponent {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private authService: AuthentificationService
   ) {}
   getUser() {
     this.dataService.getUsers().subscribe(
@@ -46,9 +52,19 @@ export class UserProfileComponent {
       }
     );
   }
-
+  onRecup6(id: any): void {
+    this.dataService.getUsers().subscribe((data: any) => {
+      this.users = data.user;
+      for (let use of this.users) {
+        if (id === use.id) {
+          this.userOnline = use;
+        }
+      }
+    });
+  }
   ngOnInit() {
     this.getUser();
+    this.onRecup6(this.authService.getUserId());
   }
   onSubmit(): void {
     const userData = {
@@ -57,10 +73,12 @@ export class UserProfileComponent {
       email: this.email,
       id: this.id,
       password: this.password,
+      role: this.role,
+      type: this.type,
     };
 
     this.http
-      .post("http://localhost:5000/manager/admin/add-user", userData)
+      .post("http://78.138.45.73/manager/admin/add-user", userData)
       .subscribe(
         (response: any) => {
           console.log(response);

@@ -52,7 +52,16 @@ export class ConfirmationComponent {
       .subscribe(
         (response: any) => {
           console.log(response);
-          this.router.navigate(["/dashboard"]);
+
+          if (response.user) {
+            if (response.user.account.single_on === true) {
+              this.router.navigate(["/profile"]);
+            } else {
+              this.router.navigate(["/dashboard"]);
+            }
+          } else {
+            //code incorrect !
+          }
         },
         (error) => {
           console.log(error);

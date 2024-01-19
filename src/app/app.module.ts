@@ -9,6 +9,8 @@ import { AppComponent } from "./app.component";
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 import { NgbModalModule } from "@ng-bootstrap/ng-bootstrap";
 import { MatTableModule } from "@angular/material/table";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
   imports: [
@@ -21,6 +23,8 @@ import { MatTableModule } from "@angular/material/table";
     AppRoutingModule,
     NgbModalModule,
     MatTableModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   declarations: [AppComponent, AdminLayoutComponent],
   providers: [],

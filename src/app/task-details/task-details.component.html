@@ -1,0 +1,269 @@
+<body>
+  <div *ngIf="projetId">
+    <div><h2>Liste des membres de la tache</h2></div>
+    <button
+      type="button"
+      class="btn btn1"
+      data-toggle="modal"
+      data-target="#memberModal"
+      data-whatever="@mdo"
+    >
+      Ajouter un membre
+    </button>
+    <mat-form-field>
+      <mat-label>Filtrer</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="membre..."
+        #input
+      />
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <tr mat-row *matRowDef="let row; columns: displayedColumns">
+        hi
+      </tr>
+
+      <ng-container matColumnDef="nom">
+        <th mat-header-cell *matHeaderCellDef>Nom</th>
+        <td class="cursor-pointer" mat-cell *matCellDef="let element">
+          {{ element.nom }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="prenom">
+        <th mat-header-cell *matHeaderCellDef>Prenom</th>
+        <td class="cursor-pointer" mat-cell *matCellDef="let element">
+          {{ element.prenom }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+        <td class="cursor-pointer" mat-cell *matCellDef="let element">
+          <div>
+            <button type="button" (click)="onDelete(element.id)">
+              <mat-icon class="icon">delete </mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          No data matching the filter "{{ input.value }}"
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+
+<div
+  class="modal fade"
+  id="memberModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="memberModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="memberModalLabel">Assigner la tache</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="modale">
+            <label for="nom">Membre:</label>
+            <input
+              class="input"
+              list="membre"
+              [(ngModel)]="userId"
+              (ngModelChange)="onChange()"
+            />
+            <datalist id="membre">
+              <option
+                *ngFor="let car of membersUsers"
+                value="{{ car.prenom }} {{ car.nom }}"
+              ></option>
+            </datalist>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button
+          type="button"
+          class="btn btn1"
+          data-dismiss="modal"
+          (click)="addMemberTask()"
+        >
+          Valider
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!projetId">
+  <button
+    type="button"
+    class="btn btn1 bouton"
+    data-toggle="modal"
+    data-target="#noteModal"
+  >
+    Ajouter une note
+  </button>
+  <div class="body">
+    <div class="card">
+      <h2>Vos notes</h2>
+      <div *ngFor="let notes of allNotes">
+        <div class="container-task">
+          <div class="container-bet">
+            <p>{{ notes.content }}</p>
+            <div>
+              <button
+                type="button"
+                class="yes"
+                data-toggle="modal"
+                data-target="#noteUpdateModal"
+                (click)="onRecup(notes.id)"
+              >
+                <mat-icon>create-outline</mat-icon>
+              </button>
+              <button class="yes" (click)="onDeleteNote(notes.id)">
+                <mat-icon class="mat1">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div *ngIf="showLessContent">
+        <p class="note-content">{{ truncatedContent }}</p>
+
+        <button (click)="toggleContent()">Afficher plus</button>
+      </div>
+      <div *ngIf="!showLessContent">
+        <p class="note-content">{{ content }}</p>
+
+        <button (click)="toggleContent()">Réduire</button>
+      </div> -->
+  <div
+    class="modal fade"
+    id="noteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="noteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="memberModalLabel">Ajouter une note</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="modale">
+              <label for="nom">Note:</label>
+              <textarea
+                [(ngModel)]="content"
+                name="content"
+                id="content"
+                rows="3"
+              ></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn1"
+            data-dismiss="modal"
+            (click)="addNote()"
+          >
+            Valider
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="noteUpdateModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="noteUpdateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="noteModalLabel">Modifier la note</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="modale">
+            <label for="nom">Note:</label>
+            <textarea
+              [(ngModel)]="content"
+              name="content"
+              id="content"
+              rows="3"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button
+          type="button"
+          class="btn btn1"
+          data-dismiss="modal"
+          (click)="onEditNote()"
+        >
+          Valider
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
