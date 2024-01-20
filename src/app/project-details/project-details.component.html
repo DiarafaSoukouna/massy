@@ -179,7 +179,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-sm-3">
-                <h6 class="mb-0">Project Title</h6>
+                <h6 class="mb-0">Titre</h6>
               </div>
               <div id="projTitle" class="col-sm text-secondary">{{oneProject.title}}</div>
             </div>
@@ -193,7 +193,7 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <h6 class="mb-0">Date Start</h6>
+                <h6 class="mb-0">Date Début</h6>
               </div>
               <div id="projDateStart" class="col-sm text-secondary">{{ oneProject.date_deb | date : "dd-MM-yyyy" }}
               </div>
@@ -201,14 +201,14 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <h6 class="mb-0">Date End</h6>
+                <h6 class="mb-0">Date Fin</h6>
               </div>
               <div id="projDateEnd" class="col-sm text-secondary">{{ oneProject.date_fin | date : "dd-MM-yyyy" }}</div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <h6 class="mb-0">Status</h6>
+                <h6 class="mb-0">Progréssion</h6>
               </div>
               <div class="col-sm text-secondary">
                 <div class="progress">
@@ -221,7 +221,7 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <h6 class="mb-0">Company</h6>
+                <h6 class="mb-0">Entreprise</h6>
               </div>
               <div id="projClient" class="col-sm text-secondary">{{ oneProject.organisme}}</div>
             </div>
@@ -240,7 +240,7 @@
                 </div>
               </div>
               <div class="col-sm-8">
-                <p class="detail-subtitle">All Members</p>
+                <p class="detail-subtitle">Membres</p>
                 <span class="numItem">{{ oneProject.members.length}}</span>
               </div>
             </div>
@@ -256,7 +256,7 @@
                 </div>
               </div>
               <div class="col-sm-8">
-                <p class="detail-subtitle">All Tasks</p>
+                <p class="detail-subtitle">Tâches</p>
                 <span class="numItem">{{ oneProject.tasks.length}}</span>
               </div>
             </div>
@@ -272,7 +272,7 @@
                 </div>
               </div>
               <div class="col-sm-8">
-                <p class="detail-subtitle">All Files</p>
+                <p class="detail-subtitle">Fichiers</p>
                 <span class="numItem">{{ oneProject.attachments.length}}</span>
               </div>
             </div>
