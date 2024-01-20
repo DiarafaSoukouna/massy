@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { DataService } from "app/data.service";
 import { Router } from "@angular/router";
 
+
 @Component({
   selector: "app-project-details",
   templateUrl: "./project-details.component.html",
@@ -20,14 +21,16 @@ export class ProjectDetailsComponent implements OnInit {
       this.projetId = params.get("projetId");
     });
     this.getProject();
-
-    console.log("hello000000", this.projetId);
   }
+
+
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
     private router: Router
-  ) {}
+  ) { }
+
+
   onProjet(id: any) {
     const data = this.allprojet;
     for (let datasource of data) {
@@ -40,12 +43,15 @@ export class ProjectDetailsComponent implements OnInit {
       }
     }
   }
+
+
   getProject() {
     this.dataService.getDonnees().subscribe((data: any) => {
       this.allprojet = data.projet;
       this.onProjet(this.projetId);
     });
   }
+
   getProgressBarColor(status: number): string {
     if (status < 30) {
       return "red";
@@ -54,5 +60,15 @@ export class ProjectDetailsComponent implements OnInit {
     } else {
       return "green";
     }
+  }
+
+  onRedirectMember(id: string) {
+    this.router.navigate(["/membres", { projetId: id }]);
+    this.onProjet(id);
+  }
+
+  onRedirectTask(id: string) {
+    this.router.navigate(["/task", { projetId: id }]);
+    this.onProjet(id);
   }
 }

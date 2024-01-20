@@ -100,7 +100,7 @@
     </a>
   </div>
 </body> -->
-<body class="mx-auto">
+<!-- <body class="mx-auto">
   <section class="section about-section gray-bg" id="about">
     <div class="container">
       <div class="align-items-center margin">
@@ -169,4 +169,117 @@
       </div>
     </div>
   </section>
-</body>
+</body> -->
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row bg-light rounded shadow-1 py-3">
+      <div class="col-md-9">
+        <div class="card mb-3 box box-secondary">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Project Title</h6>
+              </div>
+              <div id="projTitle" class="col-sm text-secondary">{{oneProject.title}}</div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Description</h6>
+              </div>
+              <div id="projDesc" class="col-sm text-secondary text-justify">{{oneProject.desc}}</div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Date Start</h6>
+              </div>
+              <div id="projDateStart" class="col-sm text-secondary">{{ oneProject.date_deb | date : "dd-MM-yyyy" }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Date End</h6>
+              </div>
+              <div id="projDateEnd" class="col-sm text-secondary">{{ oneProject.date_fin | date : "dd-MM-yyyy" }}</div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Status</h6>
+              </div>
+              <div class="col-sm text-secondary">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped" role="progressbar" [style.width.%]="oneProject.status"
+                    [style.background-color]="getProgressBarColor(oneProject.status)"
+                    [attr.aria-valuenow]="oneProject.status" aria-valuemin="0" aria-valuemax="100">{{ oneProject.status ? oneProject.status : 0 }}%</div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Company</h6>
+              </div>
+              <div id="projClient" class="col-sm text-secondary">{{ oneProject.organisme}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-3">
+        <div (click)="onRedirectMember(oneProject.id)" class="card item-num py-1 px-3">
+          <div class="content">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="icon-big text-center">
+                  <mat-icon class="text-primary icon-m">supervisor_account</mat-icon>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <p class="detail-subtitle">All Members</p>
+                <span class="numItem">{{ oneProject.members.length}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div (click)="onRedirectTask(oneProject.id)" class="card item-num py-1 px-3">
+          <div class="content">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="icon-big text-center">
+                  <mat-icon class="text-warning icon-m">assignment</mat-icon>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <p class="detail-subtitle">All Tasks</p>
+                <span class="numItem">{{ oneProject.tasks.length}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card item-num py-1 px-3">
+          <div class="content">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="icon-big text-center">
+                  <mat-icon class="text-secondary icon-m">folder</mat-icon>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <p class="detail-subtitle">All Files</p>
+                <span class="numItem">{{ oneProject.attachments.length}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
