@@ -170,6 +170,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="clean()"
         >
           <span aria-hidden="true">×</span>
         </button>
@@ -197,38 +198,49 @@
               placeholder="description du projet"
               required
             ></textarea>
-            <label for="durer_exec">Date de debut:</label>
-            <input
-              [(ngModel)]="date_deb"
-              type="date"
-              id="date_deb"
-              name="date_deb"
-              placeholder="date de debut"
-              required
-            />
-            <label for="durer_exec">Date de fin:</label>
-            <input
-              [(ngModel)]="date_fin"
-              type="date"
-              id="date_fin"
-              name="date_fin"
-              placeholder="date de fin"
-              required
-            />
-            <!-- <label for="budget_prevu">Budget prevu:</label>
+            <div style="justify-content: space-between; display: flex">
+              <span class="yo">Date de début</span>
+              <span class="yo">Date de fin</span>
+            </div>
+            <div style="justify-content: space-between; display: flex">
+              <input
+                [(ngModel)]="date_deb"
+                type="date"
+                id="date_deb"
+                name="date_deb"
+                placeholder="date de debut"
+                required
+              />
+
+              <input
+                [(ngModel)]="date_fin"
+                type="date"
+                id="date_fin"
+                name="date_fin"
+                placeholder="date de fin"
+                required
+              />
+            </div>
+            <label for="budget_prevu">Cout du projet:</label>
             <input
               [(ngModel)]="budg_prev"
-              type="text"
+              type="number"
+              pattern="\d+"
               id="budget_prevu"
               name="budget_prevu"
               placeholder="budget prevu pour le projet"
               required
-            /> -->
+            />
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="clean()"
+        >
           Fermer
         </button>
         <button
@@ -262,6 +274,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="clean()"
         >
           <span aria-hidden="true">×</span>
         </button>
@@ -289,22 +302,37 @@
               placeholder="description du projet"
               required
             ></textarea>
-            <label for="durer_exec">Date de debut:</label>
+            <div style="justify-content: space-between; display: flex">
+              <span class="yo">Date de début</span>
+              <span class="yo">Date de fin</span>
+            </div>
+            <div style="justify-content: space-between; display: flex">
+              <input
+                [(ngModel)]="date_deb"
+                type="date"
+                id="date_deb"
+                name="date_deb"
+                placeholder="Date de début"
+                required
+              />
+
+              <input
+                [(ngModel)]="date_fin"
+                type="date"
+                id="date_fin"
+                name="date_fin"
+                placeholder="date de fin"
+                required
+              />
+            </div>
+            <label for="budget_prevu">Cout du projet:</label>
             <input
-              [(ngModel)]="date_deb"
-              type="date"
-              id="date_deb"
-              name="date_deb"
-              placeholder="date de debut"
-              required
-            />
-            <label for="durer_exec">Date de fin:</label>
-            <input
-              [(ngModel)]="date_fin"
-              type="date"
-              id="date_fin"
-              name="date_fin"
-              placeholder="date de fin"
+              [(ngModel)]="budg_prev"
+              type="number"
+              pattern="\d+"
+              id="budget_prevu"
+              name="budget_prevu"
+              placeholder="budget prevu pour le projet"
               required
             />
             <!-- <label for="budget_prevu">Budget prevu:</label>
@@ -320,7 +348,12 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="clean()"
+        >
           Fermer
         </button>
         <button

@@ -7,7 +7,6 @@ import { DataService } from "app/data.service";
 import { AuthentificationService } from "app/authentification.service";
 import { SocketService } from "app/socket.service";
 import { FormControl } from "@angular/forms";
-import { startWith, map } from "rxjs/operators";
 
 @Component({
   selector: "app-task-details",
@@ -56,7 +55,7 @@ export class TaskDetailsComponent {
   }
   onTasks(id: any): void {
     this.http
-      .post("http://localhost:5000/tache/getTaskByID", {
+      .post("https://devcosit.com/tache/getTaskByID", {
         taskId: id,
       })
       .subscribe(
@@ -74,7 +73,7 @@ export class TaskDetailsComponent {
     const headers = this.authService.getHeaders();
     this.http
       .post(
-        "http://localhost:5000/tache/getTaskByID",
+        "https://devcosit.com/tache/getTaskByID",
         {
           taskId: id,
         },
@@ -98,12 +97,11 @@ export class TaskDetailsComponent {
     const headers = this.authService.getHeaders();
 
     this.http
-      .post("http://localhost:5000/tache/add-note", userData, {
+      .post("https://devcosit.com/tache/add-note", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.onTask_note(this.taskId);
           this.content = "";
         },
@@ -132,24 +130,25 @@ export class TaskDetailsComponent {
     const headers = this.authService.getHeaders();
     const dataNotify = {
       userId: this.memberSelected,
-      content: `La tache ${
+      content: `La tâche "${
         this.taskName
-      } du projet : ${this.authService.getProjetName()}, vous a été assignée`,
+      }" du projet : "${this.authService.getProjetName()}", vous a été assignée`,
       motif: "Tache",
     };
+    console.log("avant lenvoie", dataNotify);
 
     this.http
-      .post("http://localhost:5000/tache/add-member", userData, {
+      .post("https://devcosit.com/tache/add-member", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
+          console.log("apres lenvoie", dataNotify);
+          this.socket.sendNotify(dataNotify);
           this.onTasks(this.taskId);
 
-          this.socket.sendNotify(dataNotify);
           nom = "";
           prenom = "";
-          this.userId = "";
         },
         (error) => {
           console.log(error);
@@ -172,7 +171,7 @@ export class TaskDetailsComponent {
     const headers = this.authService.getHeaders();
     this.http
       .post(
-        "http://localhost:5000/projet/getByID",
+        "https://devcosit.com/projet/getByID",
         {
           projetId: id,
         },
@@ -197,7 +196,7 @@ export class TaskDetailsComponent {
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/tache/delete-member",
+          "https://devcosit.com/tache/delete-member",
           {
             memberId: id,
           },
@@ -205,7 +204,6 @@ export class TaskDetailsComponent {
         )
         .subscribe(
           (response: any) => {
-            console.log("suppression effectuer");
             this.onTasks(this.taskId);
           },
           (error) => {
@@ -232,7 +230,7 @@ export class TaskDetailsComponent {
     };
     const headers = this.authService.getHeaders();
     this.http
-      .post("http://localhost:5000/tache/update-note", userData, {
+      .post("https://devcosit.com/tache/update-note", userData, {
         headers: headers,
       })
       .subscribe(
@@ -255,7 +253,7 @@ export class TaskDetailsComponent {
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/tache/delete-note",
+          "https://devcosit.com/tache/delete-note",
           {
             noteId: id,
           },
@@ -280,5 +278,8 @@ export class TaskDetailsComponent {
   }
   displayFn(member: any): string {
     return member ? `${member.nom} ${member.prenom}` : "";
+  }
+  clean() {
+    this.content = "";
   }
 }

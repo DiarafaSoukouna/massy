@@ -10,7 +10,7 @@ export class SocketService {
   userNotify: any[];
 
   constructor(private http: HttpClient) {
-    this.socket = io("http://localhost:5000");
+    this.socket = io("https://devcosit.com");
   }
 
   // Add methods to interact with Socket.IO events
@@ -48,7 +48,7 @@ export class SocketService {
 
   sendNotify(dataNotify: any): void {
     this.http
-      .post("http://localhost:5000/user/add-notify", dataNotify)
+      .post("https://devcosit.com/user/add-notify", dataNotify)
       .subscribe(
         (response: any) => {
           this.socket.emit("send notify", "notify");

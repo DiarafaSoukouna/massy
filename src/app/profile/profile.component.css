@@ -121,3 +121,39 @@ h2 {
   font-weight: bold;
   font-family: match;
 }
+.y:hover {
+  background-color: #b82a20;
+}
+.password-button {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.password-button:hover {
+  background-color: #e53935;
+}
+.bt {
+  background-color: #f44336;
+  color: white;
+  padding: 30px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+}
+
+.bt mat-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bt:hover {
+  background-color: #e53935;
+}

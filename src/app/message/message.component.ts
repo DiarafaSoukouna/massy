@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { AuthentificationService } from 'app/authentification.service';
-import { DataService } from 'app/data.service';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from "@angular/core";
+import { AuthentificationService } from "app/authentification.service";
+import { DataService } from "app/data.service";
+import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-message',
-  templateUrl: './message.component.html',
-  styleUrl: './message.component.css'
+  selector: "app-message",
+  templateUrl: "./message.component.html",
+  styleUrl: "./message.component.css",
 })
 export class MessageComponent {
   users: any;
@@ -87,15 +87,13 @@ export class MessageComponent {
       userIdSub: userIdSub,
     };
     const headers = this.authService.getHeaders();
-    // console.log("les data", userData);
 
     this.http
-      .post("http://localhost:5000/chat/add-chat", userData, {
+      .post("https://devcosit.com/chat/add-chat", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log("initiate", response);
           this.onClickChat(response.chat.id);
           this.curChat = response.chat;
         },
@@ -117,7 +115,7 @@ export class MessageComponent {
 
   getUsersChat(id: any): void {
     this.http
-      .post("http://localhost:5000/chat/getChatBy-user", {
+      .post("https://devcosit.com/chat/getChatBy-user", {
         userId: id,
       })
       .subscribe(
@@ -132,14 +130,14 @@ export class MessageComponent {
 
   getCurrentChat(id: any): void {
     this.http
-      .post("http://localhost:5000/chat/getChatByID", {
+      .post("https://devcosit.com/chat/getChatByID", {
         chatId: id,
       })
       .subscribe(
         (response: any) => {
           this.curChat = response.chat;
-          this.messages = response.chat.messages.sort((a:any, b:any) => {
-            if(a.dateCreate > b.dateCreate){
+          this.messages = response.chat.messages.sort((a: any, b: any) => {
+            if (a.dateCreate > b.dateCreate) {
               return 1;
             }
             return -1;
@@ -163,19 +161,15 @@ export class MessageComponent {
       content: this.content,
       senderId: this.authService.getUserId(),
       chatId: this.chatId,
-    
     };
     const headers = this.authService.getHeaders();
     this.http
-      .post("http://localhost:5000/chat/add-message", Data, {
+      .post("https://devcosit.com/chat/add-message", Data, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log('Le message envoyer',response);    
           this.getCurrentChat(this.chatId);
-          console.log('Cuurent chqt',this.curChat);
-          
         },
         (error) => {
           console.log(error);

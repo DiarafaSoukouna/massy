@@ -34,6 +34,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MessageComponent } from "app/message/message.component";
 import { ProjectDetailsComponent } from "app/project-details/project-details.component";
+import { ResetPasswordComponent } from "app/reset-password/reset-password.component";
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { ProjectDetailsComponent } from "app/project-details/project-details.com
     TaskDetailsComponent,
     MessageComponent,
     ProjectDetailsComponent,
+    ResetPasswordComponent,
   ],
   providers: [DataService, AuthentificationService],
 })

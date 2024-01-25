@@ -1,6 +1,9 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav mode="side" opened="true" class="sidenav">
     <div class="search-container">
+      <button class="bt" (click)="dashboard()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
       <input
         type="text"
         [(ngModel)]="searchTerm"
@@ -12,7 +15,7 @@
         <mat-icon>add_circle</mat-icon>
       </button>
     </div>
-    <div *ngFor="let oneChat of userChats">
+    <div *ngFor="let oneChat of filtered">
       <ul class="conversation-list">
         <li class="clearfix" (click)="onClickChat(oneChat.id); scrollBottom()">
           <div class="profile-picture" style="background-color: #f44336">
@@ -35,13 +38,21 @@
                   : oneChat.prenom
               }}
             </div>
-            <div
-              class="cote text-truncate"
-              style="width: 250px; font-family: match"
-            >
-              {{ getLastMessage(oneChat) }}
+            <div *ngIf="oneChat.messages.length !== 0">
+              <div
+                class="cote text-truncate"
+                style="width: 250px; font-family: match"
+              >
+                {{ getLastMessage(oneChat) ? getLastMessage(oneChat) : "" }}
+              </div>
+              <div class="status">
+                {{
+                  getLastMessageHours(oneChat)
+                    ? getLastMessageHours(oneChat)
+                    : ""
+                }}
+              </div>
             </div>
-            <div class="status">{{ getLastMessageHours(oneChat) }}</div>
           </div>
         </li>
       </ul>
@@ -89,39 +100,40 @@
           [scrollTop]="scrollContainer.scrollHeight"
           class="chat"
         >
-          <div *ngFor="let message of messages">
-            <div *ngIf="message.senderId === userOnline.id">
-              <div class="row message-body">
-                <div class="col-sm-12 message-main-sender">
-                  <div class="sender">
-                    <div class="message-text">
-                      {{ message.content }}
+          <div *ngIf="messages.length !== 0">
+            <div *ngFor="let message of messages">
+              <div *ngIf="message.senderId === userOnline.id">
+                <div class="row message-body">
+                  <div class="col-sm-12 message-main-sender">
+                    <div class="sender">
+                      <div class="message-text">
+                        {{ message.content }}
+                      </div>
+                      <span class="message-time pull-right">
+                        {{ message.dateCreate | date : "HH:mm" }}
+                      </span>
                     </div>
-                    <span class="message-time pull-right">
-                      {{ message.dateCreate | date : "HH:mm" }}
-                    </span>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div *ngIf="!(message.senderId === userOnline.id)">
-              <div class="message-body">
-                <div class="col-sm-12 message-main-receiver">
-                  <div class="receiver">
-                    <div class="message-text">
-                      {{ message.content }}
+              <div *ngIf="!(message.senderId === userOnline.id)">
+                <div class="message-body">
+                  <div class="col-sm-12 message-main-receiver">
+                    <div class="receiver">
+                      <div class="message-text">
+                        {{ message.content }}
+                      </div>
+                      <span class="message-time pull-right">
+                        {{ message.dateCreate | date : "HH:mm" }}
+                      </span>
                     </div>
-                    <span class="message-time pull-right">
-                      {{ message.dateCreate | date : "HH:mm" }}
-                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         <div class="input-container">
           <input
             (keyup.enter)="onSendMessage()"
@@ -160,7 +172,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <div *ngFor="let user of users">
+        <input
+          type="text"
+          [(ngModel)]="search"
+          (input)="filter()"
+          class="form-control"
+          placeholder="Search..."
+        />
+        <div *ngFor="let user of userFiltered">
           <div *ngIf="user.id !== userOnline.id">
             <ul class="conversation-list">
               <li

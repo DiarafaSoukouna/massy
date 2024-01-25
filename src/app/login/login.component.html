@@ -1,3 +1,13 @@
+<div *ngIf="loginError" class="alert-container mt-3">
+  <div class="alert alert-danger" role="alert">
+    <strong>Erreur de connexion: </strong> Veuillez vérifier vos identifiants.
+  </div>
+</div>
+<div *ngIf="sendEmail" class="alert-container mt-3">
+  <div class="alert alert-danger" role="alert">
+    <strong> Erreur d'envoie: </strong> veuillez verifier votre adresse email
+  </div>
+</div>
 <div
   class="container-fluid body d-flex flex-column align-items-center justify-content-end"
 >
@@ -94,9 +104,7 @@
           type="button"
           class="btn btn1"
           data-dismiss="modal"
-          (click)="onResetCode(mail)"
-          data-toggle="modal"
-          data-target="#passwordModal"
+          (click)="onResetCode()"
         >
           Valider
         </button>
@@ -130,9 +138,8 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="modal">
+          <div class="modale">
             <label for="nom">Veuillez inscrire le code recu:</label>
-
             <input
               [(ngModel)]="code"
               type="text"
@@ -141,9 +148,7 @@
               placeholder="ex: 123456"
               required
             />
-
             <label for="nom">Nouveau mot de passe:</label>
-
             <input
               [(ngModel)]="password"
               type="password"

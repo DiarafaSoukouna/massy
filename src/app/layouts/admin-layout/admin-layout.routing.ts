@@ -14,6 +14,7 @@ import { MembresComponent } from "app/membres/membres.component";
 import { ProfileComponent } from "app/profile/profile.component";
 import { TaskDetailsComponent } from "app/task-details/task-details.component";
 import { ProjectDetailsComponent } from "app/project-details/project-details.component";
+import { ResetPasswordComponent } from "app/reset-password/reset-password.component";
 
 export const AdminLayoutRoutes: Routes = [
   // {
@@ -72,4 +73,5 @@ export const AdminLayoutRoutes: Routes = [
   { path: "profile", component: ProfileComponent },
   { path: "task-details", component: TaskDetailsComponent },
   { path: "project-details", component: ProjectDetailsComponent },
+  { path: "reset-password", component: ResetPasswordComponent },
 ];

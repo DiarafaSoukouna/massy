@@ -33,6 +33,8 @@ export class IconsComponent implements OnInit {
   allMessages: any[];
   searchTerm: any;
   filtered: any;
+  search: any;
+  userFiltered: any;
   constructor(
     private dataService: DataService,
     private router: Router,
@@ -48,7 +50,6 @@ export class IconsComponent implements OnInit {
     this.socket.getSocket().subscribe((socket) => {
       this.getCurrentChat(this.chatId);
       this.getUsersChat(this.authService.getUserId());
-      console.log("hello");
     });
     this.getUsersChat(this.authService.getUserId());
     this.getCurrentChat(this.chatId);
@@ -61,6 +62,7 @@ export class IconsComponent implements OnInit {
         if (Array.isArray(data.user)) {
           this.users = data.user;
           this.onRecup(this.authService.getUserId());
+          this.filter();
         } else {
           console.error("Les données ne sont pas un tableau :", data);
         }
@@ -118,12 +120,11 @@ export class IconsComponent implements OnInit {
     // console.log("les data", userData);
 
     this.http
-      .post("http://localhost:5000/chat/add-chat", userData, {
+      .post("https://devcosit.com/chat/add-chat", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log("initiate", response);
           this.onClickChat(response.chat.id);
           this.curChat = response.chat;
           this.getCurrentChat(response.chat.id);
@@ -148,7 +149,7 @@ export class IconsComponent implements OnInit {
 
   getUsersChat(id: any): void {
     this.http
-      .post("http://localhost:5000/chat/getChatBy-user", {
+      .post("https://devcosit.com/chat/getChatBy-user", {
         userId: id,
       })
       .subscribe(
@@ -170,7 +171,7 @@ export class IconsComponent implements OnInit {
 
   getCurrentChat(id: any): void {
     this.http
-      .post("http://localhost:5000/chat/getChatByID", {
+      .post("https://devcosit.com/chat/getChatByID", {
         chatId: id,
       })
       .subscribe(
@@ -205,7 +206,7 @@ export class IconsComponent implements OnInit {
     const headers = this.authService.getHeaders();
     if (this.content) {
       this.http
-        .post("http://localhost:5000/chat/add-message", Data, {
+        .post("https://devcosit.com/chat/add-message", Data, {
           headers: headers,
         })
         .subscribe(
@@ -264,18 +265,23 @@ export class IconsComponent implements OnInit {
     //     }
     // })
 
-    console.log("search", event);
     const filterValue = (event.target as HTMLInputElement).value;
     this.userChats.filter = filterValue.trim().toLowerCase();
   }
   filte() {
-    if (!this.searchTerm.trim()) {
+    if (this.searchTerm === undefined || this.searchTerm.trim() === "") {
       this.filtered = this.userChats;
       return;
     }
 
     this.filtered = this.userChats.filter((message: any) => {
-      const fullName = message.title;
+      let fullName = "";
+      if (message.userId === this.authService.getUserId()) {
+        fullName = message.nomSub + " " + message.prenomSub;
+      } else {
+        fullName = message.nom + " " + message.prenom;
+      }
+
       const includesResult = fullName
         .toLowerCase()
         .includes(this.searchTerm.toLowerCase());
@@ -283,12 +289,28 @@ export class IconsComponent implements OnInit {
     });
   }
 
-  scrollToBottom(): void {
-    console.log("Hello Scrool");
+  filter() {
+    if (this.search === undefined || this.search.trim() === "") {
+      this.userFiltered = this.users;
+      return;
+    }
 
+    this.userFiltered = this.users.filter((message: any) => {
+      const fullName = message.nom + " " + message.prenom;
+
+      const includesResult = fullName
+        .toLowerCase()
+        .includes(this.search.toLowerCase());
+      return includesResult;
+    });
+  }
+  scrollToBottom(): void {
     try {
       this.scrollContainer.nativeElement.scrollTop =
         this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
+  }
+  dashboard() {
+    this.router.navigate(["/dashboard"]);
   }
 }

@@ -6,8 +6,8 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class DataService {
-  private apiUrl = "http://localhost:5000/projet/getAllProjet";
-  private api = "http://localhost:5000/user/getAllUser";
+  private apiUrl = "https://devcosit.com/projet/getAllProjet";
+  private api = "https://devcosit.com/user/getAllUser";
 
   constructor(private http: HttpClient) {}
 
@@ -19,9 +19,9 @@ export class DataService {
     return this.http.get<any[]>(this.api);
   }
   getDatasets(): Observable<any[]> {
-    return this.http.get<any[]>("http://localhost:5000/dataset/users-roles");
+    return this.http.get<any[]>("https://devcosit.com/dataset/users-roles");
   }
   Cat_Tasks(id: any): void {
-    this.http.get<any[]>("http://localhost:5000/tache/getTaskBy-projet");
+    this.http.get<any[]>("https://devcosit.com/tache/getTaskBy-projet");
   }
 }

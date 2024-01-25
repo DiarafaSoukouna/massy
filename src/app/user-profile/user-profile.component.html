@@ -1,6 +1,6 @@
 <body>
   <div><h2>Liste des utilisateurs</h2></div>
-  <div *ngIf="userOnline.type === 'admin'">
+  <!-- <div *ngIf="userOnline.type === 'admin'">
     <button
       type="button"
       class="btn btn1"
@@ -10,13 +10,13 @@
     >
       Ajouter un utilisateur
     </button>
-  </div>
+  </div> -->
   <mat-form-field>
     <mat-label>Filtrer</mat-label>
     <input
       matInput
       (keyup)="applyFilter($event)"
-      placeholder="projet..."
+      placeholder="utilisateurs..."
       #input
     />
   </mat-form-field>

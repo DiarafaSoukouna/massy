@@ -10,6 +10,7 @@ import {
 } from "@angular/common";
 import { Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { DataService } from "app/data.service";
 declare var $: any;
 @Component({
   selector: "app-navbar",
@@ -25,6 +26,8 @@ export class NavbarComponent implements OnInit {
   email: any;
   notifies: any[];
   notView: any[];
+  all: any[];
+  userOnline: any;
 
   constructor(
     location: Location,
@@ -32,7 +35,8 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     private socket: SocketService,
-    private authService: AuthentificationService
+    private authService: AuthentificationService,
+    private dataService: DataService
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -55,6 +59,8 @@ export class NavbarComponent implements OnInit {
     this.socket.getNotify().subscribe((response: any) => {
       this.getAllNotify(this.authService.getUserId());
     });
+    this.getUser();
+    this.onRecup(this.authService.getUserId());
   }
 
   sidebarOpen() {
@@ -134,37 +140,37 @@ export class NavbarComponent implements OnInit {
     // this.GetNotify();
   }
 
-  showNotification(from, align, msg) {
+  showNotification(from, align, notif) {
     const type = ["", "info", "success", "warning", "danger"];
     const color = Math.floor(Math.random() * 4 + 1);
 
-    console.log("YOH");
-
-    $.notify(
-      {
-        icon: "notifications",
-        message: msg,
-      },
-      {
-        type: type[color],
-        timer: 4000,
-        placement: {
-          from: from,
-          align: align,
+    if (notif.userId === this.authService.getUserId()) {
+      $.notify(
+        {
+          icon: "notifications",
+          message: notif.content,
         },
-        template:
-          '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
-          '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
-          '<i class="material-icons" data-notify="icon">notifications</i> ' +
-          '<span data-notify="title">{1}</span> ' +
-          '<span data-notify="message">{2}</span>' +
-          '<div class="progress" data-notify="progressbar">' +
-          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-          "</div>" +
-          '<a href="{3}" target="{4}" data-notify="url"></a>' +
-          "</div>",
-      }
-    );
+        {
+          type: type[color],
+          timer: 4000,
+          placement: {
+            from: from,
+            align: align,
+          },
+          template:
+            '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
+            '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+            '<i class="material-icons" data-notify="icon">notifications</i> ' +
+            '<span data-notify="title">{1}</span> ' +
+            '<span data-notify="message">{2}</span>' +
+            '<div class="progress" data-notify="progressbar">' +
+            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+            "</div>" +
+            '<a href="{3}" target="{4}" data-notify="url"></a>' +
+            "</div>",
+        }
+      );
+    }
   }
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
@@ -187,47 +193,100 @@ export class NavbarComponent implements OnInit {
   }
 
   getAllNotify(id: string) {
+    const oldNotifyList = this.notifies;
     this.http
-      .post("http://localhost:5000/user/getNotifyBy-user", { userId: id })
+      .post("https://devcosit.com/user/getNotifyBy-user", { userId: id })
       .subscribe((response: any) => {
-        if (
-          response.notify &&
-          this.notifies &&
-          response.notify.length > this.notifies.length
-        ) {
-          const lastNotify = response.notify.sort((a: any, b: any) => {
+        const newNotifyList = response.notify;
+
+        this.notifies = response.notify
+          .filter((notify: any) => notify.view === false)
+          .sort((a: any, b: any) => {
             if (a.dateCreate < b.dateCreate) {
               return 1;
             }
             return -1;
           });
 
-          this.showNotification("top", "center", lastNotify[0].content);
-        }
+        if (newNotifyList.length > oldNotifyList.length) {
+          const lastNotify = this.notifies.sort((a: any, b: any) => {
+            if (a.dateCreate < b.dateCreate) {
+              return 1;
+            }
+            return -1;
+          });
 
-        this.notifies = response.notify.sort((a: any, b: any) => {
-          if (a.dateCreate < b.dateCreate) {
-            return 1;
-          }
-          return -1;
-        });
+          this.showNotification("top", "center", lastNotify[0]);
+        }
       });
+
     this.notifies;
   }
-  goToNotify() {
-    this.router.navigate(["/notifications"]);
+  getNotify(id: string) {
+    this.http
+      .post("https://devcosit.com/user/getNotifyBy-user", { userId: id })
+      .subscribe((response: any) => {
+        this.notifies = response.notify
+          .filter((notify: any) => notify.view === false)
+          .sort((a: any, b: any) => {
+            if (a.dateCreate < b.dateCreate) {
+              return 1;
+            }
+            return -1;
+          });
+      });
   }
 
   onLogout() {
+    const userConfirmed = window.confirm(
+      "Etes-vous sur de vouloir vous deconnecter?"
+    );
+    if (userConfirmed) {
+      this.http
+        .post(
+          "https://devcosit.com/auth/logout",
+          {},
+          { headers: this.authService.getHeaders() }
+        )
+        .subscribe((response: any) => {
+          window.localStorage.removeItem("access_token");
+
+          window.localStorage.removeItem("id");
+          window.localStorage.removeItem("email");
+          window.localStorage.removeItem("phone");
+          window.localStorage.removeItem("projetId");
+
+          this.router.navigate(["/login"]);
+        });
+    }
+  }
+  onClickNotify(id: any, content: any): void {
     this.http
       .post(
-        "http://localhost:5000/auth/logout",
-        {},
+        "https://devcosit.com/user/update-notify",
+        { id: id, view: true },
         { headers: this.authService.getHeaders() }
       )
       .subscribe((response: any) => {
-        window.localStorage.removeItem("access_token");
-        this.router.navigate(["/login"]);
+        this.router.navigate(["/notifications"]);
+        this.getNotify(this.authService.getUserId());
       });
+  }
+  getUser() {
+    this.dataService.getUsers().subscribe((data: any) => {
+      this.all = data.user;
+      this.onRecup(this.authService.getUserId());
+    });
+  }
+  onRecup(id: any): void {
+    const data = this.all;
+    for (let use of data) {
+      if (id === use.id) {
+        this.userOnline = use;
+      }
+    }
+  }
+  getInitials(nom: string, prenom: string): string {
+    return nom.charAt(0).toUpperCase() + prenom.charAt(0).toUpperCase();
   }
 }

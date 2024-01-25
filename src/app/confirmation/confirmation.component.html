@@ -1,3 +1,8 @@
+<div *ngIf="verifyMail" class="alert-container mt-3">
+  <div class="alert alert-danger" role="alert">
+    <strong> Erreur de vérification: </strong> code invalide
+  </div>
+</div>
 <body>
   <div class="container">
     <img src="assets/confirmation2.png" alt="photo enveloppe" />
@@ -12,23 +17,11 @@
     personnelles et professionnelles.
   </p>
   <h3>Recevoir le message de confirmation par..</h3>
-  <button
-    type="button"
-    class="btn btn1"
-    data-toggle="modal"
-    data-target="#emailModal"
-    (click)="onLogin('mail')"
-  >
+  <button type="button" class="btn btn1" (click)="onLogin('mail')">
     Email
   </button>
 
-  <button
-    type="button"
-    class="btn btn1"
-    data-toggle="modal"
-    data-target="#whatsappModal"
-    (click)="type = 'sms'"
-  >
+  <button type="button" class="btn btn1" (click)="type = 'sms'">
     WhatsApp
   </button>
 </body>
@@ -140,32 +133,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div>
-    <div class="spinner-grow text-primary" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-secondary" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-success" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-danger" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-warning" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-info" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-light" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <div class="spinner-grow text-dark" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-</div> -->
 </div>

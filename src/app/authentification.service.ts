@@ -8,7 +8,7 @@ import { HttpHeaders } from "@angular/common/http";
 })
 export class AuthentificationService {
   localStorageKey: string = "access_token";
-  private apiUrl = "http://localhost:5000/auth/login";
+  private apiUrl = "https://devcosit.com/auth/login";
   userId: string = "id";
   userMail: any = "email";
   userPhone: any = "phone";
@@ -29,7 +29,9 @@ export class AuthentificationService {
   removeToken(): void {
     localStorage.removeItem(this.localStorageKey);
   }
-
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem(this.userId);
+  }
   setUserId(id: string) {
     localStorage.setItem(this.userId, id);
   }

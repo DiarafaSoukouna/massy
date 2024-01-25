@@ -8,6 +8,8 @@ import { LoginComponent } from "./login/login.component";
 import { ConfirmationComponent } from "./confirmation/confirmation.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { IconsComponent } from "./icons/icons.component";
+import { CanActivateService } from "./can-activate.service";
+import { ResetPasswordComponent } from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   {
@@ -22,18 +24,26 @@ const routes: Routes = [
   {
     path: "profile",
     component: ProfileComponent,
+    canActivate: [CanActivateService],
   },
   {
     path: "confirmation",
     component: ConfirmationComponent,
   },
   {
+    path: "reset-password",
+    component: ResetPasswordComponent,
+    canActivate: [CanActivateService],
+  },
+  {
     path: "chat",
     component: IconsComponent,
+    canActivate: [CanActivateService],
   },
   {
     path: "",
     component: AdminLayoutComponent,
+    canActivate: [CanActivateService],
     children: [
       {
         path: "",
@@ -54,6 +64,7 @@ const routes: Routes = [
       useHash: true,
     }),
   ],
+  providers: [CanActivateService],
   exports: [],
 })
 export class AppRoutingModule {}

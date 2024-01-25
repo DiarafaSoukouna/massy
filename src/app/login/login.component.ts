@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthentificationService } from "app/authentification.service";
 import { HttpClient } from "@angular/common/http";
-
+declare var $: any;
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -14,6 +14,8 @@ export class LoginComponent {
   headers: any;
   mail: any;
   code: any;
+  loginError: boolean = false;
+  sendEmail: boolean = false;
 
   constructor(
     private authService: AuthentificationService,
@@ -25,31 +27,47 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe(
       (response) => {
         this.authService.setToken(response.access_token);
-        this.authService.setUserId(response.user.id);
         this.authService.setUserMail(response.user.email);
         this.authService.setUserPhone(response.user.phone);
         this.router.navigate(["/confirmation"]);
-        console.log(response);
       },
       (error) => {
         console.error("Erreur de connexion : ", error);
+        this.loginError = true;
+
+        setTimeout(() => {
+          this.loginError = false;
+        }, 5000);
       }
     );
   }
 
-  onResetCode(mail: any): void {
-    this.http
-      .post("http://localhost:5000/user/resetPwd-code", {
-        email: mail,
-      })
-      .subscribe(
-        (response: any) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+  onResetCode(): void {
+    if (this.mail) {
+      this.http
+        .post("https://devcosit.com/user/resetPwd-code", {
+          email: this.mail,
+        })
+        .subscribe(
+          (response: any) => {
+            $("#passwordModal").modal("show");
+          },
+          (error) => {
+            console.log(error);
+            this.sendEmail = true;
+
+            setTimeout(() => {
+              this.sendEmail = false;
+            }, 5000);
+          }
+        );
+    } else {
+      this.sendEmail = true;
+
+      setTimeout(() => {
+        this.sendEmail = false;
+      }, 5000);
+    }
   }
 
   onResetPassword(): void {
@@ -60,12 +78,12 @@ export class LoginComponent {
     };
     const headers = this.authService.getHeaders();
     this.http
-      .post("http://localhost:5000/user/resetPwd-password", data, {
+      .post("https://devcosit.com/user/resetPwd-password", data, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log(response);
+          this.router.navigate(["/dashboard"]);
         },
         (error) => {
           console.log(error);

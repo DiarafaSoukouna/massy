@@ -3,6 +3,7 @@ import * as Chartist from "chartist";
 import { AuthentificationService } from "app/authentification.service";
 import { DataService } from "app/data.service";
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-dashboard",
@@ -18,7 +19,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private authService: AuthentificationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
   startAnimationForLineChart(chart) {
     let seq: any, delays: any, durations: any;
@@ -197,12 +199,11 @@ export class DashboardComponent implements OnInit {
   }
   onTasksUser(): void {
     this.http
-      .post("http://localhost:5000/tache/getTaskBy-user", {
+      .post("https://devcosit.com/tache/getTaskBy-assign", {
         userId: this.authService.getUserId(),
       })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.allTasks = response.task;
           this.tasksTrue = response.task.filter(
             (task: any) => task.status === true
@@ -231,5 +232,11 @@ export class DashboardComponent implements OnInit {
         );
       }
     );
+  }
+  onRedirectProject(id: string) {
+    this.router.navigate(["/project-details", { projetId: id }]);
+  }
+  onRedirectTache(id: string) {
+    this.router.navigate(["/task", { projetId: id }]);
   }
 }

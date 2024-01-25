@@ -12,7 +12,7 @@
   <mat-menu #menuAj="matMenu">
     <!-- <button mat-menu-item [routerLink]="['/option1']">Option 1</button> -->
     <button mat-menu-item data-toggle="modal" data-target="#exampleModal">
-      <mat-icon>add</mat-icon>Ajouter une tache
+      <mat-icon>add</mat-icon>Ajouter une tâche
     </button>
     <button mat-menu-item data-toggle="modal" data-target="#CatModal">
       <mat-icon>book</mat-icon>
@@ -31,7 +31,6 @@
         </div>
 
         <mat-menu #menuCat="matMenu">
-          <!-- <button mat-menu-item [routerLink]="['/option1']">Option 1</button> -->
           <button
             mat-menu-item
             data-toggle="modal"
@@ -42,7 +41,7 @@
           </button>
           <button mat-menu-item (click)="onCatDelete(task.id)">
             <mat-icon>delete</mat-icon>
-            Supprimer la tache
+            Supprimer la tâche
           </button>
         </mat-menu>
 
@@ -62,7 +61,7 @@
 
               <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="onEdit_status(tasks.id)">
-                  <mat-icon>checkbox</mat-icon>Valider la tache
+                  <mat-icon>checkbox</mat-icon>Valider la tâche
                 </button>
 
                 <button
@@ -71,7 +70,7 @@
                   data-target="#updateTaskModal"
                   (click)="onRecup(tasks.id)"
                 >
-                  <mat-icon>create</mat-icon>Modifier la tache
+                  <mat-icon>create</mat-icon>Modifier la tâche
                 </button>
                 <button
                   mat-menu-item
@@ -86,11 +85,15 @@
                   (click)="onClickTaskNote(tasks.id, task.id)"
                 >
                   <mat-icon>question_answer</mat-icon>
-                  Voir les notes de la tache
+                  Voir les notes de la tâche
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>alarm_on</mat-icon> Date limite:
+                  {{ tasks.deadline }}
                 </button>
                 <button mat-menu-item (click)="onTaskDelete(tasks.id)">
                   <mat-icon>delete</mat-icon>
-                  Supprimer la tache
+                  Supprimer la tâche
                 </button>
               </mat-menu>
             </div>
@@ -125,12 +128,13 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Nouvelle tache</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Nouvelle tâche</h5>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              (click)="clean()"
             >
               <span aria-hidden="true">×</span>
             </button>
@@ -144,7 +148,7 @@
                   type="text"
                   id="nom"
                   name="nom"
-                  placeholder="nom de la tache"
+                  placeholder="nom de la tâche"
                   required
                 />
                 <label for="description">Description:</label>
@@ -155,7 +159,7 @@
                   type="text"
                   id="description"
                   name="description"
-                  placeholder="description de la tache"
+                  placeholder="description de la tâche"
                   required
                 ></textarea>
                 <label for="nom">Categorie</label>
@@ -168,6 +172,15 @@
                     {{ cat.title }}
                   </option>
                 </select>
+                <label for="nom">Date limite:</label>
+                <input
+                  [(ngModel)]="deadline"
+                  type="date"
+                  id="deadline"
+                  name="deadline"
+                  placeholder="date limite"
+                  required
+                />
               </div>
             </form>
           </div>
@@ -176,6 +189,7 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+              (click)="clean()"
             >
               Fermer
             </button>
@@ -246,12 +260,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="updateTaskLabel">Modifier la tache</h5>
+        <h5 class="modal-title" id="updateTaskLabel">Modifier la tâche</h5>
         <button
           type="button"
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="clean()"
         >
           <span aria-hidden="true">×</span>
         </button>
@@ -260,37 +275,50 @@
         <form>
           <div class="modale">
             <label for="nom">Nom:</label>
-            <textarea
-              cols="30"
-              rows="10"
+            <input
               [(ngModel)]="title"
               type="text"
               id="nom"
               name="nom"
-              placeholder="nom de la tache"
+              placeholder="description de la tâche"
               required
-            ></textarea>
+            />
             <label for="description">Description:</label>
-            <input
+            <textarea
+              cols="55"
+              rows="3"
               [(ngModel)]="desc"
               type="text"
               id="description"
               name="description"
-              placeholder="description de la tache"
+              placeholder="nom de la tâche"
               required
-            />
+            ></textarea>
+            <label for="nom">Categorie</label>
+            <select [(ngModel)]="cat_TaskId" name="categorie">
+              <option *ngFor="let cat of allCat" value="{{ cat.id }}">
+                {{ cat.title }}
+              </option>
+            </select>
+            <label for="nom">Date limite:</label>
             <input
-              [(ngModel)]="cat_TaskId"
-              type="hidden"
-              id="cat_TaskId"
-              name="cat_TaskId"
+              [(ngModel)]="deadline"
+              type="date"
+              id="deadline"
+              name="deadline"
+              placeholder="date limite"
               required
             />
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="clean()"
+        >
           Fermer
         </button>
         <button
@@ -323,6 +351,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="clean()"
         >
           <span aria-hidden="true">×</span>
         </button>
@@ -341,8 +370,8 @@
             />
             <label for="description">Description:</label>
             <textarea
-              cols="30"
-              rows="10"
+              cols="55"
+              rows="3"
               [(ngModel)]="desc"
               type="text"
               id="description"
@@ -361,7 +390,12 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="clean()"
+        >
           Fermer
         </button>
         <button
@@ -388,12 +422,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="UpdateCatModalLabel">Nouvelle categorie</h5>
+        <h5 class="modal-title" id="UpdateCatModalLabel">
+          Modifier la categorie
+        </h5>
         <button
           type="button"
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="clean()"
         >
           <span aria-hidden="true">×</span>
         </button>
@@ -412,8 +449,8 @@
             />
             <label for="description">Description:</label>
             <textarea
-              cols="30"
-              rows="10"
+              cols="55"
+              rows="3"
               [(ngModel)]="desc"
               type="text"
               id="description"
@@ -432,7 +469,12 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="clean()"
+        >
           Fermer
         </button>
         <button
@@ -459,7 +501,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="memberModalLabel">Assigner la tache</h5>
+        <h5 class="modal-title" id="memberModalLabel">Assigner la tâche</h5>
         <button
           type="button"
           class="close"

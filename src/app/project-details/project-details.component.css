@@ -4,22 +4,26 @@
   width: 60px;
 }
 
-.detail-subtitle{
+.detail-subtitle {
   font-size: 18px;
   font-weight: bolder;
   margin-top: 5px;
 }
 
-.numItem{
+.numItem {
   font-size: 20px;
   margin-bottom: 10px;
 }
 
-.item-num{
+.item-num {
   cursor: pointer;
-  transition: box-shadow .3s;
+  transition: box-shadow 0.3s;
 }
 
-.item-num:hover{
-  box-shadow: 0 0 15px rgba(33,33,33,.2); 
+.item-num:hover {
+  box-shadow: 0 0 15px rgba(33, 33, 33, 0.2);
+}
+.y {
+  font-weight: 600;
+  font-size: 20px;
 }

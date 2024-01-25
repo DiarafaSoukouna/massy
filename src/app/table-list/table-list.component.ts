@@ -60,6 +60,7 @@ export class TableListComponent {
 
   ngOnInit() {
     this.getProject();
+
     this.onRecup6(this.authService.getUserId());
   }
 
@@ -68,7 +69,6 @@ export class TableListComponent {
       (data: any) => {
         if (Array.isArray(data.projet)) {
           this.dataSource.data = data.projet;
-
           this.dataSource.data = data.projet
             .map(
               (projet: any) =>
@@ -96,7 +96,7 @@ export class TableListComponent {
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/projet/delete",
+          "https://devcosit.com/projet/delete",
           {
             projetId: id,
           },
@@ -104,7 +104,6 @@ export class TableListComponent {
         )
         .subscribe(
           (response: any) => {
-            console.log("Suppression exécutée", response);
             this.getProject();
           },
           (error) => {
@@ -132,10 +131,9 @@ export class TableListComponent {
     const access_token = this.authService.getToken();
 
     this.http
-      .post("http://localhost:5000/projet/add", userData, { headers })
+      .post("https://devcosit.com/projet/add", userData, { headers })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.loadingModalRef.close();
           this.modalService.dismissAll();
           this.getProject();
@@ -169,17 +167,17 @@ export class TableListComponent {
     };
     const headers = this.authService.getHeaders();
     this.http
-      .post("http://localhost:5000/projet/update", userData, {
+      .post("https://devcosit.com/projet/update", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.getProject();
           this.title = "";
           this.desc = "";
           this.date_deb = "";
           this.date_fin = "";
+          this.budg_prev = "";
         },
         (error) => {
           console.log(error);
@@ -226,15 +224,13 @@ export class TableListComponent {
   }
   addCat(userId: any, content: any, motif: string) {
     this.http
-      .post("http://localhost:5000/user/add-notify", {
+      .post("https://devcosit.com/user/add-notify", {
         userId: userId,
         content: content,
         motif: motif,
       })
       .subscribe(
-        (response: any) => {
-          console.log(response);
-        },
+        (response: any) => {},
         (error) => {
           console.log(error);
         }
@@ -249,5 +245,12 @@ export class TableListComponent {
         }
       }
     });
+  }
+  clean() {
+    this.title = "";
+    this.desc = "";
+    this.date_deb = "";
+    this.date_fin = "";
+    this.budg_prev = "";
   }
 }

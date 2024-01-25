@@ -35,13 +35,19 @@ td.mat-cell {
   font-weight: 500;
   color: #000;
 }
-
+.yo {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+  color: #000;
+}
 .modal input,
 .modal select,
 .modal textarea {
   width: calc(95% - 20px);
   padding: 5px;
   margin-top: 2px;
+  margin: 5px;
   margin-bottom: 2px;
   box-sizing: border-box;
   border: 1px solid #ccc;

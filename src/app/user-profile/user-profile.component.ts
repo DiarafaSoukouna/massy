@@ -78,11 +78,18 @@ export class UserProfileComponent {
     };
 
     this.http
-      .post("http://78.138.45.73/manager/admin/add-user", userData)
+      .post("https://devcosit.com/auth/register", userData, {
+        headers: this.authService.getHeaders(),
+      })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.getUser();
+          this.nom;
+          this.prenom = "";
+          this.email = "";
+          this.password = "";
+          this.role = "";
+          this.type = "";
         },
         (error) => {
           console.log(error);

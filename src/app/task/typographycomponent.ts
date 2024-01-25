@@ -42,6 +42,7 @@ export class TypographyComponent implements OnInit {
   userOnline: any;
   allprojets: any;
   searchTerm: any;
+  deadline: any;
   memberFormControl = new FormControl();
   filteredMembers: any[] = [];
   ngOnInit() {
@@ -72,12 +73,9 @@ export class TypographyComponent implements OnInit {
       });
   }
 
-  openModal(content: any): NgbModalRef {
-    return this.modalService.open(content, { centered: true });
-  }
   onCatasks(id: any): void {
     this.http
-      .post("http://localhost:5000/tache/getCatBy-projet", {
+      .post("https://devcosit.com/tache/getCatBy-projet", {
         projetId: id,
       })
       .subscribe(
@@ -95,12 +93,11 @@ export class TypographyComponent implements OnInit {
 
   onTasks(id: any): void {
     this.http
-      .post("http://localhost:5000/tache/getTaskBy-category", {
+      .post("https://devcosit.com/tache/getTaskBy-category", {
         cat_TaskId: id,
       })
       .subscribe(
         (response: any) => {
-          console.log(response.task);
           this.task_array = response.task;
         },
         (error) => {
@@ -111,12 +108,11 @@ export class TypographyComponent implements OnInit {
 
   onTasksByProjet(id: any): void {
     this.http
-      .post("http://localhost:5000/tache/getTaskBy-projet", {
+      .post("https://devcosit.com/tache/getTaskBy-projet", {
         projetId: id,
       })
       .subscribe(
         (response: any) => {
-          console.log(response.task);
           this.task_array = response.task;
         },
         (error) => {
@@ -133,7 +129,7 @@ export class TypographyComponent implements OnInit {
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/tache//delete-task",
+          "https://devcosit.com/tache//delete-task",
           {
             taskId: id,
           },
@@ -141,8 +137,6 @@ export class TypographyComponent implements OnInit {
         )
         .subscribe(
           (response: any) => {
-            console.log("suppression effectuer");
-            // this.onTasks(this.cat_TaskId);
             this.onTasksByProjet(this.projetId);
             this.onCatasks(this.projetId);
           },
@@ -154,7 +148,7 @@ export class TypographyComponent implements OnInit {
   }
   onTasksUser(): void {
     this.http
-      .post("http://localhost:5000/tache/getTaskBy-user", {
+      .post("https://devcosit.com/tache/getTaskBy-assign", {
         userId: this.authService.getUserId(),
       })
       .subscribe(
@@ -172,17 +166,23 @@ export class TypographyComponent implements OnInit {
       title: this.title,
       desc: this.desc,
       id: this.id,
+      deadline: this.deadline,
+      cat_TaskId: this.cat_TaskId,
+      userId: this.authService.getUserId(),
     };
+    const headers = this.authService.getHeaders();
 
     this.http
-      .post("http://localhost:5000/tache/update-task", userData)
+      .post("https://devcosit.com/tache/update-task", userData, {
+        headers: headers,
+      })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.onTasksByProjet(this.projetId);
-          this.onTasks(this.cat_TaskId);
+          this.onCatasks(this.projetId);
           this.title = "";
           this.desc = "";
+          this.deadline = "";
         },
         (error) => {
           console.log(error);
@@ -198,13 +198,12 @@ export class TypographyComponent implements OnInit {
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/tache/update-task",
+          "https://devcosit.com/tache/update-task",
           { id: id, status: true },
           { headers: headers }
         )
         .subscribe(
           (response: any) => {
-            console.log(response);
             this.onTasks(this.cat_TaskId);
           },
           (error) => {
@@ -220,22 +219,23 @@ export class TypographyComponent implements OnInit {
       desc: this.desc,
       projetId: this.projetId,
       cat_TaskId: this.cat_TaskId,
+      deadline: this.deadline,
       userId: this.authService.getUserId(),
     };
     const headers = this.authService.getHeaders();
 
     this.http
-      .post("http://localhost:5000/tache/add-task", userData, {
+      .post("https://devcosit.com/tache/add-task", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.onTasksByProjet(this.projetId);
           this.onCatasks(this.projetId);
           //this.onTasks(this.cat_TaskId);
           this.title = "";
           this.desc = "";
+          this.deadline = "";
         },
         (error) => {
           console.log(error);
@@ -249,8 +249,15 @@ export class TypographyComponent implements OnInit {
         this.title = task_array.title;
         this.desc = task_array.desc;
         this.id = task_array.id;
+        this.deadline = task_array.deadline;
+        this.cat_TaskId = task_array.cat_TaskId;
       }
     }
+  }
+  clean() {
+    this.title = "";
+    this.desc = "";
+    this.deadline = "";
   }
   addCat() {
     const userData = {
@@ -261,13 +268,12 @@ export class TypographyComponent implements OnInit {
 
     this.http
       .post(
-        "http://localhost:5000/tache/add-category",
+        "https://devcosit.com/tache/add-category",
 
         userData
       )
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.onTasks(this.cat_TaskId);
           this.onCatasks(this.projetId);
           this.title = "";
@@ -297,12 +303,12 @@ export class TypographyComponent implements OnInit {
     };
 
     this.http
-      .post("http://localhost:5000/tache/update-category", userData)
+      .post("https://devcosit.com/tache/update-category", userData)
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.onTasks(this.cat_TaskId);
-          this.onCatasks(this.projetId);
+
+          this.onTasksByProjet(this.projetId);
           this.title = "";
           this.desc = "";
         },
@@ -319,7 +325,7 @@ export class TypographyComponent implements OnInit {
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/tache/delete-category",
+          "https://devcosit.com/tache/delete-category",
           {
             cat_TaskId: id,
           },
@@ -327,7 +333,6 @@ export class TypographyComponent implements OnInit {
         )
         .subscribe(
           (response: any) => {
-            console.log("suppression effectuer");
             this.onTasks(this.cat_TaskId);
             this.onCatasks(this.projetId);
           },
@@ -357,12 +362,11 @@ export class TypographyComponent implements OnInit {
     const headers = this.authService.getHeaders();
 
     this.http
-      .post("http://localhost:5000/tache/add-member", userData, {
+      .post("https://devcosit.com/tache/add-member", userData, {
         headers: headers,
       })
       .subscribe(
         (response: any) => {
-          console.log("membre ajouter", response);
           nom = "";
           prenom = "";
         },
@@ -374,12 +378,11 @@ export class TypographyComponent implements OnInit {
 
   getMembers(id: any): void {
     this.http
-      .post("http://localhost:5000/projet/getByID", {
+      .post("https://devcosit.com/projet/getByID", {
         projetId: id,
       })
       .subscribe(
         (response: any) => {
-          console.log(response.projet.members);
           this.membersUsers = response.projet.members;
           this.filteredMembers = this.membersUsers;
         },
@@ -410,7 +413,6 @@ export class TypographyComponent implements OnInit {
         }
       }
     });
-    console.log(this.userOnline);
   }
   getProject() {
     this.dataService.getDonnees().subscribe((data: any) => {

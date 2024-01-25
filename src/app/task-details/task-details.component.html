@@ -1,6 +1,6 @@
 <body>
   <div *ngIf="projetId">
-    <div><h2>Liste des membres de la tache</h2></div>
+    <div><h2>Liste des membres de la tâche</h2></div>
     <button
       type="button"
       class="btn btn1"
@@ -74,7 +74,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="memberModalLabel">Assigner la tache</h5>
+        <h5 class="modal-title" id="memberModalLabel">Assigner la tâche</h5>
         <button
           type="button"
           class="close"
@@ -182,6 +182,7 @@
             class="close"
             data-dismiss="modal"
             aria-label="Close"
+            (click)="clean()"
           >
             <span aria-hidden="true">×</span>
           </button>
@@ -194,13 +195,18 @@
                 [(ngModel)]="content"
                 name="content"
                 id="content"
-                rows="3"
+                rows="4"
               ></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="clean()"
+          >
             Fermer
           </button>
           <button
@@ -234,6 +240,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="clean()"
         >
           <span aria-hidden="true">×</span>
         </button>
@@ -252,7 +259,12 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="clean()"
+        >
           Fermer
         </button>
         <button

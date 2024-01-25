@@ -40,12 +40,11 @@ export class MembresComponent {
 
   getMembers(id: any): void {
     this.http
-      .post("http://localhost:5000/projet/getByID", {
+      .post("https://devcosit.com/projet/getByID", {
         projetId: id,
       })
       .subscribe(
         (response: any) => {
-          console.log(response.projet.members);
           this.dataSource = response.projet.members;
         },
         (error) => {
@@ -62,8 +61,6 @@ export class MembresComponent {
   selectUser(user: any): void {
     this.nom = user.nom;
     this.prenom = user.prenom;
-
-    console.log("User selected", user);
   }
   addMember(): void {
     var nom = "";
@@ -85,14 +82,14 @@ export class MembresComponent {
 
     const dataNotify = {
       userId: this.members,
-      content: `Vous avez été ajouté qu projet au projet ${this.authService.getProjetName()} en tant que ${
+      content: `Vous avez été ajoutés au projet "${this.authService.getProjetName()}" en tant que ${
         this.role
       }`,
       motif: "Projet",
     };
 
     this.http
-      .post("http://localhost:5000/projet/add-member", userData, {
+      .post("https://devcosit.com/projet/add-member", userData, {
         headers: headers,
       })
       .subscribe(
@@ -138,7 +135,7 @@ export class MembresComponent {
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/projet/delete-member",
+          "https://devcosit.com/projet/delete-member",
           {
             memberId: id,
           },
@@ -146,7 +143,6 @@ export class MembresComponent {
         )
         .subscribe(
           (response: any) => {
-            console.log("suppression effectuer");
             this.getMembers(this.projetId);
           },
           (error) => {

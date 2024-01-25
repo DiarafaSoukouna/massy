@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { AuthentificationService } from "app/authentification.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+declare var $: any;
 
 @Component({
   selector: "app-confirmation",
@@ -13,6 +14,7 @@ export class ConfirmationComponent {
   gateway: any;
   code: any;
   public loading = false;
+  verifyMail: boolean = false;
 
   constructor(
     private authService: AuthentificationService,
@@ -26,14 +28,14 @@ export class ConfirmationComponent {
 
     this.http
       .post(
-        "http://localhost:5000/auth/send-code",
+        "https://devcosit.com/auth/send-code",
         { gateway: this.authService.getUserMail(), type: type },
         { headers: headers }
       )
       .subscribe(
         (response: any) => {
+          $("#emailModal").modal("show");
           console.log(response);
-          this.loading = false;
         },
         (error) => {
           console.log(error);
@@ -45,17 +47,17 @@ export class ConfirmationComponent {
 
     this.http
       .post(
-        "http://localhost:5000/auth/verify-code",
+        "https://devcosit.com/auth/verify-code",
         { code: this.code },
         { headers: headers }
       )
       .subscribe(
         (response: any) => {
-          console.log(response);
+          this.authService.setUserId(response.user.id);
 
           if (response.user) {
             if (response.user.account.single_on === true) {
-              this.router.navigate(["/profile"]);
+              this.router.navigate(["/reset-password"]);
             } else {
               this.router.navigate(["/dashboard"]);
             }
@@ -65,18 +67,12 @@ export class ConfirmationComponent {
         },
         (error) => {
           console.log(error);
+          this.verifyMail = true;
+
+          setTimeout(() => {
+            this.verifyMail = false;
+          }, 5000);
         }
       );
   }
-  //  verifyCode(): void {
-  //    this.authService.verifyCode(this.code).subscribe(
-  //      (response) => {
-
-  //        this.router.navigate(["/dashboard"]);
-  //      },
-  //      (error) => {
-  //        console.error("Erreur de connexion : ", error);
-  //      }
-  //    );
-  //  }
 }

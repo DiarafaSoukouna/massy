@@ -56,7 +56,9 @@
             aria-expanded="false"
           >
             <i class="material-icons">notifications</i>
-            <span class="notification">{{ notifies.length }}</span>
+            <span class="notification" *ngIf="notifies.length !== 0">{{
+              notifies.length
+            }}</span>
             <p>
               <span class="d-lg-none d-md-block">Some Actions</span>
             </p>
@@ -65,10 +67,13 @@
             class="dropdown-menu dropdown-menu-right"
             aria-labelledby="navbarDropdownMenuLink"
           >
+            <!-- <p *ngIf="notifies.length === 0">Aucune notification</p> -->
             <div *ngFor="let n of notifies">
-              <a (click)="goToNotify()" class="dropdown-item">{{
-                n.content
-              }}</a>
+              <a
+                (click)="onClickNotify(n.id, n.content)"
+                class="dropdown-item"
+                >{{ n.content }}</a
+              >
             </div>
           </div>
         </li>
@@ -82,6 +87,19 @@
               <i class="material-icons">person</i>
             </button>
             <mat-menu #menuCat="matMenu">
+              <div style="display: flex; justify-content: space-between">
+                <div
+                  class="profile-picture"
+                  style="background-color: #323232; position: relative"
+                >
+                  <div class="initials">
+                    {{ getInitials(userOnline.nom, userOnline.prenom) }}
+                  </div>
+                </div>
+                <span style="margin: 15px; font-size: 18px; font-weight: 600">
+                  {{ userOnline.nom }} {{ userOnline.prenom }}
+                </span>
+              </div>
               <button mat-menu-item (click)="profile()">
                 <mat-icon>key</mat-icon>
                 Confidentialites

@@ -56,7 +56,7 @@ export class NotificationsComponent implements OnInit {
   }
   getAllNotify(id: string) {
     this.http
-      .post("http://localhost:5000/user/getNotifyBy-user", { userId: id })
+      .post("https://devcosit.com/user/getNotifyBy-user", { userId: id })
       .subscribe((response: any) => {
         this.notifies = response.notify.sort((a: any, b: any) => {
           if (a.dateCreate < b.dateCreate) {
@@ -68,16 +68,14 @@ export class NotificationsComponent implements OnInit {
   }
   onDelete(id: any): void {
     const userConfirmed = window.confirm(
-      "Etes-vous sur de vouloir supprimer cette tache?"
+      "Etes-vous sur de vouloir supprimer cette notification?"
     );
-
-    console.log("Notification", id);
 
     const headers = this.authService.getHeaders();
     if (userConfirmed) {
       this.http
         .post(
-          "http://localhost:5000/user/delete-notify",
+          "https://devcosit.com/user/delete-notify",
           {
             notifyId: id,
           },
