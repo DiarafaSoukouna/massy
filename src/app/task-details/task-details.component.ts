@@ -135,7 +135,6 @@ export class TaskDetailsComponent {
       }" du projet : "${this.authService.getProjetName()}", vous a été assignée`,
       motif: "Tache",
     };
-    console.log("avant lenvoie", dataNotify);
 
     this.http
       .post("https://devcosit.com/tache/add-member", userData, {
@@ -143,12 +142,12 @@ export class TaskDetailsComponent {
       })
       .subscribe(
         (response: any) => {
-          console.log("apres lenvoie", dataNotify);
           this.socket.sendNotify(dataNotify);
           this.onTasks(this.taskId);
 
           nom = "";
           prenom = "";
+          this.userId = "";
         },
         (error) => {
           console.log(error);
