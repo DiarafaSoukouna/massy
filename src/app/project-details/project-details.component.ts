@@ -1,8 +1,21 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { DataService } from "app/data.service";
 import { Router } from "@angular/router";
+import { ChartComponent } from "ng-apexcharts";
 
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart,
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+};
 
 @Component({
   selector: "app-project-details",
@@ -10,6 +23,8 @@ import { Router } from "@angular/router";
   styleUrl: "./project-details.component.css",
 })
 export class ProjectDetailsComponent implements OnInit {
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
   projetId: any;
   allprojet: any;
   oneProject: any;
@@ -23,13 +38,33 @@ export class ProjectDetailsComponent implements OnInit {
     this.getProject();
   }
 
-
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
     private router: Router
-  ) { }
-
+  ) {
+    this.chartOptions = {
+      series: [44],
+      chart: {
+        width: 380,
+        type: "pie",
+      },
+      labels: ["Team A"],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      ],
+    };
+  }
 
   onProjet(id: any) {
     const data = this.allprojet;
@@ -43,7 +78,6 @@ export class ProjectDetailsComponent implements OnInit {
       }
     }
   }
-
 
   getProject() {
     this.dataService.getDonnees().subscribe((data: any) => {

@@ -22,6 +22,7 @@ export class MembresComponent {
   members: any;
   usertype: any;
   data: any;
+  id: any;
 
   displayedColumns: string[] = ["nom", "prenom", "role", "action"];
   dataSource = new MatTableDataSource<any>();
@@ -96,11 +97,21 @@ export class MembresComponent {
         (response: any) => {
           this.getMembers(this.projetId);
           this.socket.sendNotify(dataNotify);
+          this.userId = "";
+          this.nom = "";
+          this.prenom = "";
+          this.role = "";
         },
         (error) => {
           console.log(error);
         }
       );
+  }
+  clean() {
+    this.userId = "";
+    this.nom = "";
+    this.prenom = "";
+    this.role = "";
   }
 
   getUser() {
@@ -127,29 +138,24 @@ export class MembresComponent {
   }
 
   onDelete(id: any): void {
-    const userConfirmed = window.confirm(
-      "Etes-vous sur de vouloir supprimer ce membre?"
-    );
-
     const headers = this.authService.getHeaders();
-    if (userConfirmed) {
-      this.http
-        .post(
-          "https://devcosit.com/projet/delete-member",
-          {
-            memberId: id,
-          },
-          { headers: headers }
-        )
-        .subscribe(
-          (response: any) => {
-            this.getMembers(this.projetId);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
+
+    this.http
+      .post(
+        "https://devcosit.com/projet/delete-member",
+        {
+          memberId: id,
+        },
+        { headers: headers }
+      )
+      .subscribe(
+        (response: any) => {
+          this.getMembers(this.projetId);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
   onChange = () => {
     this.users.forEach((ele: any) => {

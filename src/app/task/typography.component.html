@@ -25,7 +25,11 @@
         <div class="d-flex justify-content-between">
           <h3 class="mx-2">{{ task.title }}</h3>
 
-          <button class="right" [matMenuTriggerFor]="menuCat">
+          <button
+            class="right"
+            [matMenuTriggerFor]="menuCat"
+            *ngIf="userOnline.type === 'admin'"
+          >
             <mat-icon class="text-dark right">more_vert</mat-icon>
           </button>
         </div>
@@ -60,8 +64,19 @@
               <button class="button1" [matMenuTriggerFor]="menu">...</button>
 
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="onEdit_status(tasks.id)">
+                <button mat-menu-item (click)="onStart(tasks.id)">
+                  <mat-icon>play_circle_outline</mat-icon>Commencer la tâche
+                </button>
+                <button
+                  mat-menu-item
+                  (click)="onEdit_status(tasks.id)"
+                  *ngIf="userOnline.type === 'admin'"
+                >
                   <mat-icon>checkbox</mat-icon>Valider la tâche
+                </button>
+
+                <button mat-menu-item (click)="onFinish(tasks.id)">
+                  <mat-icon>stop</mat-icon>Terminer la tâche
                 </button>
 
                 <button
@@ -69,14 +84,11 @@
                   data-toggle="modal"
                   data-target="#updateTaskModal"
                   (click)="onRecup(tasks.id)"
+                  *ngIf="userOnline.type === 'admin'"
                 >
                   <mat-icon>create</mat-icon>Modifier la tâche
                 </button>
-                <button
-                  mat-menu-item
-                  (click)="onClickTask(tasks.id, task.id)"
-                  *ngIf="userOnline.type === 'admin'"
-                >
+                <button mat-menu-item (click)="onClickTask(tasks.id, task.id)">
                   <mat-icon>group</mat-icon>
                   Voir les membres
                 </button>
@@ -91,7 +103,13 @@
                   <mat-icon>alarm_on</mat-icon> Date limite:
                   {{ tasks.deadline }}
                 </button>
-                <button mat-menu-item (click)="onTaskDelete(tasks.id)">
+                <button
+                  mat-menu-item
+                  data-toggle="modal"
+                  data-target="#confirmationModal"
+                  (click)="id = tasks.id"
+                  *ngIf="userOnline.type === 'admin'"
+                >
                   <mat-icon>delete</mat-icon>
                   Supprimer la tâche
                 </button>
@@ -116,6 +134,46 @@
     </div>
   </div>
 
+  <div
+    class="modal fade"
+    id="confirmationModal"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <p
+            style="
+              font-size: 18px;
+              margin-bottom: 20px;
+              font-family: 'Arial', sans-serif;
+            "
+          >
+            Êtes-vous sûr de vouloir supprimer cet élément ?
+          </p>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            style="margin-right: 10px; font-family: 'Arial', sans-serif"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="deleteButton"
+            (click)="onTaskDelete(id)"
+            data-dismiss="modal"
+            style="font-family: 'Arial', sans-serif"
+          >
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="m">
     <div
       class="modal fade"
@@ -208,7 +266,7 @@
   </div>
 </body>
 
-<div class="card-container">
+<!-- <div class="card-container">
   <div *ngFor="let taskUsers of task_by_Users">
     <div *ngIf="!projetId" class="card">
       <div class="d-flex justify-content-start">
@@ -220,6 +278,82 @@
       <span>{{ taskUsers.desc }}</span>
     </div>
   </div>
+</div> -->
+<div *ngIf="!projetId" style="margin: 30px">
+  <mat-form-field>
+    <mat-label>Filtrer</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="tâche..."
+      #input
+    />
+  </mat-form-field>
+
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab>
+      <ng-template mat-tab-label>Nouvelles</ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>En cours</ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>Terminées</ng-template>
+    </mat-tab>
+  </mat-tab-group>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <tr mat-row *matRowDef="let row; columns: displayedColumns">
+      hi
+    </tr>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Tâche</th>
+      <td class="cursor-pointer" mat-cell *matCellDef="let element">
+        {{ element.title }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="steps">
+      <th mat-header-cell *matHeaderCellDef>Statut</th>
+      <td class="cursor-pointer" mat-cell *matCellDef="let element">
+        {{ element.steps }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deadline">
+      <th mat-header-cell *matHeaderCellDef>Date limite</th>
+      <td class="cursor-pointer" mat-cell *matCellDef="let element">
+        {{ element.deadline }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+      <td class="cursor-pointer" mat-cell *matCellDef="let element">
+        <div>
+          <button
+            style="border: none; background-color: white"
+            (click)="onClickOneTask(element.id)"
+          >
+            <mat-icon style="color: black">visibility</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data "{{ input.value }}"</td>
+    </tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
 </div>
 <!-- <div *ngIf="!projetId">
     <div class="search-container">
@@ -489,66 +623,6 @@
     </div>
   </div>
 </div>
-
-<div
-  class="modal fade"
-  id="memberModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="memberModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="memberModalLabel">Assigner la tâche</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="modale">
-            <label for="nom">Membre:</label>
-            <input
-              matInput
-              placeholder="Choisissez un membre"
-              [formControl]="memberFormControl"
-            />
-
-            <mat-autocomplete
-              *ngIf="filteredMembers.length > 0"
-              [displayWith]="displayFn"
-              [options]="filteredMembers"
-            >
-              <mat-option
-                *ngFor="let member of filteredMembers"
-                [value]="member"
-              >
-                {{ member.nom }} {{ member.prenom }}
-              </mat-option>
-            </mat-autocomplete>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Fermer
-        </button>
-        <button
-          type="button"
-          class="btn btn1"
-          data-dismiss="modal"
-          (click)="addMemberTask()"
-        >
-          Valider
-        </button>
-      </div>
-    </div>
-  </div>
+<div *ngIf="loading" class="loading-container">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>

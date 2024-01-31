@@ -21,7 +21,9 @@ export class LoginComponent {
     private authService: AuthentificationService,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+    this.checkAuthentication();
+  }
 
   login(): void {
     this.authService.login(this.email, this.password).subscribe(
@@ -89,5 +91,14 @@ export class LoginComponent {
           console.log(error);
         }
       );
+  }
+  checkAuthentication() {
+    const isAuthenticated = localStorage.getItem("access_token");
+
+    if (isAuthenticated) {
+      this.router.navigate(["/dashboard"]);
+    } else {
+      this.router.navigate(["/login"]);
+    }
   }
 }

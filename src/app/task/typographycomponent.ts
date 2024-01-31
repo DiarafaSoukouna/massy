@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
@@ -8,6 +8,10 @@ import { ActivatedRoute } from "@angular/router";
 import { AuthentificationService } from "app/authentification.service";
 import { FormControl } from "@angular/forms";
 import { startWith, map } from "rxjs/operators";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatTabChangeEvent } from "@angular/material/tabs";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 interface Card {
   content: string;
@@ -21,6 +25,8 @@ interface Card {
   styleUrls: ["./typography.component.css"],
 })
 export class TypographyComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   cards: Card[] = [];
   card: any[];
   title: any;
@@ -45,6 +51,23 @@ export class TypographyComponent implements OnInit {
   deadline: any;
   memberFormControl = new FormControl();
   filteredMembers: any[] = [];
+  selectedTabIndex: number = 0;
+  dataForTab2: any;
+  dataForTab1: any;
+  test: any;
+  dataForTab3: any;
+  loading: boolean = false;
+
+  displayedColumns: string[] = ["title", "steps", "deadline", "action"];
+  dataSource = new MatTableDataSource<any>();
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
   ngOnInit() {
     this.projetId = this.route.snapshot.paramMap.get("projetId");
     this.onCatasks(this.projetId);
@@ -61,7 +84,8 @@ export class TypographyComponent implements OnInit {
     private dataService: DataService,
     private http: HttpClient,
     private route: ActivatedRoute,
-    private authService: AuthentificationService
+    private authService: AuthentificationService,
+    private _snackBar: MatSnackBar
   ) {
     this.memberFormControl.valueChanges
       .pipe(
@@ -90,7 +114,11 @@ export class TypographyComponent implements OnInit {
         }
       );
   }
-
+  openSnackBar(message: string) {
+    this._snackBar.open(message, "Fermer", {
+      duration: 3000,
+    });
+  }
   onTasks(id: any): void {
     this.http
       .post("https://devcosit.com/tache/getTaskBy-category", {
@@ -121,30 +149,27 @@ export class TypographyComponent implements OnInit {
       );
   }
   onTaskDelete(id: any): void {
-    const userConfirmed = window.confirm(
-      "Etes-vous sur de vouloir supprimer cette tache?"
-    );
-
     const headers = this.authService.getHeaders();
-    if (userConfirmed) {
-      this.http
-        .post(
-          "https://devcosit.com/tache//delete-task",
-          {
-            taskId: id,
-          },
-          { headers: headers }
-        )
-        .subscribe(
-          (response: any) => {
-            this.onTasksByProjet(this.projetId);
-            this.onCatasks(this.projetId);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
+
+    this.http
+      .post(
+        "https://devcosit.com/tache//delete-task",
+        {
+          taskId: id,
+        },
+        { headers: headers }
+      )
+      .subscribe(
+        (response: any) => {
+          this.onTasksByProjet(this.projetId);
+          this.onCatasks(this.projetId);
+          this.id = "";
+          this.openSnackBar("Suppression effectuée avec succès !");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
   onTasksUser(): void {
     this.http
@@ -154,6 +179,21 @@ export class TypographyComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.task_by_Users = response.task;
+          console.log(this.task_by_Users);
+          this.dataForTab1 = this.task_by_Users.filter(
+            (data: any) => data.steps === "Nouvelle"
+          );
+
+          this.dataForTab2 = this.task_by_Users.filter(
+            (data: any) => data.steps === "En cours"
+          );
+          this.dataForTab3 = this.task_by_Users.filter(
+            (data: any) => data.steps === "Terminée"
+          );
+
+          this.loadDataForTab1();
+          this.loadDataForTab2();
+          this.loadDataForTab3();
         },
         (error) => {
           console.log(error);
@@ -162,6 +202,7 @@ export class TypographyComponent implements OnInit {
   }
 
   onEdit_task(): void {
+    this.loading = true;
     const userData = {
       title: this.title,
       desc: this.desc,
@@ -183,6 +224,58 @@ export class TypographyComponent implements OnInit {
           this.title = "";
           this.desc = "";
           this.deadline = "";
+          this.loading = false;
+
+          this.openSnackBar("Modification effectuée avec succès !");
+        },
+        (error) => {
+          console.log(error);
+          this.loading = false;
+        }
+      );
+  }
+  onStart(id: any) {
+    this.loading = true;
+
+    const headers = this.authService.getHeaders();
+
+    this.http
+      .post(
+        "https://devcosit.com/tache/update-task",
+        { steps: "En cours", id: id },
+        {
+          headers: headers,
+        }
+      )
+      .subscribe(
+        (response: any) => {
+          this.loading = false;
+          this.openSnackBar("Vous avez commencé la tâche avec succès!");
+        },
+        (error) => {
+          console.log(error);
+          this.loading = false;
+        }
+      );
+  }
+
+  onFinish(id: any) {
+    this.loading = true;
+
+    const headers = this.authService.getHeaders();
+
+    this.http
+      .post(
+        "https://devcosit.com/tache/update-task",
+        { id: id, steps: "Terminée" },
+        {
+          headers: headers,
+        }
+      )
+      .subscribe(
+        (response: any) => {
+          this.loading = false;
+          this.openSnackBar("Vous avez terminé la tâche avec succès!");
         },
         (error) => {
           console.log(error);
@@ -190,6 +283,8 @@ export class TypographyComponent implements OnInit {
       );
   }
   onEdit_status(id: any): void {
+    this.loading = true;
+
     const userConfirmed = window.confirm(
       "Etes-vous sur de vouloir valider cette tache?"
     );
@@ -204,16 +299,22 @@ export class TypographyComponent implements OnInit {
         )
         .subscribe(
           (response: any) => {
+            this.loading = false;
             this.onTasks(this.cat_TaskId);
+
+            this.openSnackBar("Vous avez validé la tâche avec succès!");
           },
           (error) => {
             console.log(error);
+            this.loading = false;
           }
         );
     }
   }
 
   onSubmit(): void {
+    this.loading = true;
+
     const userData = {
       title: this.title,
       desc: this.desc,
@@ -236,9 +337,12 @@ export class TypographyComponent implements OnInit {
           this.title = "";
           this.desc = "";
           this.deadline = "";
+          this.loading = false;
+          this.openSnackBar("Tâche ajouté avec succès!");
         },
         (error) => {
           console.log(error);
+          this.loading = false;
         }
       );
   }
@@ -260,6 +364,8 @@ export class TypographyComponent implements OnInit {
     this.deadline = "";
   }
   addCat() {
+    this.loading = true;
+
     const userData = {
       title: this.title,
       desc: this.desc,
@@ -278,9 +384,12 @@ export class TypographyComponent implements OnInit {
           this.onCatasks(this.projetId);
           this.title = "";
           this.desc = "";
+          this.loading = false;
+          this.openSnackBar("Catégorie ajoutée avec succès!");
         },
         (error) => {
           console.log(error);
+          this.loading = false;
         }
       );
   }
@@ -295,6 +404,8 @@ export class TypographyComponent implements OnInit {
     }
   }
   onEdit_Cat(): void {
+    this.loading = true;
+
     const userData = {
       title: this.title,
       desc: this.desc,
@@ -311,13 +422,18 @@ export class TypographyComponent implements OnInit {
           this.onTasksByProjet(this.projetId);
           this.title = "";
           this.desc = "";
+          this.loading = false;
+          this.openSnackBar("Catégorie modifiée avec succès!");
         },
         (error) => {
           console.log(error);
+          this.loading = false;
         }
       );
   }
   onCatDelete(id: any): void {
+    this.loading = true;
+
     const userConfirmed = window.confirm(
       "Etes-vous sur de vouloir supprimer cette categorie??"
     );
@@ -333,47 +449,17 @@ export class TypographyComponent implements OnInit {
         )
         .subscribe(
           (response: any) => {
+            this.loading = false;
             this.onTasks(this.cat_TaskId);
             this.onCatasks(this.projetId);
+            this.openSnackBar("Catégorie supprimée avec succès!");
           },
           (error) => {
             console.log(error);
+            this.loading = false;
           }
         );
     }
-  }
-
-  addMemberTask(): void {
-    var nom = "";
-    var prenom = "";
-    for (let user of this.membersUsers) {
-      if (this.userId === user.userId) {
-        nom = user.nom;
-        prenom = user.prenom;
-      }
-    }
-
-    const userData = {
-      userId: this.userId,
-      nom: nom,
-      prenom: prenom,
-      taskId: this.taskId,
-    };
-    const headers = this.authService.getHeaders();
-
-    this.http
-      .post("https://devcosit.com/tache/add-member", userData, {
-        headers: headers,
-      })
-      .subscribe(
-        (response: any) => {
-          nom = "";
-          prenom = "";
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
   }
 
   getMembers(id: any): void {
@@ -403,6 +489,9 @@ export class TypographyComponent implements OnInit {
       "/task-details",
       { taskId: id, cat_TaskId: cat_TaskId },
     ]);
+  }
+  onClickOneTask(id: any): void {
+    this.router.navigate(["/one-task", { taskId: id }]);
   }
   onRecup6(id: any): void {
     this.dataService.getUsers().subscribe((data: any) => {
@@ -443,5 +532,44 @@ export class TypographyComponent implements OnInit {
         member.nom.toLowerCase().includes(filterValue) ||
         member.prenom.toLowerCase().includes(filterValue)
     );
+  }
+  onTabChange(event: MatTabChangeEvent): void {
+    this.selectedTabIndex = event.index;
+
+    switch (this.selectedTabIndex) {
+      case 0:
+        this.dataSource = this.dataForTab1;
+        break;
+      case 1:
+        this.dataSource = this.dataForTab2;
+        break;
+      case 2:
+        this.dataSource = this.dataForTab3;
+        break;
+    }
+  }
+
+  loadDataForTab1(): void {
+    setTimeout(() => {
+      if (this.selectedTabIndex === 0) {
+        this.dataSource = this.dataForTab1;
+      }
+    }, 1000);
+  }
+
+  loadDataForTab2(): void {
+    setTimeout(() => {
+      if (this.selectedTabIndex === 1) {
+        this.dataSource = this.dataForTab2;
+      }
+    }, 1000);
+  }
+
+  loadDataForTab3(): void {
+    setTimeout(() => {
+      if (this.selectedTabIndex === 2) {
+        this.dataSource = this.dataForTab3;
+      }
+    }, 1000);
   }
 }

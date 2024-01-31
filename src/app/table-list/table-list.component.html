@@ -21,6 +21,18 @@
     />
   </mat-form-field>
 
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab>
+      <ng-template mat-tab-label>Nouveaux</ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>En cours</ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>Terminer</ng-template>
+    </mat-tab>
+  </mat-tab-group>
+
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <tr mat-row *matRowDef="let row; columns: displayedColumns">
       hi
@@ -102,7 +114,9 @@
           </button>
           <button
             type="button"
-            (click)="onDelete(element.id)"
+            data-toggle="modal"
+            data-target="#confirmationModal"
+            (click)="id = element.id"
             *ngIf="userOnline.type === 'admin'"
           >
             <mat-icon class="icon">delete </mat-icon>
@@ -121,12 +135,54 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">
-        No data matching the filter "{{ input.value }}"
-      </td>
+      <td class="mat-cell" colspan="4">No data "{{ input.value }}"</td>
     </tr>
   </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
 </body>
+
+<div *ngIf="loading" class="loading-container">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div class="modal fade" id="confirmationModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p
+          style="
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+          "
+        >
+          Êtes-vous sûr de vouloir supprimer cet élément ?
+        </p>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          style="margin-right: 10px; font-family: 'Arial', sans-serif"
+        >
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          id="deleteButton"
+          (click)="onDelete(id)"
+          data-dismiss="modal"
+          style="font-family: 'Arial', sans-serif"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <ng-template #loadingModal let-modal>
   <div class="modal-header">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
@@ -11,6 +11,9 @@ import { HttpHeaders } from "@angular/common/http";
 import { AuthentificationService } from "app/authentification.service";
 import { DataSource } from "@angular/cdk/collections";
 import { SocketService } from "app/socket.service";
+import { MatTabChangeEvent } from "@angular/material/tabs";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-table-list",
@@ -18,13 +21,19 @@ import { SocketService } from "app/socket.service";
   styleUrls: ["./table-list.component.css"],
 })
 export class TableListComponent {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   private tokenKey = "accessToken";
   loadingModalRef: NgbModalRef;
   loadingModal: NgbModal;
   loading: boolean = false;
   showConfirmation = false;
   projet_array: any[];
-
+  selectedTabIndex: number = 0;
+  dataForTab2: any;
+  dataForTab1: any;
+  test: any;
+  dataForTab3: any;
   title: any;
   desc: any;
   date_deb: any;
@@ -35,6 +44,7 @@ export class TableListComponent {
   status: any;
   users: any;
   userOnline: any;
+  recup: any;
 
   displayedColumns: string[] = [
     "title",
@@ -49,13 +59,17 @@ export class TableListComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
   constructor(
     private http: HttpClient,
     private router: Router,
     private modalService: NgbModal,
     private dataService: DataService,
     private authService: AuthentificationService,
-    private socket: SocketService
+    private socket: SocketService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -68,7 +82,6 @@ export class TableListComponent {
     this.dataService.getDonnees().subscribe(
       (data: any) => {
         if (Array.isArray(data.projet)) {
-          this.dataSource.data = data.projet;
           this.dataSource.data = data.projet
             .map(
               (projet: any) =>
@@ -77,6 +90,20 @@ export class TableListComponent {
                   .includes(this.authService.getUserId()) && projet
             )
             .filter((projet: any) => projet !== false);
+          this.test = this.dataSource.data;
+          this.dataForTab2 = this.test.filter(
+            (data: any) => data.status > "0" && data.status !== "100"
+          );
+          this.dataForTab3 = this.test.filter(
+            (data: any) => data.status === "100"
+          );
+
+          this.dataForTab1 = this.test.filter(
+            (data: any) => data.status === "0"
+          );
+          this.loadDataForTab1();
+          this.loadDataForTab2();
+          this.loadDataForTab3();
         } else {
           console.error("Les données ne sont pas un tableau :", data);
         }
@@ -89,31 +116,39 @@ export class TableListComponent {
       }
     );
   }
+  openSnackBar(message: string) {
+    this._snackBar.open(message, "Fermer", {
+      duration: 3000,
+    });
+  }
 
   onDelete(id: any): void {
-    const userConfirmed = window.confirm("Are you sure you want to delete?");
     const headers = this.authService.getHeaders();
-    if (userConfirmed) {
-      this.http
-        .post(
-          "https://devcosit.com/projet/delete",
-          {
-            projetId: id,
-          },
-          { headers: headers }
-        )
-        .subscribe(
-          (response: any) => {
-            this.getProject();
-          },
-          (error) => {
-            console.log(error);
-            this.getProject();
-          }
-        );
-    }
+
+    this.http
+      .post(
+        "https://devcosit.com/projet/delete",
+        {
+          projetId: id,
+        },
+        { headers: headers }
+      )
+      .subscribe(
+        (response: any) => {
+          this.getProject();
+
+          this.id = "";
+          this.openSnackBar("La suppression a réussi !");
+        },
+        (error) => {
+          console.log(error);
+          this.getProject();
+        }
+      );
   }
+
   onSubmit(event: Event): void {
+    this.loading = true;
     event.preventDefault();
 
     this.loadingModalRef = this.modalService.open(this.loadingModal);
@@ -141,10 +176,13 @@ export class TableListComponent {
           this.desc = "";
           this.date_deb = "";
           this.date_fin = "";
+          this.loading = false;
+          this.openSnackBar("Projet créé avec succes!");
         },
         (error) => {
           console.log(error);
           this.loadingModalRef.close();
+          this.loading = false;
         }
       );
   }
@@ -200,7 +238,7 @@ export class TableListComponent {
   }
 
   onRecup(id: any): void {
-    const data = this.dataSource.data;
+    const data = this.test;
     for (let datasource of data) {
       if (datasource.id === id) {
         this.title = datasource.title;
@@ -252,5 +290,48 @@ export class TableListComponent {
     this.date_deb = "";
     this.date_fin = "";
     this.budg_prev = "";
+  }
+
+  onTabChange(event: MatTabChangeEvent): void {
+    this.selectedTabIndex = event.index;
+
+    switch (this.selectedTabIndex) {
+      case 0:
+        this.dataSource = this.dataForTab1;
+        break;
+      case 1:
+        this.dataSource = this.dataForTab2;
+        break;
+      case 2:
+        this.dataSource = this.dataForTab3;
+        break;
+    }
+  }
+
+  loadDataForTab1(): void {
+    setTimeout(() => {
+      if (this.selectedTabIndex === 0) {
+        this.dataSource = this.dataForTab1;
+      }
+    }, 1000);
+  }
+
+  loadDataForTab2(): void {
+    setTimeout(() => {
+      if (this.selectedTabIndex === 1) {
+        this.dataSource = this.dataForTab2;
+      }
+    }, 1000);
+  }
+
+  loadDataForTab3(): void {
+    setTimeout(() => {
+      if (this.selectedTabIndex === 2) {
+        this.dataSource = this.dataForTab3;
+      }
+    }, 1000);
+  }
+  ouvrirModalConfirmation(): void {
+    this.modalService.open("confirmationModal", { centered: true });
   }
 }

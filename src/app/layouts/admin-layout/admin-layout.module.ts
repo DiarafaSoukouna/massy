@@ -32,10 +32,13 @@ import { ComponentsModule } from "app/components/components.module";
 import { TaskDetailsComponent } from "app/task-details/task-details.component";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
-import { MessageComponent } from "app/message/message.component";
 import { ProjectDetailsComponent } from "app/project-details/project-details.component";
 import { ResetPasswordComponent } from "app/reset-password/reset-password.component";
-
+import { MatTabsModule } from "@angular/material/tabs";
+import { NgApexchartsModule } from "ng-apexcharts";
+import { OneTaskComponent } from "app/one-task/one-task.component";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 @NgModule({
   imports: [
     CommonModule,
@@ -56,6 +59,10 @@ import { ResetPasswordComponent } from "app/reset-password/reset-password.compon
     ComponentsModule,
     MatListModule,
     MatSidenavModule,
+    MatTabsModule,
+    NgApexchartsModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
   ],
   declarations: [
     DashboardComponent,
@@ -71,9 +78,9 @@ import { ResetPasswordComponent } from "app/reset-password/reset-password.compon
     MembresComponent,
     ProfileComponent,
     TaskDetailsComponent,
-    MessageComponent,
     ProjectDetailsComponent,
     ResetPasswordComponent,
+    OneTaskComponent,
   ],
   providers: [DataService, AuthentificationService],
 })

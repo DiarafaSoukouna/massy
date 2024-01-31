@@ -11,6 +11,10 @@ import {
 import { Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { DataService } from "app/data.service";
+import {
+  MatSnackBar,
+  MatSnackBarVerticalPosition,
+} from "@angular/material/snack-bar";
 declare var $: any;
 @Component({
   selector: "app-navbar",
@@ -28,6 +32,7 @@ export class NavbarComponent implements OnInit {
   notView: any[];
   all: any[];
   userOnline: any;
+  notif: any;
 
   constructor(
     location: Location,
@@ -36,7 +41,8 @@ export class NavbarComponent implements OnInit {
     private http: HttpClient,
     private socket: SocketService,
     private authService: AuthentificationService,
-    private dataService: DataService
+    private dataService: DataService,
+    private snackBar: MatSnackBar
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -140,38 +146,56 @@ export class NavbarComponent implements OnInit {
     // this.GetNotify();
   }
 
-  showNotification(from, align, notif) {
-    const type = ["", "info", "success", "warning", "danger"];
-    const color = Math.floor(Math.random() * 4 + 1);
+  // showNotification(from, align, notif) {
+  //   const type = ["", "info", "success", "warning", "danger"];
+  //   const color = Math.floor(Math.random() * 4 + 1);
+
+  //   if (notif.userId === this.authService.getUserId()) {
+  //     $.notify(
+  //       {
+  //         icon: "notifications",
+  //         message: notif.content,
+  //       },
+  //       {
+  //         type: type[color],
+  //         timer: 4000,
+  //         placement: {
+  //           from: from,
+  //           align: align,
+  //         },
+  //         template:
+  //           '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
+  //           '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+  //           '<i class="material-icons" data-notify="icon">notifications</i> ' +
+  //           '<span data-notify="title">{1}</span> ' +
+  //           '<span data-notify="message">{2}</span>' +
+  //           '<div class="progress" data-notify="progressbar">' +
+  //           '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+  //           "</div>" +
+  //           '<a href="{3}" target="{4}" data-notify="url"></a>' +
+  //           "</div>",
+  //       }
+  //     );
+  //   }
+  // }
+
+  showNotification(notif: any): void {
+    const type = ["info", "success", "warning", "danger"];
+    const color = Math.floor(Math.random() * 4);
 
     if (notif.userId === this.authService.getUserId()) {
-      $.notify(
-        {
-          icon: "notifications",
-          message: notif.content,
-        },
-        {
-          type: type[color],
-          timer: 4000,
-          placement: {
-            from: from,
-            align: align,
-          },
-          template:
-            '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
-            '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
-            '<i class="material-icons" data-notify="icon">notifications</i> ' +
-            '<span data-notify="title">{1}</span> ' +
-            '<span data-notify="message">{2}</span>' +
-            '<div class="progress" data-notify="progressbar">' +
-            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-            "</div>" +
-            '<a href="{3}" target="{4}" data-notify="url"></a>' +
-            "</div>",
-        }
-      );
+      const verticalPosition: MatSnackBarVerticalPosition = "top";
+
+      const snackBarRef = this.snackBar.open(notif.content, "Fermer", {
+        duration: 4000,
+        panelClass: ["alert-" + type[color]],
+        verticalPosition: "bottom",
+      });
+
+      snackBarRef.afterDismissed().subscribe(() => {});
     }
   }
+
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
     if (titlee.charAt(0) === "#") {
@@ -193,7 +217,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getAllNotify(id: string) {
-    const oldNotifyList = this.notifies;
+    const oldNotifyList = this.notif;
     this.http
       .post("https://devcosit.com/user/getNotifyBy-user", { userId: id })
       .subscribe((response: any) => {
@@ -207,21 +231,22 @@ export class NavbarComponent implements OnInit {
             }
             return -1;
           });
+        this.notif = response.notify.sort((a: any, b: any) => {
+          if (a.dateCreate < b.dateCreate) {
+            return 1;
+          }
+          return -1;
+        });
 
         if (newNotifyList.length > oldNotifyList.length) {
-          const lastNotify = this.notifies.sort((a: any, b: any) => {
-            if (a.dateCreate < b.dateCreate) {
-              return 1;
-            }
-            return -1;
-          });
-
-          this.showNotification("top", "center", lastNotify[0]);
+          const lastNotify = this.notif;
+          this.showNotification(lastNotify[0]);
         }
       });
 
     this.notifies;
   }
+
   getNotify(id: string) {
     this.http
       .post("https://devcosit.com/user/getNotifyBy-user", { userId: id })

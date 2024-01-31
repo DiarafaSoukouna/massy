@@ -1,9 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { DataService } from "app/data.service";
 import { AuthentificationService } from "app/authentification.service";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
   selector: "app-user-profile",
@@ -11,6 +12,8 @@ import { AuthentificationService } from "app/authentification.service";
   styleUrls: ["./user-profile.component.css"],
 })
 export class UserProfileComponent {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   nom: any;
   prenom: any;
   email: any;
@@ -28,6 +31,9 @@ export class UserProfileComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
   constructor(
     private http: HttpClient,

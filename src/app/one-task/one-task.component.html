@@ -1,0 +1,40 @@
+<div class="mx-auto card">
+  <div class="card-header">Détails de la tâche</div>
+  <div class="card-body">
+    <h2>{{ oneTask.title }}</h2>
+    <span>Statut: {{ oneTask.steps }}</span>
+
+    <p>
+      <strong style="font-size: 16px; font-weight: 600; display: inline-block"
+        >Description:
+      </strong>
+      <span>{{ oneTask.desc }}</span>
+    </p>
+    <div style="overflow-x: auto; display: flex">
+      <div
+        class="card1"
+        (click)="
+          onClickTaskMembers(oneTask.id, oneTask.cat_TaskId, oneTask.projetId)
+        "
+      >
+        <h4>Membres</h4>
+        <h2>{{ members.length }}</h2>
+      </div>
+      <div
+        class="card1"
+        (click)="onClickTaskNotes(oneTask.id, oneTask.cat_TaskId)"
+      >
+        <h4>Notes</h4>
+        <h2>{{ notes.length }}</h2>
+      </div>
+      <div class="card1" (click)="onClickProject(oneTask.projetId)">
+        <h4>Projet</h4>
+        <h2>Voir</h2>
+      </div>
+      <div class="card1">
+        <h4>Fichier</h4>
+        <h2>0</h2>
+      </div>
+    </div>
+  </div>
+</div>
