@@ -138,3 +138,13 @@ select option {
   background-color: #f44336;
   border-color: #da190b;
 }
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.mat-progress-spinner {
+  margin: auto;
+}

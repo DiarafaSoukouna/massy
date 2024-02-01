@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
@@ -7,6 +7,8 @@ import { DataService } from "app/data.service";
 import { AuthentificationService } from "app/authentification.service";
 import { SocketService } from "app/socket.service";
 import { FormControl } from "@angular/forms";
+import { MatPaginator } from "@angular/material/paginator";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-task-details",
@@ -14,6 +16,8 @@ import { FormControl } from "@angular/forms";
   styleUrl: "./task-details.component.css",
 })
 export class TaskDetailsComponent {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   taskId: any;
   cat_taskId: any;
   allTasks: any;
@@ -28,14 +32,15 @@ export class TaskDetailsComponent {
   memberFormControl = new FormControl();
   filteredMembers: any[];
   memberSelected: any;
-
+  loading: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
     private dataService: DataService,
     private authService: AuthentificationService,
-    private socket: SocketService
+    private socket: SocketService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {
@@ -52,6 +57,20 @@ export class TaskDetailsComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  startLoading(): void {
+    this.spinner.show();
+    const delay = 3000;
+    setTimeout(() => {
+      this.stopLoading();
+    }, delay);
+  }
+
+  stopLoading(): void {
+    this.spinner.hide();
   }
   onTasks(id: any): void {
     this.http
@@ -112,6 +131,7 @@ export class TaskDetailsComponent {
   }
 
   addMemberTask(): void {
+    this.loading = true;
     var nom = "";
     var prenom = "";
     for (let user of this.membersUsers) {
@@ -142,6 +162,8 @@ export class TaskDetailsComponent {
       })
       .subscribe(
         (response: any) => {
+          this.loading = false;
+
           this.socket.sendNotify(dataNotify);
           this.onTasks(this.taskId);
 
@@ -151,6 +173,7 @@ export class TaskDetailsComponent {
         },
         (error) => {
           console.log(error);
+          this.loading = false;
         }
       );
   }
@@ -187,29 +210,29 @@ export class TaskDetailsComponent {
       );
   }
   onDelete(id: any): void {
-    const userConfirmed = window.confirm(
-      "Etes-vous sur de vouloir supprimer ce membre?"
-    );
+    this.loading = true;
 
     const headers = this.authService.getHeaders();
-    if (userConfirmed) {
-      this.http
-        .post(
-          "https://devcosit.com/tache/delete-member",
-          {
-            memberId: id,
-          },
-          { headers: headers }
-        )
-        .subscribe(
-          (response: any) => {
-            this.onTasks(this.taskId);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
+
+    this.http
+      .post(
+        "https://devcosit.com/tache/delete-member",
+        {
+          memberId: id,
+        },
+        { headers: headers }
+      )
+      .subscribe(
+        (response: any) => {
+          this.loading = false;
+          this.onTasks(this.taskId);
+          this.id = "";
+        },
+        (error) => {
+          console.log(error);
+          this.loading = false;
+        }
+      );
   }
 
   onRecup(id: any): void {
@@ -223,6 +246,7 @@ export class TaskDetailsComponent {
   }
 
   onEditNote() {
+    this.loading = true;
     const userData = {
       content: this.content,
       id: this.id,
@@ -234,39 +258,40 @@ export class TaskDetailsComponent {
       })
       .subscribe(
         (response: any) => {
+          this.loading = false;
           this.onTask_note(this.taskId);
           this.content = "";
         },
         (error) => {
           console.log(error);
+          this.loading = false;
         }
       );
   }
 
   onDeleteNote(id: any): void {
-    const userConfirmed = window.confirm(
-      "Etes-vous sur de vouloir supprimer cette tache?"
-    );
-
+    this.loading = true;
     const headers = this.authService.getHeaders();
-    if (userConfirmed) {
-      this.http
-        .post(
-          "https://devcosit.com/tache/delete-note",
-          {
-            noteId: id,
-          },
-          { headers: headers }
-        )
-        .subscribe(
-          (response: any) => {
-            this.onTask_note(this.taskId);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
+
+    this.http
+      .post(
+        "https://devcosit.com/tache/delete-note",
+        {
+          noteId: id,
+        },
+        { headers: headers }
+      )
+      .subscribe(
+        (response: any) => {
+          this.loading = false;
+          this.onTask_note(this.taskId);
+          this.id = "";
+        },
+        (error) => {
+          console.log(error);
+          this.loading = false;
+        }
+      );
   }
   filterMembers(value: string) {
     this.filteredMembers = this.membersUsers.filter((member: any) =>

@@ -25,7 +25,7 @@ export class UserProfileComponent {
   role: any;
   type: any;
 
-  displayedColumns: string[] = ["nom", "prenom", "email"];
+  displayedColumns: string[] = ["nom", "prenom", "email", "role"];
   dataSource = new MatTableDataSource<any>();
 
   applyFilter(event: Event) {

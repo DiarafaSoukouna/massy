@@ -250,6 +250,7 @@ export class TypographyComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.loading = false;
+          this.router.navigate(["/task-details", { taskId: id }]);
           this.openSnackBar("Vous avez commencé la tâche avec succès!");
         },
         (error) => {
@@ -275,6 +276,7 @@ export class TypographyComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.loading = false;
+          this.onTasks(this.cat_TaskId);
           this.openSnackBar("Vous avez terminé la tâche avec succès!");
         },
         (error) => {
@@ -492,6 +494,10 @@ export class TypographyComponent implements OnInit {
   }
   onClickOneTask(id: any): void {
     this.router.navigate(["/one-task", { taskId: id }]);
+  }
+  onClickproject(id: any): void {
+    this.projetId = this.route.snapshot.paramMap.get("projetId");
+    this.router.navigate(["/task", { projetId: id }]);
   }
   onRecup6(id: any): void {
     this.dataService.getUsers().subscribe((data: any) => {

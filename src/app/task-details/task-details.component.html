@@ -44,7 +44,12 @@
 
         <td class="cursor-pointer" mat-cell *matCellDef="let element">
           <div>
-            <button type="button" (click)="onDelete(element.id)">
+            <button
+              type="button"
+              data-toggle="modal"
+              data-target="#confirmationsModal"
+              (click)="id = element.id"
+            >
               <mat-icon class="icon">delete </mat-icon>
             </button>
           </div>
@@ -58,6 +63,10 @@
         <td class="mat-cell" colspan="4">No data "{{ input.value }}"</td>
       </tr>
     </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
   </div>
 </body>
 
@@ -144,7 +153,12 @@
               >
                 <mat-icon>create-outline</mat-icon>
               </button>
-              <button class="yes" (click)="onDeleteNote(notes.id)">
+              <button
+                class="yes"
+                data-toggle="modal"
+                data-target="#confirmationModal"
+                (click)="id = element.id"
+              >
                 <mat-icon class="mat1">delete</mat-icon>
               </button>
             </div>
@@ -272,6 +286,86 @@
           (click)="onEditNote()"
         >
           Valider
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-container">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="modal fade" id="confirmationModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p
+          style="
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+          "
+        >
+          Êtes-vous sûr de vouloir supprimer cet élément ?
+        </p>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          style="margin-right: 10px; font-family: 'Arial', sans-serif"
+        >
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          id="deleteButton"
+          (click)="onDeleteNote(id)"
+          data-dismiss="modal"
+          style="font-family: 'Arial', sans-serif"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="confirmationsModal"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p
+          style="
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+          "
+        >
+          Êtes-vous sûr de vouloir supprimer cet élément ?
+        </p>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          style="margin-right: 10px; font-family: 'Arial', sans-serif"
+        >
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          id="deleteButton"
+          (click)="onDelete(id)"
+          data-dismiss="modal"
+          style="font-family: 'Arial', sans-serif"
+        >
+          Supprimer
         </button>
       </div>
     </div>

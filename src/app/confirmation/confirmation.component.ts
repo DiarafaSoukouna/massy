@@ -35,7 +35,6 @@ export class ConfirmationComponent {
       .subscribe(
         (response: any) => {
           $("#emailModal").modal("show");
-          console.log(response);
         },
         (error) => {
           console.log(error);
@@ -43,6 +42,58 @@ export class ConfirmationComponent {
       );
   }
   verifyCode(): void {
+    const headers = this.authService.getHeaders();
+
+    this.http
+      .post(
+        "https://devcosit.com/auth/verify-code",
+        { code: this.code },
+        { headers: headers }
+      )
+      .subscribe(
+        (response: any) => {
+          this.authService.setUserId(response.user.id);
+
+          if (response.user) {
+            if (response.user.account.single_on === true) {
+              this.router.navigate(["/reset-password"]);
+            } else {
+              this.router.navigate(["/dashboard"]);
+            }
+          } else {
+            //code incorrect !
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.verifyMail = true;
+
+          setTimeout(() => {
+            this.verifyMail = false;
+          }, 5000);
+        }
+      );
+  }
+  onLogin2(type: string): void {
+    this.loading = true;
+    const headers = this.authService.getHeaders();
+
+    this.http
+      .post(
+        "https://devcosit.com/auth/send-code",
+        { gateway: "71975833", type: type },
+        { headers: headers }
+      )
+      .subscribe(
+        (response: any) => {
+          $("#whatModal").modal("show");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+  verifyCode2(): void {
     const headers = this.authService.getHeaders();
 
     this.http

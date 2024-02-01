@@ -21,10 +21,67 @@
     Email
   </button>
 
-  <button type="button" class="btn btn1" (click)="type = 'sms'">
+  <button type="button" class="btn btn1" (click)="onLogin2('whatsapp')">
     WhatsApp
   </button>
 </body>
+
+<div
+  class="modal fade"
+  id="whatModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="whatLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="emailModalLabel">Authentification</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="modale">
+            <div class="centrer">
+              <label for="email"
+                >Veuillez inscrire le code recu par WhatsApp</label
+              >
+              <input
+                [(ngModel)]="code"
+                type="text"
+                id="code"
+                name="code"
+                placeholder="ex:12345"
+                required
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Fermer
+        </button>
+        <button
+          type="button"
+          class="btn btn1"
+          data-dismiss="modal"
+          (click)="verifyCode2()"
+        >
+          Valider
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- authentification par mail -->
 <div
@@ -84,53 +141,4 @@
   </div>
 
   <!-- authentification par WhatsApp -->
-
-  <div
-    class="modal fade"
-    id="whatsappModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="whatsappModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="whatsapp">Authentification</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="modale">
-              <div class="centrer">
-                <label for="email"
-                  >Veuillez inscrire le code recu par WhatsApp</label
-                >
-                <input
-                  type="text"
-                  id="whatsapp"
-                  name="whatsapp"
-                  placeholder="ex:12345"
-                  required
-                />
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Fermer
-          </button>
-          <button type="button" class="btn btn1">Valider</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

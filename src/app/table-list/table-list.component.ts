@@ -82,7 +82,7 @@ export class TableListComponent {
     this.dataService.getDonnees().subscribe(
       (data: any) => {
         if (Array.isArray(data.projet)) {
-          this.dataSource.data = data.projet
+          this.test = data.projet
             .map(
               (projet: any) =>
                 projet.members
@@ -90,7 +90,6 @@ export class TableListComponent {
                   .includes(this.authService.getUserId()) && projet
             )
             .filter((projet: any) => projet !== false);
-          this.test = this.dataSource.data;
           this.dataForTab2 = this.test.filter(
             (data: any) => data.status > "0" && data.status !== "100"
           );
@@ -117,9 +116,11 @@ export class TableListComponent {
     );
   }
   openSnackBar(message: string) {
+    this.loading = true;
     this._snackBar.open(message, "Fermer", {
       duration: 3000,
     });
+    this.loading = false;
   }
 
   onDelete(id: any): void {
@@ -195,6 +196,7 @@ export class TableListComponent {
     }
   }
   onEdit(): void {
+    this.loading = true;
     const userData = {
       title: this.title,
       desc: this.desc,
@@ -210,6 +212,7 @@ export class TableListComponent {
       })
       .subscribe(
         (response: any) => {
+          this.loading = false;
           this.getProject();
           this.title = "";
           this.desc = "";

@@ -87,7 +87,14 @@
               <i class="material-icons">person</i>
             </button>
             <mat-menu #menuCat="matMenu">
-              <div style="display: flex; justify-content: space-between">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  cursor: pointer;
+                "
+                (click)="profile()"
+              >
                 <div
                   class="profile-picture"
                   style="background-color: #323232; position: relative"

@@ -67,7 +67,15 @@
       <td class="mat-cell" colspan="4">No data "{{ input.value }}"</td>
     </tr>
   </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
 </body>
+
+<div *ngIf="loading" class="loading-container">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
 <div class="modal fade" id="confirmationModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">

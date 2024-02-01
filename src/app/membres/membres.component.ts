@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
@@ -6,6 +6,8 @@ import { DataService } from "app/data.service";
 import { AuthentificationService } from "app/authentification.service";
 import { ActivatedRoute } from "@angular/router";
 import { SocketService } from "app/socket.service";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-membres",
@@ -13,6 +15,7 @@ import { SocketService } from "app/socket.service";
   styleUrl: "./membres.component.css",
 })
 export class MembresComponent {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   userId: any;
   projetId: any;
   role: any;
@@ -23,6 +26,7 @@ export class MembresComponent {
   usertype: any;
   data: any;
   id: any;
+  loading: boolean = false;
 
   displayedColumns: string[] = ["nom", "prenom", "role", "action"];
   dataSource = new MatTableDataSource<any>();
@@ -30,14 +34,19 @@ export class MembresComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private dataService: DataService,
     private authService: AuthentificationService,
     private route: ActivatedRoute,
-    private socket: SocketService
+    private socket: SocketService,
+    private _snackBar: MatSnackBar
   ) {}
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   getMembers(id: any): void {
     this.http
@@ -46,7 +55,7 @@ export class MembresComponent {
       })
       .subscribe(
         (response: any) => {
-          this.dataSource = response.projet.members;
+          this.dataSource.data = response.projet.members;
         },
         (error) => {
           console.log(error);
@@ -64,6 +73,7 @@ export class MembresComponent {
     this.prenom = user.prenom;
   }
   addMember(): void {
+    this.loading = true;
     var nom = "";
     var prenom = "";
     for (let user of this.users) {
@@ -101,9 +111,12 @@ export class MembresComponent {
           this.nom = "";
           this.prenom = "";
           this.role = "";
+          this.loading = false;
+          this.openSnackBar("Membre ajouté avec succès !");
         },
         (error) => {
           console.log(error);
+          this.loading = false;
         }
       );
   }
@@ -151,6 +164,7 @@ export class MembresComponent {
       .subscribe(
         (response: any) => {
           this.getMembers(this.projetId);
+          this.openSnackBar("La suppression a réussi !");
         },
         (error) => {
           console.log(error);
@@ -167,4 +181,9 @@ export class MembresComponent {
       }
     });
   };
+  openSnackBar(message: string) {
+    this._snackBar.open(message, "Fermer", {
+      duration: 3000,
+    });
+  }
 }

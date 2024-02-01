@@ -49,6 +49,7 @@
     "moment": "2.29.1",
     "net-browserify": "^0.2.4",
     "ng-apexcharts": "^1.8.0",
+    "ngx-spinner": "^16.0.2",
     "path-browserify": "^1.0.1",
     "perfect-scrollbar": "1.5.5",
     "popper.js": "1.16.1",

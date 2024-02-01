@@ -51,15 +51,21 @@
 
         <div *ngFor="let tasks of task_array">
           <div *ngIf="tasks.cat_TaskId === task.id">
-            <div class="tasks" [ngClass]="{ 'non-editable': tasks.status }">
+            <div
+              class="tasks"
+              [ngClass]="{
+                'non-editable': tasks.status && tasks.steps === 'Terminée'
+              }"
+            >
               <!-- <label class="checkbox-label">
                 <input type="checkbox" class="custom-checkbox" />
                 <span class="checkbox-custom"></span>
               </label> -->
-              <div *ngIf="tasks.status">
+
+              <div *ngIf="tasks.status || tasks.steps === 'Terminée'">
                 <mat-icon>checkbox</mat-icon>
               </div>
-              <span>{{ tasks.title }}</span>
+              <span (click)="onClickOneTask(tasks.id)">{{ tasks.title }}</span>
 
               <button class="button1" [matMenuTriggerFor]="menu">...</button>
 
@@ -292,13 +298,17 @@
 
   <mat-tab-group (selectedTabChange)="onTabChange($event)">
     <mat-tab>
-      <ng-template mat-tab-label>Nouvelles</ng-template>
+      <ng-template mat-tab-label
+        >Nouvelles {{ dataForTab1.length }}</ng-template
+      >
     </mat-tab>
     <mat-tab>
-      <ng-template mat-tab-label>En cours</ng-template>
+      <ng-template mat-tab-label>En cours {{ dataForTab2.length }}</ng-template>
     </mat-tab>
     <mat-tab>
-      <ng-template mat-tab-label>Terminées</ng-template>
+      <ng-template mat-tab-label
+        >Terminées {{ dataForTab3.length }}</ng-template
+      >
     </mat-tab>
   </mat-tab-group>
 
@@ -339,6 +349,12 @@
           >
             <mat-icon style="color: black">visibility</mat-icon>
           </button>
+          <!-- <button
+            style="border: none; background-color: white"
+            (click)="onClickproject(element.projetId)"
+          >
+            <mat-icon style="color: black">card_travel</mat-icon>
+          </button> -->
         </div>
       </td>
     </ng-container>
