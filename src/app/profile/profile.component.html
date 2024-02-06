@@ -9,7 +9,7 @@
   </div>
 </div>
 <button *ngIf="!sendEmail && !verifyCode" class="bt" (click)="dashboard()">
-  <mat-icon>home</mat-icon> Dashboard
+  Retour
 </button>
 
 <div class="container-xl px-4 mt-4">
@@ -116,6 +116,17 @@
                   Changer de mot de passe
                 </button>
               </div>
+            </div>
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputPhone">Profession</label>
+              <input
+                [(ngModel)]="role"
+                readonly
+                class="form-control"
+                id="role"
+                name="role"
+                type="text"
+              />
             </div>
           </form>
         </div>

@@ -81,7 +81,7 @@ export class ConfirmationComponent {
     this.http
       .post(
         "https://devcosit.com/auth/send-code",
-        { gateway: "71975833", type: type },
+        { gateway: this.authService.getUserPhone(), type: type },
         { headers: headers }
       )
       .subscribe(

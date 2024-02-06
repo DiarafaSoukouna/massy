@@ -35,6 +35,7 @@ export class IconsComponent implements OnInit {
   filtered: any;
   search: any;
   userFiltered: any;
+  messageClicked: boolean = false;
   constructor(
     private dataService: DataService,
     private router: Router,
@@ -223,7 +224,24 @@ export class IconsComponent implements OnInit {
   }
 
   getLastMessage(chat: any) {
-    return chat.messages
+    var boolView = false;
+    const lastMessage = chat.messages.sort((a: any, b: any) => {
+      if (a.dateCreate > b.dateCreate) {
+        return 1;
+      }
+      return -1;
+    });
+    if (
+      lastMessage.length > 0 &&
+      lastMessage.slice(-1)[0].senderId !== this.authService.getUserId() &&
+      lastMessage.slice(-1)[0].view === false
+    ) {
+      boolView = true;
+    } else {
+      boolView = false;
+    }
+
+    const con = chat.messages
       .sort((a: any, b: any) => {
         if (a.dateCreate > b.dateCreate) {
           return 1;
@@ -231,7 +249,10 @@ export class IconsComponent implements OnInit {
         return -1;
       })
       .slice(-1)[0].content;
+
+    return { content: con, view: boolView };
   }
+
   getLastMessageHours(chat: any) {
     const sortedMessages = chat.messages.sort((a: any, b: any) => {
       if (a.dateCreate > b.dateCreate) {
@@ -312,5 +333,28 @@ export class IconsComponent implements OnInit {
   }
   dashboard() {
     this.router.navigate(["/dashboard"]);
+  }
+  UpdateMessage(chat: any): void {
+    const chat1 = chat;
+    for (let chat of chat1.messages) {
+      if (
+        chat.view === false &&
+        chat.senderId !== this.authService.getUserId()
+      ) {
+        this.http
+          .post("https://devcosit.com/chat/update-message", {
+            id: chat.id,
+            view: true,
+          })
+          .subscribe(
+            (response: any) => {
+              this.getUsersChat(this.authService.getUserId());
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+      }
+    }
   }
 }

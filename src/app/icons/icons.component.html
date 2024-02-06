@@ -17,7 +17,12 @@
     </div>
     <div *ngFor="let oneChat of filtered">
       <ul class="conversation-list">
-        <li class="clearfix" (click)="onClickChat(oneChat.id); scrollBottom()">
+        <li
+          class="clearfix"
+          (click)="
+            onClickChat(oneChat.id); UpdateMessage(oneChat); scrollBottom()
+          "
+        >
           <div class="profile-picture" style="background-color: #f44336">
             <div class="initials">
               {{
@@ -42,8 +47,11 @@
               <div
                 class="cote text-truncate"
                 style="width: 250px; font-family: match"
+                [ngClass]="{
+                  non: getLastMessage(oneChat).view
+                }"
               >
-                {{ getLastMessage(oneChat) ? getLastMessage(oneChat) : "" }}
+                {{ getLastMessage(oneChat).content }}
               </div>
               <div class="status">
                 {{

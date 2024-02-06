@@ -27,6 +27,8 @@ export class MembresComponent {
   data: any;
   id: any;
   loading: boolean = false;
+  allProjet: any[];
+  projectName: string;
 
   displayedColumns: string[] = ["nom", "prenom", "role", "action"];
   dataSource = new MatTableDataSource<any>();
@@ -67,6 +69,8 @@ export class MembresComponent {
     this.projetId = this.route.snapshot.paramMap.get("projetId");
     this.getMembers(this.projetId);
     this.getDataRole();
+    this.getProjet();
+    this.onRecup(this.projetId);
   }
   selectUser(user: any): void {
     this.nom = user.nom;
@@ -93,9 +97,7 @@ export class MembresComponent {
 
     const dataNotify = {
       userId: this.members,
-      content: `Vous avez été ajoutés au projet "${this.authService.getProjetName()}" en tant que ${
-        this.role
-      }`,
+      content: `Vous avez été ajoutés au projet "${this.projectName}" en tant que ${this.role}`,
       motif: "Projet",
     };
 
@@ -119,6 +121,20 @@ export class MembresComponent {
           this.loading = false;
         }
       );
+  }
+  onRecup(id: any): void {
+    const data = this.allProjet;
+    for (let p of data) {
+      if (p.id === id) {
+        this.projectName = p.title;
+      }
+    }
+  }
+  getProjet() {
+    this.dataService.getDonnees().subscribe((data: any) => {
+      this.allProjet = data.projet;
+      this.onRecup(this.projetId);
+    });
   }
   clean() {
     this.userId = "";

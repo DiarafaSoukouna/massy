@@ -299,15 +299,20 @@
   <mat-tab-group (selectedTabChange)="onTabChange($event)">
     <mat-tab>
       <ng-template mat-tab-label
-        >Nouvelles {{ dataForTab1.length }}</ng-template
+        >Nouvelles
+        <span class="span">{{ dataForTab1.length }}</span></ng-template
       >
     </mat-tab>
     <mat-tab>
-      <ng-template mat-tab-label>En cours {{ dataForTab2.length }}</ng-template>
+      <ng-template mat-tab-label
+        >En cours
+        <span class="span">{{ dataForTab2.length }}</span></ng-template
+      >
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label
-        >Terminées {{ dataForTab3.length }}</ng-template
+        >Terminées
+        <span class="span">{{ dataForTab3.length }}</span></ng-template
       >
     </mat-tab>
   </mat-tab-group>

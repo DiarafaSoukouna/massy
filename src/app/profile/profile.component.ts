@@ -20,6 +20,7 @@ export class ProfileComponent {
   code: any;
   sendEmail: boolean = false;
   verifyCode: boolean = false;
+  role: any;
   constructor(
     private router: Router,
     private dataService: DataService,
@@ -60,6 +61,7 @@ export class ProfileComponent {
         this.prenom = user.prenom;
         this.email = user.email;
         this.phone = user.phone;
+        this.role = user.role;
       }
     }
   }

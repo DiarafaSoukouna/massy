@@ -33,6 +33,7 @@ export class NavbarComponent implements OnInit {
   all: any[];
   userOnline: any;
   notif: any;
+  userChats: any;
 
   constructor(
     location: Location,
@@ -60,6 +61,10 @@ export class NavbarComponent implements OnInit {
         this.mobile_menu_visible = 0;
       }
     });
+    this.socket.getSocket().subscribe((socket) => {
+      this.getUsersChat(this.authService.getUserId());
+    });
+    this.getUsersChat(this.authService.getUserId());
 
     this.getAllNotify(this.authService.getUserId());
     this.socket.getNotify().subscribe((response: any) => {
@@ -313,5 +318,32 @@ export class NavbarComponent implements OnInit {
   }
   getInitials(nom: string, prenom: string): string {
     return nom.charAt(0).toUpperCase() + prenom.charAt(0).toUpperCase();
+  }
+  getUsersChat(id: any): void {
+    this.http
+      .post("https://devcosit.com/chat/getChatBy-user", {
+        userId: id,
+      })
+      .subscribe(
+        (response: any) => {
+          this.userChats = 0;
+
+          for (let chat of response.chat) {
+            if (
+              chat.messages.length > 0 &&
+              chat.messages.slice(-1)[0].view === false &&
+              chat.messages.slice(-1)[0].senderId !==
+                this.authService.getUserId()
+            ) {
+              this.userChats++;
+            }
+          }
+
+          console.log(this.userChats);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }

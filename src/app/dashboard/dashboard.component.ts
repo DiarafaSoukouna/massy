@@ -4,6 +4,8 @@ import { AuthentificationService } from "app/authentification.service";
 import { DataService } from "app/data.service";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { DatePipe } from "@angular/common";
+import { PageEvent } from "@angular/material/paginator";
 
 @Component({
   selector: "app-dashboard",
@@ -15,6 +17,8 @@ export class DashboardComponent implements OnInit {
   allTasks: any[];
   allUsersOnline: [];
   tasksTrue: any;
+  currentDate = new Date();
+  displayedUsers: any;
 
   constructor(
     private dataService: DataService,
@@ -172,6 +176,7 @@ export class DashboardComponent implements OnInit {
     this.getProject();
     this.onTasksUser();
     this.getUser();
+    // this.displayedUsers = this.allUsersOnline.slice(0, this.pageSize);
   }
   getProject() {
     this.dataService.getDonnees().subscribe(
@@ -237,6 +242,14 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(["/project-details", { projetId: id }]);
   }
   onRedirectTache(id: string) {
-    this.router.navigate(["/task", { projetId: id }]);
+    this.router.navigate(["/one-task", { taskId: id }]);
   }
+  // pageSize: number = 10;
+  // page: number = 1;
+
+  // onPageChange(event: PageEvent) {
+  //   const startIndex = event.pageIndex * event.pageSize;
+  //   const endIndex = startIndex + event.pageSize;
+  //   this.displayedUsers = this.allUsersOnline.slice(startIndex, endIndex);
+  // }
 }

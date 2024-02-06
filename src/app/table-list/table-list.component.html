@@ -23,13 +23,22 @@
 
   <mat-tab-group (selectedTabChange)="onTabChange($event)">
     <mat-tab>
-      <ng-template mat-tab-label>Nouveaux {{ dataForTab1.length }}</ng-template>
+      <ng-template mat-tab-label
+        >Nouveaux
+        <span class="span">{{ dataForTab1.length }}</span></ng-template
+      >
     </mat-tab>
     <mat-tab>
-      <ng-template mat-tab-label>En cours {{ dataForTab2.length }}</ng-template>
+      <ng-template mat-tab-label
+        >En cours
+        <span class="span">{{ dataForTab2.length }}</span></ng-template
+      >
     </mat-tab>
     <mat-tab>
-      <ng-template mat-tab-label>Terminé {{ dataForTab3.length }}</ng-template>
+      <ng-template mat-tab-label
+        >Terminés
+        <span class="span">{{ dataForTab3.length }}</span></ng-template
+      >
     </mat-tab>
   </mat-tab-group>
 
