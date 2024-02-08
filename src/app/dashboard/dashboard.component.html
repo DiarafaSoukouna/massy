@@ -142,15 +142,18 @@
                             t.steps !== 'Terminée'
                         }"
                       >
-                        <mat-icon
-                          style="margin-right: 10px"
-                          *ngIf="
-                            t.deadline < (currentDate | date : 'yyyy-MM-dd') &&
-                            t.steps !== 'Terminée'
-                          "
-                          >warning</mat-icon
-                        >
-                        {{ t.title }}
+                        <div class="d-flex items-center justify-content-start">
+                          <mat-icon
+                            style="margin-right: 10px"
+                            *ngIf="
+                              t.deadline <
+                                (currentDate | date : 'yyyy-MM-dd') &&
+                              t.steps !== 'Terminée'
+                            "
+                            >warning</mat-icon
+                          >
+                          {{ t.title }}
+                        </div>
                       </td>
 
                       <td class="td-actions text-right">

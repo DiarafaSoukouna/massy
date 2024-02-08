@@ -327,6 +327,7 @@ export class NavbarComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.userChats = 0;
+          var tab = [];
 
           for (let chat of response.chat) {
             if (
@@ -336,6 +337,8 @@ export class NavbarComponent implements OnInit {
                 this.authService.getUserId()
             ) {
               this.userChats++;
+
+              tab.push(chat.messages.slice(-1)[0]);
             }
           }
 

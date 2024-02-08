@@ -52,14 +52,13 @@ export class TypographyComponent implements OnInit {
   memberFormControl = new FormControl();
   filteredMembers: any[] = [];
   selectedTabIndex: number = 0;
-  dataForTab2: any;
-  dataForTab1: any;
   test: any;
-  dataForTab3: any;
   loading: boolean = false;
-
   displayedColumns: string[] = ["title", "steps", "deadline", "action"];
   dataSource = new MatTableDataSource<any>();
+  dataForTab1 = new MatTableDataSource<any>();
+  dataForTab2 = new MatTableDataSource<any>();
+  dataForTab3 = new MatTableDataSource<any>();
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -180,14 +179,14 @@ export class TypographyComponent implements OnInit {
         (response: any) => {
           this.task_by_Users = response.task;
           console.log(this.task_by_Users);
-          this.dataForTab1 = this.task_by_Users.filter(
+          this.dataForTab1.data = this.task_by_Users.filter(
             (data: any) => data.steps === "Nouvelle"
           );
 
-          this.dataForTab2 = this.task_by_Users.filter(
+          this.dataForTab2.data = this.task_by_Users.filter(
             (data: any) => data.steps === "En cours"
           );
-          this.dataForTab3 = this.task_by_Users.filter(
+          this.dataForTab3.data = this.task_by_Users.filter(
             (data: any) => data.steps === "Terminée"
           );
 

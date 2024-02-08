@@ -39,6 +39,9 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { OneTaskComponent } from "app/one-task/one-task.component";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
+import { InMemoryDataService } from "app/services/in-memory-data.service";
+import { GanttComponent } from "app/gantt.component";
 
 @NgModule({
   imports: [
@@ -64,6 +67,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     NgApexchartsModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
   ],
   declarations: [
     DashboardComponent,
@@ -82,6 +86,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     ProjectDetailsComponent,
     ResetPasswordComponent,
     OneTaskComponent,
+    GanttComponent,
   ],
   providers: [DataService, AuthentificationService],
 })

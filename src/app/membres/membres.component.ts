@@ -188,10 +188,13 @@ export class MembresComponent {
       );
   }
   onChange = () => {
+    var prenom = this.userId.split(" ")[0];
+    var nom = this.userId.split(" ").slice(-1)[0];
+
     this.users.forEach((ele: any) => {
       if (
-        this.userId.split(" ")[0] === ele.prenom.trim() &&
-        this.userId.split(" ")[1] === ele.nom.trim()
+        prenom === ele.prenom.split(" ")[0].trim() &&
+        nom === ele.nom.trim()
       ) {
         this.members = ele.id;
       }

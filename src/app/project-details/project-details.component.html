@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="row bg-light rounded shadow-1 py-3">
+    <div class="row bg-light rounded shadow-1">
       <div class="col-md-9">
         <div class="card mb-3 box box-secondary">
           <div class="card-body">
@@ -159,6 +159,24 @@
           </div>
         </div>
       </div> -->
+    </div>
+  </div>
+
+  <div class="container-fluid bg-light rounded-sm py-3 my-3">
+    <gantt [projetInput]="oneProject"></gantt>
+    <div>
+      <input
+        value="Export to PDF"
+        type="button"
+        class="btn"
+        onclick="gantt.exportToPDF()"
+      />
+      <input
+        value="Export to PNG"
+        type="button"
+        class="btn"
+        onclick="gantt.exportToPNG()"
+      />
     </div>
   </div>
 </div>
